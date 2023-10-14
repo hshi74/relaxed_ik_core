@@ -35,6 +35,7 @@ impl RelaxedIK {
     }
 
     pub fn solve(&mut self) -> Vec<f64> {
+        // let start = std::time::Instant::now(); // Start timer
         let mut out_x = self.vars.xopt.clone();
 
 
@@ -49,6 +50,9 @@ impl RelaxedIK {
             }
         }
         self.vars.update(out_x.clone());  
+
+        // let duration = start.elapsed(); // Get elapsed time
+        // println!("Frequency: {:.2} Hz", 1.0 / duration.as_secs_f64());
         out_x
     }
 }

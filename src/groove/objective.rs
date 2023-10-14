@@ -209,7 +209,8 @@ impl ObjectiveTrait for SelfCollision {
         //     assert!(dis_old == 0.0 || dis_old + 0.01 > dis);
         // }
 
-        swamp_loss(dis, 0.02, 1.5, 60.0, 0.0001, 30)
+        // swamp_loss(dis, 0.02, 1.5, 60.0, 0.0001, 30)
+        swamp_loss(dis, 0.005, 1.5, 60.0, 0.0001, 30)
     }
 
     fn call_lite(&self, x: &[f64], v: &vars::RelaxedIKVars, ee_poses: &Vec<(nalgebra::Vector3<f64>, nalgebra::UnitQuaternion<f64>)>) -> f64 {
