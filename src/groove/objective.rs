@@ -190,7 +190,7 @@ impl ObjectiveTrait for SelfCollision {
         let rot_2 = frames[self.second_arm].1[self.second_link];
         let segment_pos_2 = Isometry3::from_parts(tra_2, rot_2);
         
-        let dis = query::distance(&segment_pos_1, &*link_1.0, &segment_pos_2, &*link_2.0).unwrap();
+        let dis = query::distance(&segment_pos_1, &*link_1.0, &segment_pos_2, &*link_2.0).unwrap() * 10.0;
 
         // if self.first_link < frames[self.first_arm].0.len() - 1 && self.second_link < frames[self.second_arm].0.len() - 1 {
         //     let start_pt_1 = Point3::from(frames[self.first_arm].0[self.first_link]);
@@ -209,8 +209,11 @@ impl ObjectiveTrait for SelfCollision {
         //     assert!(dis_old == 0.0 || dis_old + 0.01 > dis);
         // }
 
+        if dis < 0.02 {
+            println!("first_arm: {} second_arm: {} first_link: {} second_link: {} dis: {}", self.first_arm, self.second_arm, self.first_link, self.second_link, dis);
+        }
         // swamp_loss(dis, 0.02, 1.5, 60.0, 0.0001, 30)
-        swamp_loss(dis, 0.005, 1.5, 60.0, 0.0001, 30)
+        swamp_loss(dis, 0.02, 1.5, 60.0, 0.0001, 30)
     }
 
     fn call_lite(&self, x: &[f64], v: &vars::RelaxedIKVars, ee_poses: &Vec<(nalgebra::Vector3<f64>, nalgebra::UnitQuaternion<f64>)>) -> f64 {
