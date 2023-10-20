@@ -102,23 +102,23 @@ impl ObjectiveMaster {
         // }
         // println!("Num self-collision pairs: {}", pairs.len());
 
-        let self_collision_weight = 0.01;
-        let mut pairs = Vec::new();
+        // let self_collision_weight = 0.01;
+        // let mut pairs = Vec::new();
 
-        for i in 0..num_chains {
-            let next_chain = (i + 1) % num_chains;
-            for j in 0..chain_indices[i].len() {  
-                for k in 0..chain_indices[next_chain].len() {
-                    if !chain_indices[i].contains(&chain_indices[next_chain][k]) && !chain_indices[next_chain].contains(&chain_indices[i][j]) {
-                        objectives.push(Box::new(SelfCollision::new(i, next_chain, j, k)));
-                        weight_priors.push(self_collision_weight);
-                        pairs.push((chain_indices[i][j], chain_indices[next_chain][k]));
-                        // println!("{} {}", chain_indices[i][ii], chain_indices[j][jj]);
-                    }
-                }
-            }
-        }
-        println!("Num self-collision pairs: {}", pairs.len());
+        // for i in 0..num_chains {
+        //     let next_chain = (i + 1) % num_chains;
+        //     for j in 0..chain_indices[i].len() {  
+        //         for k in 0..chain_indices[next_chain].len() {
+        //             if !chain_indices[i].contains(&chain_indices[next_chain][k]) && !chain_indices[next_chain].contains(&chain_indices[i][j]) {
+        //                 objectives.push(Box::new(SelfCollision::new(i, next_chain, j, k)));
+        //                 weight_priors.push(self_collision_weight);
+        //                 pairs.push((chain_indices[i][j], chain_indices[next_chain][k]));
+        //                 // println!("{} {}", chain_indices[i][ii], chain_indices[j][jj]);
+        //             }
+        //         }
+        //     }
+        // }
+        // println!("Num self-collision pairs: {}", pairs.len());
         
         Self{objectives, num_chains, weight_priors, lite: false, finite_diff_grad: false}
     }

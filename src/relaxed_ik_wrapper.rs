@@ -120,21 +120,26 @@ pub unsafe extern "C" fn solve_velocity(ptr: *mut RelaxedIK, pos_vels: *const c_
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn get_ee_positions(ptr: *mut RelaxedIK) -> Opt {
+pub unsafe extern "C" fn get_ee_poses(ptr: *mut RelaxedIK) -> Opt {
     let relaxed_ik = unsafe {
         assert!(!ptr.is_null());
         &mut *ptr
     };
 
-    let mut positions = Vec::new();
-    for i in 0..relaxed_ik.vars.goal_positions.len() {
-        positions.push(relaxed_ik.vars.goal_positions[i].x);
-        positions.push(relaxed_ik.vars.goal_positions[i].y);
-        positions.push(relaxed_ik.vars.goal_positions[i].z);
+    let mut poses = Vec::new();
+    let pose = relaxed_ik.vars.robot.get_ee_pos_and_quat_immutable(&relaxed_ik.vars.xopt);
+    for i in 0..pose.len() {
+        poses.push(pose[i].0.x);
+        poses.push(pose[i].0.y);
+        poses.push(pose[i].0.z);
+        poses.push(pose[i].1.coords.w);
+        poses.push(pose[i].1.coords.x);
+        poses.push(pose[i].1.coords.y);
+        poses.push(pose[i].1.coords.z);
     }
-    let ptr = positions.as_ptr();
-    let len = positions.len();
-    std::mem::forget(positions);
+    let ptr = poses.as_ptr();
+    let len = poses.len();
+    std::mem::forget(poses);
     Opt {data: ptr, length: len as c_int}
 }
 
