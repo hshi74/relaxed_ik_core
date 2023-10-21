@@ -1,14 +1,67 @@
 <?xml version="1.0" ?>
 <robot name="converted_robot">
-   <link name="world">
-      <!-- <inertial>
-         <origin xyz="0.0 0.0 0.0" rpy="0.0 0.0 0.0" />
-         <mass value="0.0" />
-         <inertia ixx="0.0" iyy="0.0" izz="0.0" ixy="0" ixz="0" iyz="0" />
-      </inertial> -->
-   </link>
-   <joint type="fixed" name="fixed_joint">
+   <link name="world" />
+
+   <!-- Prismatic joints for translations -->
+   <joint type="prismatic" name="translate_x_joint">
       <parent link="world" />
+      <child link="joint_tx_link" />
+      <origin xyz="0 0 0" rpy="0 0 0" />
+      <axis xyz="1 0 0" />
+      <limit effort="20.0" lower="-1.0" upper="1.0" velocity="5.0"/>
+   </joint>
+
+   <joint type="prismatic" name="translate_y_joint">
+      <parent link="joint_tx_link" />
+      <child link="joint_ty_link" />
+      <origin xyz="0 0 0" rpy="0 0 0" />
+      <axis xyz="0 1 0" />
+      <limit effort="20.0" lower="-1.0" upper="1.0" velocity="5.0"/>
+   </joint>
+
+   <joint type="prismatic" name="translate_z_joint">
+      <parent link="joint_ty_link" />
+      <child link="joint_tz_link" />
+      <origin xyz="0 0 0" rpy="0 0 0" />
+      <axis xyz="0 0 1" />
+      <limit effort="20.0" lower="-1.0" upper="1.0" velocity="5.0"/>
+   </joint>
+
+   <!-- Revolute joints for rotations -->
+   <joint type="revolute" name="rotate_x_joint">
+      <parent link="joint_tz_link" />
+      <child link="joint_rx_link" />
+      <origin xyz="0 0 0" rpy="0 0 0" />
+      <axis xyz="1 0 0" />
+      <limit effort="100" lower="-3.141593" upper="3.141593" velocity="100"/>
+   </joint>
+
+   <joint type="revolute" name="rotate_y_joint">
+      <parent link="joint_rx_link" />
+      <child link="joint_ry_link" />
+      <origin xyz="0 0 0" rpy="0 0 0" />
+      <axis xyz="0 1 0" />
+      <limit effort="100" lower="-3.141593" upper="3.141593" velocity="100"/>
+   </joint>
+
+   <joint type="revolute" name="rotate_z_joint">
+      <parent link="joint_ry_link" />
+      <child link="joint_rz_link" />
+      <origin xyz="0 0 0" rpy="0 0 0" />
+      <axis xyz="0 0 1" />
+      <limit effort="100" lower="-3.141593" upper="3.141593" velocity="100"/>
+   </joint>
+
+   <!-- Empty link definitions for the new joints -->
+   <link name="joint_tx_link" />
+   <link name="joint_ty_link" />
+   <link name="joint_tz_link" />
+   <link name="joint_rx_link" />
+   <link name="joint_ry_link" />
+   <link name="joint_rz_link" />
+
+   <joint type="fixed" name="wrist_fixed">
+      <parent link="joint_rz_link" />
       <child link="lunate" />
       <origin xyz="0 0 0" rpy="0 0 0" />
    </joint>

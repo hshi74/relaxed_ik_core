@@ -12,6 +12,6 @@ ee_links:
   - MFtip
   - RFtip
   - LFtip
-joint_ordering: ['cmc_abduction', 'cmc_flexion', 'mp_flexion', 'ip_flexion', 'mcp2_flexion', 'mcp2_abduction', 'pm2_flexion', 'md2_flexion', 'mcp3_flexion', 'mcp3_abduction', 'pm3_flexion', 'md3_flexion', 'mcp4_flexion', 'mcp4_abduction', 'pm4_flexion', 'md4_flexion', 'mcp5_flexion', 'mcp5_abduction', 'pm5_flexion', 'md5_flexion']
-starting_config: [-0.5, -0.78, -0.785398, -1.309, 0.0, -0.261799, 0.0, 0.0, 0.0, -0.261799, 0.0, 0.0, 0.0, -0.261799, 0.0, 0.0, 0.0, -0.261799, 0.0, 0.0]
+joint_ordering: ['translate_x_joint', 'translate_y_joint', 'translate_z_joint', 'rotate_x_joint', 'rotate_y_joint', 'rotate_z_joint', 'cmc_abduction', 'cmc_flexion', 'mp_flexion', 'ip_flexion', 'mcp2_flexion', 'mcp2_abduction', 'pm2_flexion', 'md2_flexion', 'mcp3_flexion', 'mcp3_abduction', 'pm3_flexion', 'md3_flexion', 'mcp4_flexion', 'mcp4_abduction', 'pm4_flexion', 'md4_flexion', 'mcp5_flexion', 'mcp5_abduction', 'pm5_flexion', 'md5_flexion']
+starting_config: [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, -0.5, -0.78, -0.785398, -1.309, 0.0, -0.261799, 0.0, 0.0, 0.0, -0.261799, 0.0, 0.0, 0.0, -0.261799, 0.0, 0.0, 0.0, -0.261799, 0.0, 0.0]
 obstacles:
