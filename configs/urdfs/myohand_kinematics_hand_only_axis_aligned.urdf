@@ -1,0 +1,685 @@
+<robot name="converted_robot">
+   <link name="world">
+      <inertial>
+         <origin xyz="0.0 0.0 0.0" rpy="0.0 0.0 0.0" />
+         <mass value="0.0" />
+         <inertia ixx="0.0" iyy="0.0" izz="0.0" ixy="0" ixz="0" iyz="0" />
+      </inertial>
+   </link>
+   <joint type="floating" name="floating_joint">
+      <parent link="world" />
+      <child link="lunate" />
+      <origin xyz="0 0 0" rpy="0 0 0" />
+   </joint>
+   <link name="lunate">
+      <inertial>
+         <origin xyz="0 0 0" rpy="0 0 0 " />
+         <mass value="0.0012000263535597198" />
+         <inertia ixx="0.0001" iyy="0.0001" izz="0.0001" ixy="0" ixz="0" iyz="0" />
+      </inertial>
+      <visual name="lunate">
+         <origin xyz="0 0 0" rpy="0 0 0" />
+         <geometry>
+            <mesh filename="./meshes/lunate.stl" />
+         </geometry>
+         <material name="white" />
+      </visual>
+   </link>
+   <link name="scaphoid">
+      <inertial>
+         <origin xyz="0.0 0.0 0.0" rpy="0.0 0.0 0.0" />
+         <mass value="0.02" />
+         <inertia ixx="0.0001" iyy="0.0001" izz="0.0001" ixy="0" ixz="0" iyz="0" />
+      </inertial>
+      <visual name="scaphoid">
+         <origin xyz="-2.3838397997690175e-05 -9.018410708891066e-06 3.833897382858033e-05" rpy="-0.5692290431693718 -0.33878345041747715 0.21369142489696064" />
+         <geometry>
+            <mesh filename="./meshes/scaphoid.stl" />
+         </geometry>
+         <material name="white" />
+      </visual>
+   </link>
+   <joint type="fixed" name="lunate2scaphoid_fixed">
+      <parent link="lunate" />
+      <child link="scaphoid" />
+      <origin xyz="0.012345 -0.004464 -0.001254" rpy="0.0 0.0 0.0" />
+   </joint>
+   <link name="pisiform">
+      <inertial>
+         <origin xyz="0.0 0.0 0.0" rpy="0.0 0.0 0.0" />
+         <mass value="0.02" />
+         <inertia ixx="0.0001" iyy="0.0001" izz="0.0001" ixy="0" ixz="0" iyz="0" />
+      </inertial>
+      <visual name="pisiform">
+         <origin xyz="0.0017780895273392433 -0.0009073903269969469 -7.190186304977116e-05" rpy="1.2462055088005255 0.49559439583995424 -0.34929645069987836" />
+         <geometry>
+            <mesh filename="./meshes/pisiform.stl" />
+         </geometry>
+         <material name="white" />
+      </visual>
+   </link>
+   <joint type="fixed" name="lunate2pisiform_fixed">
+      <parent link="lunate" />
+      <child link="pisiform" />
+      <origin xyz="-0.013388 -0.009886 -0.010593" rpy="0.0 0.0 0.0" />
+   </joint>
+   <link name="triquetrum">
+      <inertial>
+         <origin xyz="0.0 0.0 0.0" rpy="0.0 0.0 0.0" />
+         <mass value="0.02" />
+         <inertia ixx="0.0001" iyy="0.0001" izz="0.0001" ixy="0" ixz="0" iyz="0" />
+      </inertial>
+      <visual name="triquetrum">
+         <origin xyz="5.930790822756372e-07 -1.1225602601593567e-06 -3.3935291609719996e-06" rpy="1.9269139677822995 -0.29745876180457564 -0.5516387254770375" />
+         <geometry>
+            <mesh filename="./meshes/triquetrum.stl" />
+         </geometry>
+         <material name="white" />
+      </visual>
+   </link>
+   <joint type="fixed" name="lunate2triquetrum_fixed">
+      <parent link="lunate" />
+      <child link="triquetrum" />
+      <origin xyz="-0.010784 -0.007499 -0.001289" rpy="0.0 0.0 0.0" />
+   </joint>
+   <link name="capitate">
+      <inertial>
+         <origin xyz="2.4997529376086936e-06 -4.319736123192584e-06 1.3404175140860993e-06" rpy="1.2103081004613072 -0.2920747955988763 -0.020398215496376104" />
+         <mass value="0.001912230829037991" />
+         <inertia ixx="0.0001" iyy="0.0001" izz="0.0001" ixy="0" ixz="0" iyz="0" />
+      </inertial>
+      <visual name="capitate">
+         <origin xyz="2.4997529376086936e-06 -4.319736123192584e-06 1.3404175140860993e-06" rpy="1.2103081004613072 -0.29207479559887606 -0.020398215496375882" />
+         <geometry>
+            <mesh filename="./meshes/capitate.stl" />
+         </geometry>
+         <material name="white" />
+      </visual>
+   </link>
+   <joint type="fixed" name="lunate2capitate_fixed">
+      <parent link="lunate" />
+      <child link="capitate" />
+      <origin xyz="0.003992 -0.015054 0.002327" rpy="0.0 0.0 0.0" />
+   </joint>
+   <link name="trapezium">
+      <inertial>
+         <origin xyz="0.0 0.0 0.0" rpy="0.0 0.0 0.0" />
+         <mass value="0.02" />
+         <inertia ixx="0.0001" iyy="0.0001" izz="0.0001" ixy="0" ixz="0" iyz="0" />
+      </inertial>
+      <visual name="trapezium">
+         <origin xyz="-5.679888633744862e-06 1.5277743172746618e-06 -7.338957239381493e-07" rpy="-0.25650854392346234 -0.8000548292338777 2.2561533548010577" />
+         <geometry>
+            <mesh filename="./meshes/trapezium.stl" />
+         </geometry>
+         <material name="white" />
+      </visual>
+   </link>
+   <joint type="fixed" name="capitate2trapezium_fixed">
+      <parent link="capitate" />
+      <child link="trapezium" />
+      <origin xyz="0.015293 -0.004569 -0.010308" rpy="0.0 0.0 0.0" />
+   </joint>
+   <link name="firstmc">
+      <inertial>
+         <origin xyz="0.01309968089388166 -0.0068745282609964375 -0.009698928892781572" rpy="-2.1572247499833628 -0.31560297757072453 -1.7510692763715643" />
+         <mass value="0.016" />
+         <inertia ixx="0.0001" iyy="0.0001" izz="0.0001" ixy="0" ixz="0" iyz="0" />
+      </inertial>
+      <visual name="1mc">
+         <origin xyz="0.013949344157192699 -0.007244102305333049 -0.008775826812769635" rpy="-2.237451597882739 -0.5181491466513541 -1.6277365169800728" />
+         <geometry>
+            <mesh filename="./meshes/1mc.stl" />
+         </geometry>
+         <material name="white" />
+      </visual>
+   </link>
+   <link name="cmc_abduction_dummy">
+      <inertial>
+         <origin xyz="0.0 0.0 0.0" rpy="-0.7286789533902661 0.04241170412851947 -0.01617642349516324" />
+         <mass value="0.001" />
+         <inertia ixx="1e-09" iyy="1e-09" izz="1e-09" ixy="0" ixz="0" iyz="0" />
+      </inertial>
+   </link>
+   <joint type="revolute" name="cmc_abduction">
+      <parent link="trapezium" />
+      <child link="cmc_abduction_dummy" />
+      <origin xyz="0.0072 -0.0054 -0.0025" rpy="0.7286789533902661 -0.042411704128519245 -0.01617642349516324" />
+      <axis xyz="0 0 1" />
+      <limit lower="-0.5" upper="0.78" effort="100" velocity="100" />
+   </joint>
+   <joint type="revolute" name="cmc_flexion">
+      <parent link="cmc_abduction_dummy" />
+      <child link="firstmc" />
+      <origin xyz="0.0 0.0 0.0" rpy="-1.7353556432102104 0.24272282231633158 -0.5745472836968706" />
+      <axis xyz="0 0 1" />
+      <limit lower="-0.78" upper="0.7" effort="100" velocity="100" />
+   </joint>
+   <link name="proximal_thumb">
+      <inertial>
+         <origin xyz="0.009175945436263407 -0.017323667062881923 -0.003637662002596822" rpy="2.193467119650854 0.33126827277613535 1.3835402268256396" />
+         <mass value="0.0079" />
+         <inertia ixx="0.0001" iyy="0.0001" izz="0.0001" ixy="0" ixz="0" iyz="0" />
+      </inertial>
+      <visual name="thumbprox">
+         <origin xyz="0.008173510689699315 -0.01598403329006852 -0.0031381886816513756" rpy="1.751348942319772 -0.12389205032924067 0.43579123948592824" />
+         <geometry>
+            <mesh filename="./meshes/thumbprox.stl" />
+         </geometry>
+         <material name="white" />
+      </visual>
+   </link>
+   <joint type="revolute" name="mp_flexion">
+      <parent link="firstmc" />
+      <child link="proximal_thumb" />
+      <origin xyz="0.027246285309179025 -0.013332110277934892 -0.019133080577570315" rpy="1.2527425101647096 -0.5549106329448805 -0.37755264808441874" />
+      <axis xyz="0 0 1" />
+      <limit lower="-0.785398" upper="0.698132" effort="100" velocity="100" />
+   </joint>
+   <link name="distal_thumb">
+      <inertial>
+         <origin xyz="0.00550527089824059 -0.011306835175704626 0.0008529188979227702" rpy="1.55414831514287 -0.6236827888860802 0.4187783633237224" />
+         <mass value="0.003" />
+         <inertia ixx="0.0001" iyy="0.0001" izz="0.0001" ixy="0" ixz="0" iyz="0" />
+      </inertial>
+      <visual name="thumbdist">
+         <origin xyz="0.004163110040363477 -0.009760905931564777 0.0009698082009144747" rpy="1.522079931177215 -0.031788312575904865 0.4785542231651294" />
+         <geometry>
+            <mesh filename="./meshes/thumbdist.stl" />
+         </geometry>
+         <material name="white" />
+      </visual>
+   </link>
+   <joint type="revolute" name="ip_flexion">
+      <parent link="proximal_thumb" />
+      <child link="distal_thumb" />
+      <origin xyz="0.01332315574203723 -0.0275339009948909 -0.0057617546873297495" rpy="0.2947943417533358 0.032709979997034955 -0.01102290149135593" />
+      <axis xyz="0 0 1" />
+      <limit lower="-1.309" upper="0.436332" effort="100" velocity="100" />
+   </joint>
+   <link name="trapezoid">
+      <inertial>
+         <origin xyz="0.0 0.0 0.0" rpy="0.0 0.0 0.0" />
+         <mass value="0.02" />
+         <inertia ixx="0.0001" iyy="0.0001" izz="0.0001" ixy="0" ixz="0" iyz="0" />
+      </inertial>
+      <visual name="trapezoid">
+         <origin xyz="1.3738754173765188e-06 -1.4770538374651388e-06 1.891333122868397e-07" rpy="0.27598761251820697 0.5558008487263413 0.19209924739735612" />
+         <geometry>
+            <mesh filename="./meshes/trapezoid.stl" />
+         </geometry>
+         <material name="white" />
+      </visual>
+   </link>
+   <joint type="fixed" name="capitate2trapezoid_fixed">
+      <parent link="capitate" />
+      <child link="trapezoid" />
+      <origin xyz="0.009143 -0.004062 -0.002464" rpy="0.0 0.0 0.0" />
+   </joint>
+   <link name="hamate">
+      <inertial>
+         <origin xyz="0.0 0.0 0.0" rpy="0.0 0.0 0.0" />
+         <mass value="0.02" />
+         <inertia ixx="0.0001" iyy="0.0001" izz="0.0001" ixy="0" ixz="0" iyz="0" />
+      </inertial>
+      <visual name="hamate">
+         <origin xyz="-1.1482893173857308e-05 -1.3737940466853783e-06 1.520742004524574e-06" rpy="1.941141541594031 -0.4553846643318562 -0.6664160632978575" />
+         <geometry>
+            <mesh filename="./meshes/hamate.stl" />
+         </geometry>
+         <material name="white" />
+      </visual>
+   </link>
+   <joint type="fixed" name="capitate2hamate_fixed">
+      <parent link="capitate" />
+      <child link="hamate" />
+      <origin xyz="-0.010969 -0.002495 -0.00075" rpy="0.0 0.0 0.0" />
+   </joint>
+   <link name="secondmc">
+      <inertial>
+         <origin xyz="0.0 0.0 0.0" rpy="0.0 0.0 0.0" />
+         <mass value="0.02" />
+         <inertia ixx="0.0001" iyy="0.0001" izz="0.0001" ixy="0" ixz="0" iyz="0" />
+      </inertial>
+      <visual name="2mc">
+         <origin xyz="-0.00010482465471356576 0.00012638710442843635 -0.00013983506463650922" rpy="-1.2288611407496322 -1.0576482637579705 2.9957695490133696" />
+         <geometry>
+            <mesh filename="./meshes/2mc.stl" />
+         </geometry>
+         <material name="white" />
+      </visual>
+   </link>
+   <joint type="fixed" name="capitate2secondmc_fixed">
+      <parent link="capitate" />
+      <child link="secondmc" />
+      <origin xyz="0.014685 -0.03762 0.005032" rpy="0.0 0.0 0.0" />
+   </joint>
+   <link name="proxph2">
+      <inertial>
+         <origin xyz="0.0 0.0 0.0" rpy="0.0861356540103359 0.05502674551362019 0.0023719461216022628" />
+         <mass value="0.01" />
+         <inertia ixx="0.0001" iyy="0.0001" izz="0.0001" ixy="0" ixz="0" iyz="0" />
+      </inertial>
+      <visual name="2proxph">
+         <origin xyz="0.004472687843888486 -0.02272677663991265 0.002479947664628242" rpy="1.3231070703266785 -1.2754347723112274 0.4086444603936795" />
+         <geometry>
+            <mesh filename="./meshes/2proxph.stl" />
+         </geometry>
+         <material name="white" />
+      </visual>
+   </link>
+   <link name="mcp2_flexion_dummy">
+      <inertial>
+         <origin xyz="0.0 0.0 0.0" rpy="1.570796326794898 -1.4708802086674053 -1.4708802086674067" />
+         <mass value="0.001" />
+         <inertia ixx="1e-09" iyy="1e-09" izz="1e-09" ixy="0" ixz="0" iyz="0" />
+      </inertial>
+   </link>
+   <joint type="revolute" name="mcp2_flexion">
+      <parent link="secondmc" />
+      <child link="mcp2_flexion_dummy" />
+      <origin xyz="0.003501 -0.028243 0.00362" rpy="-1.5707963267948977 1.4708802086674053 -1.4708802086674064" />
+      <axis xyz="0 0 1" />
+      <limit lower="0.0" upper="1.5708" effort="100" velocity="100" />
+   </joint>
+   <joint type="revolute" name="mcp2_abduction">
+      <parent link="mcp2_flexion_dummy" />
+      <child link="proxph2" />
+      <origin xyz="0.0 0.0 0.0" rpy="1.996706135703522 -1.4588445662369582 -1.9856122470713664" />
+      <axis xyz="0 0 1" />
+      <limit lower="-0.261799" upper="0.261799" effort="100" velocity="100" />
+   </joint>
+   <link name="midph2">
+      <inertial>
+         <origin xyz="0.0 0.0 0.0" rpy="2.673926789498819 -1.347488638214627 -2.561714096685443" />
+         <mass value="0.003" />
+         <inertia ixx="0.0001" iyy="0.0001" izz="0.0001" ixy="0" ixz="0" iyz="0" />
+      </inertial>
+      <visual name="2midph">
+         <origin xyz="0.0009560287692837252 -0.013695302813660859 0.00024924915529945775" rpy="-1.5630400763369505 -0.0019507371444631438 -3.1305336815452" />
+         <geometry>
+            <mesh filename="./meshes/2midph.stl" />
+         </geometry>
+         <material name="white" />
+      </visual>
+   </link>
+   <joint type="revolute" name="pm2_flexion">
+      <parent link="proxph2" />
+      <child link="midph2" />
+      <origin xyz="0.007803785313420723 -0.041731842245086755 0.0033294417870314806" rpy="-3.1093030719372434 1.3265450030648043 -2.985625911527994" />
+      <axis xyz="0 0 1" />
+      <limit lower="0.0" upper="1.5708" effort="100" velocity="100" />
+   </joint>
+   <link name="distph2">
+      <inertial>
+         <origin xyz="0.0 0.0 0.0" rpy="1.5707963267948983 -1.47079632685829 -1.4707963268582915" />
+         <mass value="0.002" />
+         <inertia ixx="0.0001" iyy="0.0001" izz="0.0001" ixy="0" ixz="0" iyz="0" />
+      </inertial>
+      <visual name="2distph">
+         <origin xyz="0.0005571386112458035 -0.008550037799959378 0.00021472053347544227" rpy="-1.5239710771919284 -0.03676633885392766 -3.140805196244449" />
+         <geometry>
+            <mesh filename="./meshes/2distph.stl" />
+         </geometry>
+         <material name="white" />
+      </visual>
+   </link>
+   <joint type="revolute" name="md2_flexion">
+      <parent link="midph2" />
+      <child link="distph2" />
+      <origin xyz="0.0012127706679736369 -0.02510505928504355 0.0005244221594777518" rpy="0.0221383296958119 -0.1977786936551691 2.5098334244206405e-05" />
+      <axis xyz="0 0 1" />
+      <limit lower="0.0" upper="1.5708" effort="100" velocity="100" />
+   </joint>
+   <link name="thirdmc">
+      <inertial>
+         <origin xyz="0.0 0.0 0.0" rpy="0.0 0.0 0.0" />
+         <mass value="0.02" />
+         <inertia ixx="0.0001" iyy="0.0001" izz="0.0001" ixy="0" ixz="0" iyz="0" />
+      </inertial>
+      <visual name="3mc">
+         <origin xyz="1.2224798849698734e-05 0.0005168737374986281 -0.0002408104212366876" rpy="1.4450266262998412 0.1803584102818272 -0.007490416792627297" />
+         <geometry>
+            <mesh filename="./meshes/3mc.stl" />
+         </geometry>
+         <material name="white" />
+      </visual>
+   </link>
+   <joint type="fixed" name="capitate2thirdmc_fixed">
+      <parent link="capitate" />
+      <child link="thirdmc" />
+      <origin xyz="0.000477 -0.039239 0.007377" rpy="0.0 0.0 0.0" />
+   </joint>
+   <link name="proxph3">
+      <inertial>
+         <origin xyz="0.0 0.0 0.0" rpy="0.0 0.1999995919289601 0.0" />
+         <mass value="0.01" />
+         <inertia ixx="0.0001" iyy="0.0001" izz="0.0001" ixy="0" ixz="0" iyz="0" />
+      </inertial>
+      <visual name="3proxph">
+         <origin xyz="0.0019480928462846329 -0.023288394738447946 0.004206817248303274" rpy="1.1265372608123134 -1.2987544122063608 0.4693796480506728" />
+         <geometry>
+            <mesh filename="./meshes/3proxph.stl" />
+         </geometry>
+         <material name="white" />
+      </visual>
+   </link>
+   <link name="mcp3_flexion_dummy">
+      <inertial>
+         <origin xyz="0.0 0.0 0.0" rpy="0.0 -1.370796734865936 0.0" />
+         <mass value="0.001" />
+         <inertia ixx="1e-09" iyy="1e-09" izz="1e-09" ixy="0" ixz="0" iyz="0" />
+      </inertial>
+   </link>
+   <joint type="revolute" name="mcp3_flexion">
+      <parent link="thirdmc" />
+      <child link="mcp3_flexion_dummy" />
+      <origin xyz="0.00024 -0.02629 0.001778" rpy="0.0 1.370796734865936 0.0" />
+      <axis xyz="0 0 1" />
+      <limit lower="0.0" upper="1.5708" effort="100" velocity="100" />
+   </joint>
+   <joint type="revolute" name="mcp3_abduction">
+      <parent link="mcp3_flexion_dummy" />
+      <child link="proxph3" />
+      <origin xyz="0.0 0.0 0.0" rpy="0.0 -1.570796326794896 0.0" />
+      <axis xyz="0 0 1" />
+      <limit lower="-0.261799" upper="0.261799" effort="100" velocity="100" />
+   </joint>
+   <link name="midph3">
+      <inertial>
+         <origin xyz="0.0 0.0 0.0" rpy="0.0 0.0 0.0" />
+         <mass value="0.002" />
+         <inertia ixx="0.0001" iyy="0.0001" izz="0.0001" ixy="0" ixz="0" iyz="0" />
+      </inertial>
+      <visual name="3midph">
+         <origin xyz="0.0006816078760314237 -0.014875938368986357 0.001587685371803658" rpy="-0.7901456653983332 -1.4979259934357858 2.4117147631811826" />
+         <geometry>
+            <mesh filename="./meshes/3midph.stl" />
+         </geometry>
+         <material name="white" />
+      </visual>
+   </link>
+   <joint type="revolute" name="pm3_flexion">
+      <parent link="proxph3" />
+      <child link="midph3" />
+      <origin xyz="0.002854817426452336 -0.044211 0.005778011549107881" rpy="0.0 0.1999995919289601 0.0" />
+      <axis xyz="1.0 0.0 0.0" />
+      <limit lower="0.0" upper="1.5708" effort="100" velocity="100" />
+   </joint>
+   <link name="distph3">
+      <inertial>
+         <origin xyz="0.0 0.0 0.0" rpy="0.0 0.0 0.0" />
+         <mass value="0.002" />
+         <inertia ixx="0.0001" iyy="0.0001" izz="0.0001" ixy="0" ixz="0" iyz="0" />
+      </inertial>
+      <visual name="3distph">
+         <origin xyz="0.0006273508355478594 -0.008558888636208259 -3.248103020591859e-05" rpy="0.4079397820603109 -1.4851549016387633 1.2108481043436288" />
+         <geometry>
+            <mesh filename="./meshes/3distph.stl" />
+         </geometry>
+         <material name="white" />
+      </visual>
+   </link>
+   <joint type="revolute" name="md3_flexion">
+      <parent link="midph3" />
+      <child link="distph3" />
+      <origin xyz="0.001365 -0.029047 0.001954" rpy="0.0 0.0 0.0" />
+      <axis xyz="1.0 0.0 0.0" />
+      <limit lower="0.0" upper="1.5708" effort="100" velocity="100" />
+   </joint>
+   <link name="fourthmc">
+      <inertial>
+         <origin xyz="0.0 0.0 0.0" rpy="0.0 0.0 0.0" />
+         <mass value="0.02" />
+         <inertia ixx="0.0001" iyy="0.0001" izz="0.0001" ixy="0" ixz="0" iyz="0" />
+      </inertial>
+      <visual name="4mc">
+         <origin xyz="4.3801331849671294e-05 0.0005319429897597941 -0.00016676819956183388" rpy="1.5268660941250807 -0.37727025049358964 -0.07031755099911208" />
+         <geometry>
+            <mesh filename="./meshes/4mc.stl" />
+         </geometry>
+         <material name="white" />
+      </visual>
+   </link>
+   <joint type="fixed" name="capitate2fourthmc_fixed">
+      <parent link="capitate" />
+      <child link="fourthmc" />
+      <origin xyz="-0.012046 -0.040519 0.003513" rpy="0.0 0.0 0.0" />
+   </joint>
+   <link name="proxph4">
+      <inertial>
+         <origin xyz="0.0 0.0 0.0" rpy="0.0 0.4500004640280282 0.0" />
+         <mass value="0.01" />
+         <inertia ixx="0.0001" iyy="0.0001" izz="0.0001" ixy="0" ixz="0" iyz="0" />
+      </inertial>
+      <visual name="4proxph">
+         <origin xyz="-0.0013324913087104354 -0.02159195456528691 0.002122647132918427" rpy="0.6976319582938976 -1.4758909364414674 0.797666297432624" />
+         <geometry>
+            <mesh filename="./meshes/4proxph.stl" />
+         </geometry>
+         <material name="white" />
+      </visual>
+   </link>
+   <link name="mcp4_flexion_dummy">
+      <inertial>
+         <origin xyz="0.0 0.0 0.0" rpy="0.0 -1.120795862766868 0.0" />
+         <mass value="0.001" />
+         <inertia ixx="1e-09" iyy="1e-09" izz="1e-09" ixy="0" ixz="0" iyz="0" />
+      </inertial>
+   </link>
+   <joint type="revolute" name="mcp4_flexion">
+      <parent link="fourthmc" />
+      <child link="mcp4_flexion_dummy" />
+      <origin xyz="-0.00183 -0.023689 -0.000173" rpy="0.0 1.1207958627668684 0.0" />
+      <axis xyz="0 0 1" />
+      <limit lower="0.0" upper="1.5708" effort="100" velocity="100" />
+   </joint>
+   <joint type="revolute" name="mcp4_abduction">
+      <parent link="mcp4_flexion_dummy" />
+      <child link="proxph4" />
+      <origin xyz="0.0 0.0 0.0" rpy="0.0 -1.570796326794896 0.0" />
+      <axis xyz="0 0 1" />
+      <limit lower="-0.261799" upper="0.261799" effort="100" velocity="100" />
+   </joint>
+   <link name="midph4">
+      <inertial>
+         <origin xyz="0.0 0.0 0.0" rpy="0.0 -1.1707966444174693 0.0" />
+         <mass value="0.003" />
+         <inertia ixx="0.0001" iyy="0.0001" izz="0.0001" ixy="0" ixz="0" iyz="0" />
+      </inertial>
+      <visual name="4midph">
+         <origin xyz="-0.0011779831931869116 -0.013115120811561626 -0.0012500319645132893" rpy="-1.624420311140701 -0.005298798978447428 3.0977891945924623" />
+         <geometry>
+            <mesh filename="./meshes/4midph.stl" />
+         </geometry>
+         <material name="white" />
+      </visual>
+   </link>
+   <joint type="revolute" name="pm4_flexion">
+      <parent link="proxph4" />
+      <child link="midph4" />
+      <origin xyz="-0.0025917474596572772 -0.040255 0.0027456609596525293" rpy="3.141592653589793 1.5207955451442956 3.141592653589793" />
+      <axis xyz="0 0 1" />
+      <limit lower="0.0" upper="1.5708" effort="100" velocity="100" />
+   </joint>
+   <link name="distph4">
+      <inertial>
+         <origin xyz="0.0 0.0 0.0" rpy="0.0 -0.9707969349430002 0.0" />
+         <mass value="0.002" />
+         <inertia ixx="0.0001" iyy="0.0001" izz="0.0001" ixy="0" ixz="0" iyz="0" />
+      </inertial>
+      <visual name="4distph">
+         <origin xyz="-0.001235809428807667 -0.008850484069392732 5.7377488490499336e-05" rpy="-1.5832780312239776 -0.030396363417948713 2.965276549615234" />
+         <geometry>
+            <mesh filename="./meshes/4distph.stl" />
+         </geometry>
+         <material name="white" />
+      </visual>
+   </link>
+   <joint type="revolute" name="md4_flexion">
+      <parent link="midph4" />
+      <child link="distph4" />
+      <origin xyz="-0.001420839030551271 -0.024789 -0.00191485624767556" rpy="0.0 -0.199999709474469 0.0" />
+      <axis xyz="0 0 1" />
+      <limit lower="0.0" upper="1.5708" effort="100" velocity="100" />
+   </joint>
+   <link name="fifthmc">
+      <inertial>
+         <origin xyz="0.0 0.0 0.0" rpy="0.0 0.0 0.0" />
+         <mass value="0.02" />
+         <inertia ixx="0.0001" iyy="0.0001" izz="0.0001" ixy="0" ixz="0" iyz="0" />
+      </inertial>
+      <visual name="5mc">
+         <origin xyz="0.0001946755913526482 0.0004185145324013182 -0.00012864902693672213" rpy="1.6537260233892077 -1.161764483067726 -0.20407074680325432" />
+         <geometry>
+            <mesh filename="./meshes/5mc.stl" />
+         </geometry>
+         <material name="white" />
+      </visual>
+   </link>
+   <joint type="fixed" name="capitate2fifthmc_fixed">
+      <parent link="capitate" />
+      <child link="fifthmc" />
+      <origin xyz="-0.021896 -0.034683 -0.004218" rpy="0.0 0.0 0.0" />
+   </joint>
+   <link name="proxph5">
+      <inertial>
+         <origin xyz="0.0 0.0 0.0" rpy="0.0 0.5999993918518967 0.0" />
+         <mass value="0.005" />
+         <inertia ixx="0.0001" iyy="0.0001" izz="0.0001" ixy="0" ixz="0" iyz="0" />
+      </inertial>
+      <visual name="5proxph">
+         <origin xyz="-0.0034026725129732067 -0.01932150249608627 0.0008813150870897462" rpy="-1.4569822139036401 -1.381514906722609 2.885196567174457" />
+         <geometry>
+            <mesh filename="./meshes/5proxph.stl" />
+         </geometry>
+         <material name="white" />
+      </visual>
+   </link>
+   <link name="mcp5_flexion_dummy">
+      <inertial>
+         <origin xyz="0.0 0.0 0.0" rpy="0.0 -0.9707969349430002 0.0" />
+         <mass value="0.001" />
+         <inertia ixx="1e-09" iyy="1e-09" izz="1e-09" ixy="0" ixz="0" iyz="0" />
+      </inertial>
+   </link>
+   <joint type="revolute" name="mcp5_flexion">
+      <parent link="fifthmc" />
+      <child link="mcp5_flexion_dummy" />
+      <origin xyz="-0.001597 -0.021431 -0.001496" rpy="0.0 0.9707969349430003 0.0" />
+      <axis xyz="0 0 1" />
+      <limit lower="0.0" upper="1.5708" effort="100" velocity="100" />
+   </joint>
+   <joint type="revolute" name="mcp5_abduction">
+      <parent link="mcp5_flexion_dummy" />
+      <child link="proxph5" />
+      <origin xyz="0.0 0.0 0.0" rpy="0.0 -1.5707963267948963 0.0" />
+      <axis xyz="0 0 1" />
+      <limit lower="-0.261799" upper="0.261799" effort="100" velocity="100" />
+   </joint>
+   <link name="midph5">
+      <inertial>
+         <origin xyz="0.0 0.0 0.0" rpy="0.0 -0.9707969349430002 0.0" />
+         <mass value="0.002" />
+         <inertia ixx="0.0001" iyy="0.0001" izz="0.0001" ixy="0" ixz="0" iyz="0" />
+      </inertial>
+      <visual name="5midph">
+         <origin xyz="0.00019222894426716632 -0.01177058496388638 -0.0020887951389246284" rpy="-1.7327462170365329 0.14316308891352914 3.08764894477981" />
+         <geometry>
+            <mesh filename="./meshes/5midph.stl" />
+         </geometry>
+         <material name="white" />
+      </visual>
+   </link>
+   <joint type="revolute" name="pm5_flexion">
+      <parent link="proxph5" />
+      <child link="midph5" />
+      <origin xyz="-0.005982552759701617 -0.035563 0.0006046027434494238" rpy="-0.0 1.5707963267948966 0.0" />
+      <axis xyz="0 0 1" />
+      <limit lower="0.0" upper="1.5708" effort="100" velocity="100" />
+   </joint>
+   <link name="distph5">
+      <inertial>
+         <origin xyz="0.0 0.0 0.0" rpy="-0.3006875686285624 -0.6985554313998293 0.11023436132302193" />
+         <mass value="0.001" />
+         <inertia ixx="0.0001" iyy="0.0001" izz="0.0001" ixy="0" ixz="0" iyz="0" />
+      </inertial>
+      <visual name="5distph">
+         <origin xyz="-0.0010144355254230908 -0.007878397339015868 0.0004474441857034435" rpy="-1.5131584280044281 -0.07399081576380362 2.9725845702930727" />
+         <geometry>
+            <mesh filename="./meshes/5distph.stl" />
+         </geometry>
+         <material name="white" />
+      </visual>
+   </link>
+   <joint type="revolute" name="md5_flexion">
+      <parent link="midph5" />
+      <child link="distph5" />
+      <origin xyz="0.0002301414543709532 -0.020677000000000004 -0.0036360314782713345" rpy="0.20638367854381953 -0.26826088009272797 0.08747994233519721" />
+      <axis xyz="0 0 1" />
+      <limit lower="0.0" upper="1.5708" effort="100" velocity="100" />
+   </joint>
+   <link name="THtip">
+      <inertial>
+         <origin xyz="0.0 0.0 0.0" rpy="0.0 0.0 0.0" />
+         <mass value="0.001" />
+         <inertia ixx="1e-09" iyy="1e-09" izz="1e-09" ixy="0" ixz="0" iyz="0" />
+      </inertial>
+   </link>
+   <joint type="fixed" name="THtip_joint">
+      <parent link="distal_thumb" />
+      <child link="THtip" />
+      <origin xyz="0.009841981910666443 -0.021512696300755037 0.0020830962391582093" rpy="-0.500912540251172 0.05012299056598368 -0.012825373716091965" />
+   </joint>
+   <link name="IFtip">
+      <inertial>
+         <origin xyz="0.0 0.0 0.0" rpy="0.0 0.0 0.0" />
+         <mass value="0.001" />
+         <inertia ixx="1e-09" iyy="1e-09" izz="1e-09" ixy="0" ixz="0" iyz="0" />
+      </inertial>
+   </link>
+   <joint type="fixed" name="IFtip_joint">
+      <parent link="distph2" />
+      <child link="IFtip" />
+      <origin xyz="0.001807957398170786 -0.018019268531468673 0.00019300683206118223" rpy="1.5707963267948983 -1.47079632685829 -1.4707963268582915" />
+   </joint>
+   <link name="MFtip">
+      <inertial>
+         <origin xyz="0.0 0.0 0.0" rpy="0.0 0.0 0.0" />
+         <mass value="0.001" />
+         <inertia ixx="1e-09" iyy="1e-09" izz="1e-09" ixy="0" ixz="0" iyz="0" />
+      </inertial>
+   </link>
+   <joint type="fixed" name="MFtip_joint">
+      <parent link="distph3" />
+      <child link="MFtip" />
+      <origin xyz="0.002 -0.019 -0.001" rpy="0.0 0.0 0.0" />
+   </joint>
+   <link name="RFtip">
+      <inertial>
+         <origin xyz="0.0 0.0 0.0" rpy="0.0 0.0 0.0" />
+         <mass value="0.001" />
+         <inertia ixx="1e-09" iyy="1e-09" izz="1e-09" ixy="0" ixz="0" iyz="0" />
+      </inertial>
+   </link>
+   <joint type="fixed" name="RFtip_joint">
+      <parent link="distph4" />
+      <child link="RFtip" />
+      <origin xyz="-0.001389977929764417 -0.018000000000000002 -0.00026069398682713335" rpy="0.0 -0.9707969349430002 0.0" />
+   </joint>
+   <link name="LFtip">
+      <inertial>
+         <origin xyz="0.0 0.0 0.0" rpy="0.0 0.0 0.0" />
+         <mass value="0.001" />
+         <inertia ixx="1e-09" iyy="1e-09" izz="1e-09" ixy="0" ixz="0" iyz="0" />
+      </inertial>
+   </link>
+   <joint type="fixed" name="LFtip_joint">
+      <parent link="distph5" />
+      <child link="LFtip" />
+      <origin xyz="-0.0002639275958432456 -0.017259588011967385 0.0010183142350493565" rpy="-0.3006875686285624 -0.6985554313998293 0.11023436132302193" />
+   </joint>
+   <material name="white">
+      <color rgba="1 1 1 1" />
+   </material>
+</robot>
