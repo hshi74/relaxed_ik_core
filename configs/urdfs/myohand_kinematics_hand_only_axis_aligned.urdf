@@ -1,12 +1,13 @@
+<?xml version="1.0" ?>
 <robot name="converted_robot">
    <link name="world">
-      <inertial>
+      <!-- <inertial>
          <origin xyz="0.0 0.0 0.0" rpy="0.0 0.0 0.0" />
          <mass value="0.0" />
          <inertia ixx="0.0" iyy="0.0" izz="0.0" ixy="0" ixz="0" iyz="0" />
-      </inertial>
+      </inertial> -->
    </link>
-   <joint type="floating" name="floating_joint">
+   <joint type="fixed" name="fixed_joint">
       <parent link="world" />
       <child link="lunate" />
       <origin xyz="0 0 0" rpy="0 0 0" />
@@ -20,7 +21,7 @@
       <visual name="lunate">
          <origin xyz="0 0 0" rpy="0 0 0" />
          <geometry>
-            <mesh filename="./meshes/lunate.stl" />
+            <mesh filename="file:///home/haochen/catkin_ws/src/relaxed_ik_ros1/relaxed_ik_core/configs/urdfs/meshes/lunate.stl" />
          </geometry>
          <material name="white" />
       </visual>
@@ -34,7 +35,7 @@
       <visual name="scaphoid">
          <origin xyz="-2.3838397997690175e-05 -9.018410708891066e-06 3.833897382858033e-05" rpy="-0.5692290431693718 -0.33878345041747715 0.21369142489696064" />
          <geometry>
-            <mesh filename="./meshes/scaphoid.stl" />
+            <mesh filename="file:///home/haochen/catkin_ws/src/relaxed_ik_ros1/relaxed_ik_core/configs/urdfs/meshes/scaphoid.stl" />
          </geometry>
          <material name="white" />
       </visual>
@@ -53,7 +54,7 @@
       <visual name="pisiform">
          <origin xyz="0.0017780895273392433 -0.0009073903269969469 -7.190186304977116e-05" rpy="1.2462055088005255 0.49559439583995424 -0.34929645069987836" />
          <geometry>
-            <mesh filename="./meshes/pisiform.stl" />
+            <mesh filename="file:///home/haochen/catkin_ws/src/relaxed_ik_ros1/relaxed_ik_core/configs/urdfs/meshes/pisiform.stl" />
          </geometry>
          <material name="white" />
       </visual>
@@ -72,7 +73,7 @@
       <visual name="triquetrum">
          <origin xyz="5.930790822756372e-07 -1.1225602601593567e-06 -3.3935291609719996e-06" rpy="1.9269139677822995 -0.29745876180457564 -0.5516387254770375" />
          <geometry>
-            <mesh filename="./meshes/triquetrum.stl" />
+            <mesh filename="file:///home/haochen/catkin_ws/src/relaxed_ik_ros1/relaxed_ik_core/configs/urdfs/meshes/triquetrum.stl" />
          </geometry>
          <material name="white" />
       </visual>
@@ -91,7 +92,7 @@
       <visual name="capitate">
          <origin xyz="2.4997529376086936e-06 -4.319736123192584e-06 1.3404175140860993e-06" rpy="1.2103081004613072 -0.29207479559887606 -0.020398215496375882" />
          <geometry>
-            <mesh filename="./meshes/capitate.stl" />
+            <mesh filename="file:///home/haochen/catkin_ws/src/relaxed_ik_ros1/relaxed_ik_core/configs/urdfs/meshes/capitate.stl" />
          </geometry>
          <material name="white" />
       </visual>
@@ -110,7 +111,7 @@
       <visual name="trapezium">
          <origin xyz="-5.679888633744862e-06 1.5277743172746618e-06 -7.338957239381493e-07" rpy="-0.25650854392346234 -0.8000548292338777 2.2561533548010577" />
          <geometry>
-            <mesh filename="./meshes/trapezium.stl" />
+            <mesh filename="file:///home/haochen/catkin_ws/src/relaxed_ik_ros1/relaxed_ik_core/configs/urdfs/meshes/trapezium.stl" />
          </geometry>
          <material name="white" />
       </visual>
@@ -129,7 +130,7 @@
       <visual name="1mc">
          <origin xyz="0.013949344157192699 -0.007244102305333049 -0.008775826812769635" rpy="-2.237451597882739 -0.5181491466513541 -1.6277365169800728" />
          <geometry>
-            <mesh filename="./meshes/1mc.stl" />
+            <mesh filename="file:///home/haochen/catkin_ws/src/relaxed_ik_ros1/relaxed_ik_core/configs/urdfs/meshes/1mc.stl" />
          </geometry>
          <material name="white" />
       </visual>
@@ -164,7 +165,7 @@
       <visual name="thumbprox">
          <origin xyz="0.008173510689699315 -0.01598403329006852 -0.0031381886816513756" rpy="1.751348942319772 -0.12389205032924067 0.43579123948592824" />
          <geometry>
-            <mesh filename="./meshes/thumbprox.stl" />
+            <mesh filename="file:///home/haochen/catkin_ws/src/relaxed_ik_ros1/relaxed_ik_core/configs/urdfs/meshes/thumbprox.stl" />
          </geometry>
          <material name="white" />
       </visual>
@@ -185,7 +186,7 @@
       <visual name="thumbdist">
          <origin xyz="0.004163110040363477 -0.009760905931564777 0.0009698082009144747" rpy="1.522079931177215 -0.031788312575904865 0.4785542231651294" />
          <geometry>
-            <mesh filename="./meshes/thumbdist.stl" />
+            <mesh filename="file:///home/haochen/catkin_ws/src/relaxed_ik_ros1/relaxed_ik_core/configs/urdfs/meshes/thumbdist.stl" />
          </geometry>
          <material name="white" />
       </visual>
@@ -206,7 +207,7 @@
       <visual name="trapezoid">
          <origin xyz="1.3738754173765188e-06 -1.4770538374651388e-06 1.891333122868397e-07" rpy="0.27598761251820697 0.5558008487263413 0.19209924739735612" />
          <geometry>
-            <mesh filename="./meshes/trapezoid.stl" />
+            <mesh filename="file:///home/haochen/catkin_ws/src/relaxed_ik_ros1/relaxed_ik_core/configs/urdfs/meshes/trapezoid.stl" />
          </geometry>
          <material name="white" />
       </visual>
@@ -225,7 +226,7 @@
       <visual name="hamate">
          <origin xyz="-1.1482893173857308e-05 -1.3737940466853783e-06 1.520742004524574e-06" rpy="1.941141541594031 -0.4553846643318562 -0.6664160632978575" />
          <geometry>
-            <mesh filename="./meshes/hamate.stl" />
+            <mesh filename="file:///home/haochen/catkin_ws/src/relaxed_ik_ros1/relaxed_ik_core/configs/urdfs/meshes/hamate.stl" />
          </geometry>
          <material name="white" />
       </visual>
@@ -244,7 +245,7 @@
       <visual name="2mc">
          <origin xyz="-0.00010482465471356576 0.00012638710442843635 -0.00013983506463650922" rpy="-1.2288611407496322 -1.0576482637579705 2.9957695490133696" />
          <geometry>
-            <mesh filename="./meshes/2mc.stl" />
+            <mesh filename="file:///home/haochen/catkin_ws/src/relaxed_ik_ros1/relaxed_ik_core/configs/urdfs/meshes/2mc.stl" />
          </geometry>
          <material name="white" />
       </visual>
@@ -263,7 +264,7 @@
       <visual name="2proxph">
          <origin xyz="0.004472687843888486 -0.02272677663991265 0.002479947664628242" rpy="1.3231070703266785 -1.2754347723112274 0.4086444603936795" />
          <geometry>
-            <mesh filename="./meshes/2proxph.stl" />
+            <mesh filename="file:///home/haochen/catkin_ws/src/relaxed_ik_ros1/relaxed_ik_core/configs/urdfs/meshes/2proxph.stl" />
          </geometry>
          <material name="white" />
       </visual>
@@ -298,7 +299,7 @@
       <visual name="2midph">
          <origin xyz="0.0009560287692837252 -0.013695302813660859 0.00024924915529945775" rpy="-1.5630400763369505 -0.0019507371444631438 -3.1305336815452" />
          <geometry>
-            <mesh filename="./meshes/2midph.stl" />
+            <mesh filename="file:///home/haochen/catkin_ws/src/relaxed_ik_ros1/relaxed_ik_core/configs/urdfs/meshes/2midph.stl" />
          </geometry>
          <material name="white" />
       </visual>
@@ -319,7 +320,7 @@
       <visual name="2distph">
          <origin xyz="0.0005571386112458035 -0.008550037799959378 0.00021472053347544227" rpy="-1.5239710771919284 -0.03676633885392766 -3.140805196244449" />
          <geometry>
-            <mesh filename="./meshes/2distph.stl" />
+            <mesh filename="file:///home/haochen/catkin_ws/src/relaxed_ik_ros1/relaxed_ik_core/configs/urdfs/meshes/2distph.stl" />
          </geometry>
          <material name="white" />
       </visual>
@@ -340,7 +341,7 @@
       <visual name="3mc">
          <origin xyz="1.2224798849698734e-05 0.0005168737374986281 -0.0002408104212366876" rpy="1.4450266262998412 0.1803584102818272 -0.007490416792627297" />
          <geometry>
-            <mesh filename="./meshes/3mc.stl" />
+            <mesh filename="file:///home/haochen/catkin_ws/src/relaxed_ik_ros1/relaxed_ik_core/configs/urdfs/meshes/3mc.stl" />
          </geometry>
          <material name="white" />
       </visual>
@@ -359,7 +360,7 @@
       <visual name="3proxph">
          <origin xyz="0.0019480928462846329 -0.023288394738447946 0.004206817248303274" rpy="1.1265372608123134 -1.2987544122063608 0.4693796480506728" />
          <geometry>
-            <mesh filename="./meshes/3proxph.stl" />
+            <mesh filename="file:///home/haochen/catkin_ws/src/relaxed_ik_ros1/relaxed_ik_core/configs/urdfs/meshes/3proxph.stl" />
          </geometry>
          <material name="white" />
       </visual>
@@ -394,7 +395,7 @@
       <visual name="3midph">
          <origin xyz="0.0006816078760314237 -0.014875938368986357 0.001587685371803658" rpy="-0.7901456653983332 -1.4979259934357858 2.4117147631811826" />
          <geometry>
-            <mesh filename="./meshes/3midph.stl" />
+            <mesh filename="file:///home/haochen/catkin_ws/src/relaxed_ik_ros1/relaxed_ik_core/configs/urdfs/meshes/3midph.stl" />
          </geometry>
          <material name="white" />
       </visual>
@@ -415,7 +416,7 @@
       <visual name="3distph">
          <origin xyz="0.0006273508355478594 -0.008558888636208259 -3.248103020591859e-05" rpy="0.4079397820603109 -1.4851549016387633 1.2108481043436288" />
          <geometry>
-            <mesh filename="./meshes/3distph.stl" />
+            <mesh filename="file:///home/haochen/catkin_ws/src/relaxed_ik_ros1/relaxed_ik_core/configs/urdfs/meshes/3distph.stl" />
          </geometry>
          <material name="white" />
       </visual>
@@ -436,7 +437,7 @@
       <visual name="4mc">
          <origin xyz="4.3801331849671294e-05 0.0005319429897597941 -0.00016676819956183388" rpy="1.5268660941250807 -0.37727025049358964 -0.07031755099911208" />
          <geometry>
-            <mesh filename="./meshes/4mc.stl" />
+            <mesh filename="file:///home/haochen/catkin_ws/src/relaxed_ik_ros1/relaxed_ik_core/configs/urdfs/meshes/4mc.stl" />
          </geometry>
          <material name="white" />
       </visual>
@@ -455,7 +456,7 @@
       <visual name="4proxph">
          <origin xyz="-0.0013324913087104354 -0.02159195456528691 0.002122647132918427" rpy="0.6976319582938976 -1.4758909364414674 0.797666297432624" />
          <geometry>
-            <mesh filename="./meshes/4proxph.stl" />
+            <mesh filename="file:///home/haochen/catkin_ws/src/relaxed_ik_ros1/relaxed_ik_core/configs/urdfs/meshes/4proxph.stl" />
          </geometry>
          <material name="white" />
       </visual>
@@ -490,7 +491,7 @@
       <visual name="4midph">
          <origin xyz="-0.0011779831931869116 -0.013115120811561626 -0.0012500319645132893" rpy="-1.624420311140701 -0.005298798978447428 3.0977891945924623" />
          <geometry>
-            <mesh filename="./meshes/4midph.stl" />
+            <mesh filename="file:///home/haochen/catkin_ws/src/relaxed_ik_ros1/relaxed_ik_core/configs/urdfs/meshes/4midph.stl" />
          </geometry>
          <material name="white" />
       </visual>
@@ -511,7 +512,7 @@
       <visual name="4distph">
          <origin xyz="-0.001235809428807667 -0.008850484069392732 5.7377488490499336e-05" rpy="-1.5832780312239776 -0.030396363417948713 2.965276549615234" />
          <geometry>
-            <mesh filename="./meshes/4distph.stl" />
+            <mesh filename="file:///home/haochen/catkin_ws/src/relaxed_ik_ros1/relaxed_ik_core/configs/urdfs/meshes/4distph.stl" />
          </geometry>
          <material name="white" />
       </visual>
@@ -532,7 +533,7 @@
       <visual name="5mc">
          <origin xyz="0.0001946755913526482 0.0004185145324013182 -0.00012864902693672213" rpy="1.6537260233892077 -1.161764483067726 -0.20407074680325432" />
          <geometry>
-            <mesh filename="./meshes/5mc.stl" />
+            <mesh filename="file:///home/haochen/catkin_ws/src/relaxed_ik_ros1/relaxed_ik_core/configs/urdfs/meshes/5mc.stl" />
          </geometry>
          <material name="white" />
       </visual>
@@ -551,7 +552,7 @@
       <visual name="5proxph">
          <origin xyz="-0.0034026725129732067 -0.01932150249608627 0.0008813150870897462" rpy="-1.4569822139036401 -1.381514906722609 2.885196567174457" />
          <geometry>
-            <mesh filename="./meshes/5proxph.stl" />
+            <mesh filename="file:///home/haochen/catkin_ws/src/relaxed_ik_ros1/relaxed_ik_core/configs/urdfs/meshes/5proxph.stl" />
          </geometry>
          <material name="white" />
       </visual>
@@ -586,7 +587,7 @@
       <visual name="5midph">
          <origin xyz="0.00019222894426716632 -0.01177058496388638 -0.0020887951389246284" rpy="-1.7327462170365329 0.14316308891352914 3.08764894477981" />
          <geometry>
-            <mesh filename="./meshes/5midph.stl" />
+            <mesh filename="file:///home/haochen/catkin_ws/src/relaxed_ik_ros1/relaxed_ik_core/configs/urdfs/meshes/5midph.stl" />
          </geometry>
          <material name="white" />
       </visual>
@@ -607,7 +608,7 @@
       <visual name="5distph">
          <origin xyz="-0.0010144355254230908 -0.007878397339015868 0.0004474441857034435" rpy="-1.5131584280044281 -0.07399081576380362 2.9725845702930727" />
          <geometry>
-            <mesh filename="./meshes/5distph.stl" />
+            <mesh filename="file:///home/haochen/catkin_ws/src/relaxed_ik_ros1/relaxed_ik_core/configs/urdfs/meshes/5distph.stl" />
          </geometry>
          <material name="white" />
       </visual>

@@ -3,6 +3,7 @@ use nalgebra::{self, Point3, Vector3};
 use urdf_rs;
 use parry3d_f64::shape::{self, Shape};
 use collada;
+use stl_io::read_stl;
 
 fn convert_ros_package_path(filename: &str) -> Option<String> {
     // Check if filename starts with "package://"
@@ -33,60 +34,83 @@ fn convert_ros_package_path(filename: &str) -> Option<String> {
         } else {
             println!("ROS_PACKAGE_PATH not set.");
         }
+    } else if filename.starts_with("file://") {
+        let possible_path = filename["file://".len()..].to_string();
+        return Some(possible_path);
     } else {
-        println!("Filename '{}' does not start with 'package://'.", filename);
+        eprintln!("Error: Unsupported file URI.");
     }
     None
 }
 
-fn load_dae_to_aabb(file_path: &str) -> Option<shape::SharedShape> {
-    let doc = collada::document::ColladaDocument::from_path(std::path::Path::new(file_path)).ok()?;
-    
+
+fn load_mesh_to_bbox(file_path: &str) -> Option<shape::SharedShape> {
+    let path = std::path::Path::new(file_path);
+
     let mut all_vertices = Vec::new();
     let mut all_indices = Vec::new();
-
-    if let Some(object_set) = doc.get_obj_set() {
-        for object in object_set.objects {
-            // Convert vertices to parry3d format
-            let vertices: Vec<_> = object.vertices.iter().map(|vertex| {
-                Point3::new(vertex.x, vertex.y, vertex.z) // Replace with actual field names
-            }).collect();
-
-            // Suppose `geometry` is one instance of `collada::Geometry` from object.geometry
-            let mut indices = Vec::new();
-            for primitive_element in object.geometry {
-                for mesh in primitive_element.mesh {
-                    match mesh {
-                        collada::PrimitiveElement::Polylist(polylist) => {
-                            println!("Polylist is not supported yet!")
-                        },
-                        collada::PrimitiveElement::Triangles(triangles) => {
-                            // Append indices from triangles directly
-                            // Again, you'll need to extract and perhaps re-arrange the indices 
-                            // based on your actual data structure and requirements.
-                            // Example: (Assuming triangles has a field 'indices' that is Vec<usize>)
-                            for vertex in triangles.vertices {
-                                // Ensure your index type matches (converting usize to u32 if safe)
-                                let triangle = [
-                                    vertex.0 as u32,
-                                    vertex.1 as u32,
-                                    vertex.2 as u32,
-                                ];
-                                indices.push(triangle);
-                            }
-                        },
-                    }
-                }
-            }
-            // Potentially add vertices and indices to all_vertices and all_indices
-            // if multiple objects' geometries should be combined into a single TriMesh
-            all_vertices.extend(vertices);
-            all_indices.extend(indices);
-        }
-    };
-    // println!("all_vertices: {:?}", all_vertices);
-    // println!("all_indices: {:?}", all_indices);
     
+    match path.extension() {
+        Some(ext) => {
+            if ext == "stl" {
+                let mut reader = std::io::BufReader::new(std::fs::File::open(path).ok()?);
+                let mesh = read_stl(&mut reader).ok()?;
+                
+                all_vertices = mesh.vertices.iter().map(|v| Point3::new(v[0] as f64, v[1] as f64, v[2] as f64)).collect();
+                all_indices = mesh.faces.iter().map(|f| [f.vertices[0] as u32, f.vertices[1] as u32, f.vertices[2] as u32]).collect();
+            } else if ext == "dae" {
+                let doc = collada::document::ColladaDocument::from_path(std::path::Path::new(file_path)).ok()?;
+    
+                if let Some(object_set) = doc.get_obj_set() {
+                    for object in object_set.objects {
+                        // Convert vertices to parry3d format
+                        let vertices: Vec<_> = object.vertices.iter().map(|vertex| {
+                            Point3::new(vertex.x, vertex.y, vertex.z) // Replace with actual field names
+                        }).collect();
+
+                        // Suppose `geometry` is one instance of `collada::Geometry` from object.geometry
+                        let mut indices = Vec::new();
+                        for primitive_element in object.geometry {
+                            for mesh in primitive_element.mesh {
+                                match mesh {
+                                    collada::PrimitiveElement::Polylist(polylist) => {
+                                        println!("Polylist is not supported yet!")
+                                    },
+                                    collada::PrimitiveElement::Triangles(triangles) => {
+                                        // Append indices from triangles directly
+                                        // Again, you'll need to extract and perhaps re-arrange the indices 
+                                        // based on your actual data structure and requirements.
+                                        // Example: (Assuming triangles has a field 'indices' that is Vec<usize>)
+                                        for vertex in triangles.vertices {
+                                            // Ensure your index type matches (converting usize to u32 if safe)
+                                            let triangle = [
+                                                vertex.0 as u32,
+                                                vertex.1 as u32,
+                                                vertex.2 as u32,
+                                            ];
+                                            indices.push(triangle);
+                                        }
+                                    },
+                                }
+                            }
+                        }
+                        // Potentially add vertices and indices to all_vertices and all_indices
+                        // if multiple objects' geometries should be combined into a single TriMesh
+                        all_vertices.extend(vertices);
+                        all_indices.extend(indices);
+                    }
+                };
+            } else {
+                eprintln!("Error: Unsupported file extension.");
+                return None;
+            }
+        }
+        None => {
+            eprintln!("Error: File has no extension.");  // Log the error
+            return None;
+        },
+    }
+
     let trimesh = shape::TriMesh::new(all_vertices, all_indices);
     // Retrieve AABB of TriMesh
     let mesh_aabb = trimesh.compute_local_aabb();
@@ -136,13 +160,26 @@ impl Robot {
             let mut articulated_joint_index = 0;
             let mut chain_meshes = Vec::new();
             
-            serial_chain.iter_links().for_each(|link| {
+            for link in serial_chain.iter_links() {
                 println!("link name: {:?}", link.name);
                 let mut shapes_vec = Vec::new();
-                link.collisions.iter().for_each(|c| {
-                    let parry_pose = *c.origin();
+
+                let origins: Vec<nalgebra::Isometry<f64, nalgebra::Unit<nalgebra::Quaternion<f64>>, 3>>;
+                let geometries: Vec<k::link::Geometry<f64>>;
+
+                if !link.collisions.is_empty() {
+                    origins = link.collisions.iter().map(|c| *c.origin()).collect();
+                    geometries = link.collisions.iter().map(|c| c.geometry.clone()).collect();
+                } else if !link.visuals.is_empty() {
+                    origins = link.visuals.iter().map(|c| *c.origin()).collect();
+                    geometries = link.visuals.iter().map(|c| c.geometry.clone()).collect();
+                } else {
+                    continue;
+                }
+                for (origin, geometry) in origins.iter().zip(geometries.iter()) {
+                    let parry_pose: nalgebra::Isometry<f64, nalgebra::Unit<nalgebra::Quaternion<f64>>, 3> = *origin;
                 
-                    let parry_shape = match &c.geometry {
+                    let parry_shape = match &geometry {
                         k::link::Geometry::Box { depth, width, height } => {
                             let half_extents = Vector3::new(*depth / 2.0, *width / 2.0, *height / 2.0);
                             shape::SharedShape::cuboid(half_extents.x, half_extents.y, half_extents.z)
@@ -162,18 +199,18 @@ impl Robot {
                         k::link::Geometry::Mesh { filename, scale } => {
                             let file_path = convert_ros_package_path(filename).unwrap();
                             // println!("Loading {:?} from {:?}", filename, file_path);
-                            load_dae_to_aabb(&file_path).unwrap()
+                            load_mesh_to_bbox(&file_path).unwrap()
                         },
                     };
                     // println!("parry_pose: {:?}", parry_pose);
                     // println!("parry_shape: {:?}", parry_shape.0.shape_type());
                     shapes_vec.push((parry_pose, parry_shape))
-                });
+                }
                 if !shapes_vec.is_empty() {
                     let compound_shape = shape::SharedShape::compound(shapes_vec);
                     chain_meshes.push(compound_shape);
                 }
-            });
+            }
             // println!("chain_meshes: {:?}", chain_meshes.len());
             link_meshes.push(chain_meshes);
 
