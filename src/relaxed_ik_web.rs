@@ -27,7 +27,7 @@ impl RelaxedIK {
 
         let vars = RelaxedIKVars::from_jsvalue(cfg, &urdf);
 
-        let om = ObjectiveMaster::relaxed_ik(&vars.robot.chain_indices);
+        let om = ObjectiveMaster::relaxed_ik(&vars.robot.chain_indices, vars.ee_only);
         let groove = OptimizationEngineOpen::new(vars.robot.num_dofs.clone());
         Self{vars, om, groove}
     }
@@ -67,38 +67,35 @@ impl RelaxedIK {
         let pos_vec: Vec<f64> = serde_wasm_bindgen::from_value(pos_goal).unwrap();
         let quat_vec: Vec<f64> = serde_wasm_bindgen::from_value(quat_goal).unwrap();
 
-        let mut tole_vec = if tolerance.is_null() || tolerance.is_undefined() {
+        let tole_vec = if tolerance.is_null() || tolerance.is_undefined() {
             vec![0.0; self.vars.robot.num_chains * 6]
         } else {
             serde_wasm_bindgen::from_value(tolerance).unwrap()
         };
 
-        let mut pos_goals: Vec<Vector3<f64>> = Vec::new();
-        let mut quat_goals: Vec<UnitQuaternion<f64>> = Vec::new();
-        let mut tolerances: Vec<Vector6<f64>> = Vec::new();
-
-        for i in 0..self.vars.robot.num_chains {
-            let pos = Vector3::new(pos_vec[i*3], pos_vec[i*3+1], pos_vec[i*3+2]);
-            let quat = UnitQuaternion::from_quaternion(Quaternion::new(quat_vec[i*4], quat_vec[i*4+1], quat_vec[i*4+2], quat_vec[i*4+3]));
-            let tole = Vector6::new(tole_vec[i*6], tole_vec[i*6+1], tole_vec[i*6+2], tole_vec[i*6+3], tole_vec[i*6+4], tole_vec[i*6+5]);
-            pos_goals.push(pos);
-            quat_goals.push(quat);
-            tolerances.push(tole);
+        let mut ctr = 0;
+        for i in 0..self.vars.robot.num_chains  {
+            for j in 0..self.vars.robot.chain_indices[i].len() {
+                let pos = Vector3::new(pos_vec[3*ctr], pos_vec[3*ctr+1], pos_vec[3*ctr+2]);
+                let tmp_q = Quaternion::new(quat_vec[4*ctr+3], quat_vec[4*ctr], quat_vec[4*ctr+1], quat_vec[4*ctr+2]);
+                let quat =  UnitQuaternion::from_quaternion(tmp_q);
+                let tole = Vector6::new( 
+                    tole_vec[6*ctr], tole_vec[6*ctr+1], tole_vec[6*ctr+2],
+                    tole_vec[6*ctr+3], tole_vec[6*ctr+4], tole_vec[6*ctr+5]
+                );
+                if relative {
+                    self.vars.goal_positions[i][j] = self.vars.init_ee_positions[i] + pos;
+                    self.vars.goal_quats[i][j] = quat * self.vars.init_ee_quats[i];
+                } else {
+                    self.vars.goal_positions[i][j] = pos.clone();
+                    self.vars.goal_quats[i][j] = quat.clone();
+                }
+                self.vars.tolerances[i][j] = tole.clone();
+                ctr += 1;
+            }
         }
 
         let mut out_x = self.vars.xopt.clone();
-
-        for i in 0..self.vars.robot.num_chains {
-            if relative {
-                self.vars.goal_positions[i] = self.vars.init_ee_positions[i] + pos_goals[i];
-                self.vars.goal_quats[i] = quat_goals[i] * self.vars.init_ee_quats[i];
-            } else {
-                self.vars.goal_positions[i] = pos_goals[i].clone();
-                self.vars.goal_quats[i] = quat_goals[i].clone();
-            }
-            self.vars.tolerances[i] = tolerances[i].clone();
-        }
-
         self.groove.optimize(&mut out_x, &self.vars, &self.om, 100);
         self.vars.update(out_x.clone());
 

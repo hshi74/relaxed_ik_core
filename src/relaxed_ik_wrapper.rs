@@ -177,12 +177,18 @@ pub unsafe extern "C" fn solve(ptr: *mut RelaxedIK, pos_goals: *const c_double, 
 fn solve_position_helper(relaxed_ik: &mut RelaxedIK, pos_goals: Vec<f64>, quat_goals: Vec<f64>,
                 tolerance: Vec<f64>) -> Vec<f64> {
 
+    let mut ctr = 0;
     for i in 0..relaxed_ik.vars.robot.num_chains  {
-        relaxed_ik.vars.goal_positions[i] = Vector3::new(pos_goals[3*i], pos_goals[3*i+1], pos_goals[3*i+2]);
-        let tmp_q = Quaternion::new(quat_goals[4*i+3], quat_goals[4*i], quat_goals[4*i+1], quat_goals[4*i+2]);
-        relaxed_ik.vars.goal_quats[i] =  UnitQuaternion::from_quaternion(tmp_q);
-        relaxed_ik.vars.tolerances[i] = Vector6::new( tolerance[6*i], tolerance[6*i+1], tolerance[6*i+2],
-            tolerance[6*i+3], tolerance[6*i+4], tolerance[6*i+5])
+        for j in 0..relaxed_ik.vars.robot.chain_indices[i].len() {
+            relaxed_ik.vars.goal_positions[i][j] = Vector3::new(pos_goals[3*ctr], pos_goals[3*ctr+1], pos_goals[3*ctr+2]);
+            let tmp_q = Quaternion::new(quat_goals[4*ctr+3], quat_goals[4*ctr], quat_goals[4*ctr+1], quat_goals[4*ctr+2]);
+            relaxed_ik.vars.goal_quats[i][j] =  UnitQuaternion::from_quaternion(tmp_q);
+            relaxed_ik.vars.tolerances[i][j] = Vector6::new( 
+                tolerance[6*ctr], tolerance[6*ctr+1], tolerance[6*ctr+2],
+                tolerance[6*ctr+3], tolerance[6*ctr+4], tolerance[6*ctr+5]
+            );
+            ctr += 1;
+        }
     }
                     
     let x = relaxed_ik.solve();
@@ -192,24 +198,22 @@ fn solve_position_helper(relaxed_ik: &mut RelaxedIK, pos_goals: Vec<f64>, quat_g
 fn solve_velocity_helper(relaxed_ik: &mut RelaxedIK, pos_vels: Vec<f64>, rot_vels: Vec<f64>,
     tolerance: Vec<f64>) -> Vec<f64> {
 
-    for i in 0..relaxed_ik.vars.robot.num_chains  {
-        relaxed_ik.vars.goal_positions[i] += Vector3::new(pos_vels[3*i], pos_vels[3*i+1], pos_vels[3*i+2]);
-        let axisangle = Vector3::new(rot_vels[3*i], rot_vels[3*i+1], rot_vels[3*i+2]);
-        let tmp_q = UnitQuaternion::from_scaled_axis(axisangle);
-        let org_q = relaxed_ik.vars.goal_quats[i].clone();
-        relaxed_ik.vars.goal_quats[i] =  tmp_q * org_q;
-        relaxed_ik.vars.tolerances[i] = Vector6::new( tolerance[3*i], tolerance[3*i+1], tolerance[3*i+2],
-            tolerance[3*i+3], tolerance[3*i+4], tolerance[3*i+5])
+    let mut ctr = 0;
+    for i in 0..relaxed_ik.vars.robot.num_chains {
+        for j in 0..relaxed_ik.vars.robot.chain_indices[i].len() {
+            relaxed_ik.vars.goal_positions[i][j] += Vector3::new(pos_vels[3*ctr], pos_vels[3*ctr+1], pos_vels[3*ctr+2]);
+            let axisangle = Vector3::new(rot_vels[3*ctr], rot_vels[3*ctr+1], rot_vels[3*ctr+2]);
+            let tmp_q = UnitQuaternion::from_scaled_axis(axisangle);
+            let org_q = relaxed_ik.vars.goal_quats[i][j].clone();
+            relaxed_ik.vars.goal_quats[i][j] = tmp_q * org_q;
+            relaxed_ik.vars.tolerances[i][j] = Vector6::new(
+                tolerance[6*ctr], tolerance[6*ctr+1], tolerance[6*ctr+2],
+                tolerance[6*ctr+3], tolerance[6*ctr+4], tolerance[6*ctr+5]
+            );
+            ctr += 1;
+        }
     }
 
     let x = relaxed_ik.solve();
-
-
-    let frames = relaxed_ik.vars.robot.get_frames_immutable(&x);
-    let last = frames[0].0.len() - 1 ;
-    let ee_pos = frames[0].0[last];
-    let goal = relaxed_ik.vars.goal_positions[0];
-    let dist = (ee_pos - goal).norm();
-
     return x;
 }

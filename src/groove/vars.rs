@@ -17,7 +17,8 @@ pub struct VarsConstructorData {
     pub base_links: Vec<String>,
     pub ee_links: Vec<String>,
     pub joint_ordering: Vec<String>,
-    starting_config: Vec<f64>
+    starting_config: Vec<f64>,
+    pub ee_only: bool
 }
 
 pub struct RelaxedIKVars {
@@ -27,11 +28,12 @@ pub struct RelaxedIKVars {
     pub prev_state: Vec<f64>,
     pub prev_state2: Vec<f64>,
     pub prev_state3: Vec<f64>,
-    pub goal_positions: Vec<Vector3<f64>>,
-    pub goal_quats: Vec<UnitQuaternion<f64>>,
-    pub tolerances: Vec<Vector6<f64>>,
+    pub goal_positions: Vec<Vec<Vector3<f64>>>,
+    pub goal_quats: Vec<Vec<UnitQuaternion<f64>>>,
+    pub tolerances: Vec<Vec<Vector6<f64>>>,
     pub init_ee_positions: Vec<Vector3<f64>>,
-    pub init_ee_quats: Vec<UnitQuaternion<f64>>
+    pub init_ee_quats: Vec<UnitQuaternion<f64>>,
+    pub ee_only: bool
 }
 impl RelaxedIKVars {
     pub fn from_local_settings(path_to_setting: &str) -> Self {
@@ -95,9 +97,12 @@ impl RelaxedIKVars {
             init_ee_quats.push(pose[i].1);
         }
 
+        let ee_only = settings["ee_only"].as_bool().unwrap_or(true);
+
         RelaxedIKVars{robot, init_state: starting_config.clone(), xopt: starting_config.clone(),
             prev_state: starting_config.clone(), prev_state2: starting_config.clone(), prev_state3: starting_config.clone(),
-            goal_positions: init_ee_positions.clone(), goal_quats: init_ee_quats.clone(), tolerances, init_ee_positions, init_ee_quats}
+            goal_positions: vec![init_ee_positions.clone()], goal_quats: vec![init_ee_quats.clone()], tolerances: vec![tolerances], 
+            init_ee_positions, init_ee_quats, ee_only}
     }
     
     // for webassembly
@@ -121,10 +126,13 @@ impl RelaxedIKVars {
             init_ee_positions.push(pose[i].0);
             init_ee_quats.push(pose[i].1);
         }
+        
+        let ee_only = configs.ee_only;
 
         RelaxedIKVars{robot, init_state: configs.starting_config.clone(), xopt: configs.starting_config.clone(),
             prev_state: configs.starting_config.clone(), prev_state2: configs.starting_config.clone(), prev_state3: configs.starting_config.clone(),
-            goal_positions: init_ee_positions.clone(), goal_quats: init_ee_quats.clone(), tolerances, init_ee_positions, init_ee_quats}
+            goal_positions: vec![init_ee_positions.clone()], goal_quats: vec![init_ee_quats.clone()], tolerances: vec![tolerances], 
+            init_ee_positions, init_ee_quats, ee_only}
 
     }
 

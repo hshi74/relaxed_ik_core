@@ -13,8 +13,10 @@ fn main() {
 
     for i in 0..10{
         for j in 0..relaxed_ik.vars.robot.num_chains {
-            // gradually move along the y axis
-            relaxed_ik.vars.goal_positions[j] += Vector3::new(0.0, 0.01, 0.0);
+            for k in 0..relaxed_ik.vars.robot.chain_indices[j].len() {
+                // gradually move along the y axis
+                relaxed_ik.vars.goal_positions[j][k] += Vector3::new(0.0, 0.01, 0.0);
+            }
         }
         let x = relaxed_ik.solve();
         println!("Joint solutions: {:?}", x);
