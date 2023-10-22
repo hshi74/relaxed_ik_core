@@ -180,6 +180,7 @@ fn solve_position_helper(relaxed_ik: &mut RelaxedIK, pos_goals: Vec<f64>, quat_g
     let mut ctr = 0;
     for i in 0..relaxed_ik.vars.robot.num_chains  {
         for j in 0..relaxed_ik.vars.robot.chain_indices[i].len() {
+            if relaxed_ik.vars.ee_only && j > 0 { continue;}
             relaxed_ik.vars.goal_positions[i][j] = Vector3::new(pos_goals[3*ctr], pos_goals[3*ctr+1], pos_goals[3*ctr+2]);
             let tmp_q = Quaternion::new(quat_goals[4*ctr+3], quat_goals[4*ctr], quat_goals[4*ctr+1], quat_goals[4*ctr+2]);
             relaxed_ik.vars.goal_quats[i][j] =  UnitQuaternion::from_quaternion(tmp_q);
@@ -201,6 +202,7 @@ fn solve_velocity_helper(relaxed_ik: &mut RelaxedIK, pos_vels: Vec<f64>, rot_vel
     let mut ctr = 0;
     for i in 0..relaxed_ik.vars.robot.num_chains {
         for j in 0..relaxed_ik.vars.robot.chain_indices[i].len() {
+            if relaxed_ik.vars.ee_only && j > 0 { continue;}
             relaxed_ik.vars.goal_positions[i][j] += Vector3::new(pos_vels[3*ctr], pos_vels[3*ctr+1], pos_vels[3*ctr+2]);
             let axisangle = Vector3::new(rot_vels[3*ctr], rot_vels[3*ctr+1], rot_vels[3*ctr+2]);
             let tmp_q = UnitQuaternion::from_scaled_axis(axisangle);

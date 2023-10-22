@@ -54,11 +54,9 @@ impl RelaxedIKVars {
 
         let mut base_links: Vec<String> = Vec::new();
         let mut ee_links = Vec::new();
-        let mut tolerances: Vec<Vector6<f64>> = Vec::new();
         for i in 0..num_chains {
             base_links.push(base_links_arr[i].as_str().unwrap().to_string());
             ee_links.push(ee_links_arr[i].as_str().unwrap().to_string());
-            tolerances.push(Vector6::new(0., 0., 0., 0., 0., 0.));
         }
 
         let joint_ordering = if let Some(joint_ordering_arr) = settings["joint_ordering"].as_vec() {
@@ -98,10 +96,37 @@ impl RelaxedIKVars {
         }
 
         let ee_only = settings["ee_only"].as_bool().unwrap_or(true);
+        
+        let mut goal_positions: Vec<Vec<Vector3<f64>>> = Vec::new();
+        let mut goal_quats: Vec<Vec<UnitQuaternion<f64>>> = Vec::new();
+        let mut tolerances: Vec<Vec<Vector6<f64>>> = Vec::new();
+        if ee_only {
+            for i in 0..pose.len() {
+                goal_positions.push(vec![pose[i].0]);
+                goal_quats.push(vec![pose[i].1]);
+                tolerances.push(vec![Vector6::new(0., 0., 0., 0., 0., 0.)]);
+            }
+        }
+        else {
+            let frames = robot.get_frames_immutable(&starting_config);
+            for i in 0..num_chains {
+                let mut tmp_pos = Vec::new();
+                let mut tmp_quat = Vec::new();
+                let mut tmp_tole = Vec::new();
+                for j in 0..robot.chain_indices[i].len() {
+                    tmp_pos.push(frames[i].0[j].clone());
+                    tmp_quat.push(frames[i].1[j].clone());
+                    tmp_tole.push(Vector6::new(0., 0., 0., 0., 0., 0.));
+                }
+                goal_positions.push(tmp_pos);
+                goal_quats.push(tmp_quat);
+                tolerances.push(tmp_tole);
+            }
+        }
 
         RelaxedIKVars{robot, init_state: starting_config.clone(), xopt: starting_config.clone(),
             prev_state: starting_config.clone(), prev_state2: starting_config.clone(), prev_state3: starting_config.clone(),
-            goal_positions: vec![init_ee_positions.clone()], goal_quats: vec![init_ee_quats.clone()], tolerances: vec![tolerances], 
+            goal_positions: goal_positions, goal_quats: goal_quats, tolerances: tolerances, 
             init_ee_positions, init_ee_quats, ee_only}
     }
     
@@ -117,9 +142,11 @@ impl RelaxedIKVars {
 
         let robot = Robot::from_urdf(urdf, &configs.base_links, &configs.ee_links, Some(configs.joint_ordering));
 
+        let starting_config = configs.starting_config;
+
         let mut init_ee_positions: Vec<Vector3<f64>> = Vec::new();
         let mut init_ee_quats: Vec<UnitQuaternion<f64>> = Vec::new();
-        let pose = robot.get_ee_pos_and_quat_immutable(&configs.starting_config);
+        let pose = robot.get_ee_pos_and_quat_immutable(&starting_config);
         assert!(pose.len() == num_chains);
 
         for i in 0..pose.len() {
@@ -129,11 +156,37 @@ impl RelaxedIKVars {
         
         let ee_only = configs.ee_only;
 
-        RelaxedIKVars{robot, init_state: configs.starting_config.clone(), xopt: configs.starting_config.clone(),
-            prev_state: configs.starting_config.clone(), prev_state2: configs.starting_config.clone(), prev_state3: configs.starting_config.clone(),
-            goal_positions: vec![init_ee_positions.clone()], goal_quats: vec![init_ee_quats.clone()], tolerances: vec![tolerances], 
-            init_ee_positions, init_ee_quats, ee_only}
+        let mut goal_positions: Vec<Vec<Vector3<f64>>> = Vec::new();
+        let mut goal_quats: Vec<Vec<UnitQuaternion<f64>>> = Vec::new();
+        let mut tolerances: Vec<Vec<Vector6<f64>>> = Vec::new();
+        if ee_only {
+            for i in 0..pose.len() {
+                goal_positions.push(vec![pose[i].0]);
+                goal_quats.push(vec![pose[i].1]);
+                tolerances.push(vec![Vector6::new(0., 0., 0., 0., 0., 0.)]);
+            }
+        }
+        else {
+            let frames = robot.get_frames_immutable(&starting_config);
+            for i in 0..num_chains {
+                let mut tmp_pos = Vec::new();
+                let mut tmp_quat = Vec::new();
+                let mut tmp_tole = Vec::new();
+                for j in 0..robot.chain_indices[i].len() {
+                    tmp_pos.push(frames[i].0[j].clone());
+                    tmp_quat.push(frames[i].1[j].clone());
+                    tmp_tole.push(Vector6::new(0., 0., 0., 0., 0., 0.));
+                }
+                goal_positions.push(tmp_pos);
+                goal_quats.push(tmp_quat);
+                tolerances.push(tmp_tole);
+            }
+        }
 
+        RelaxedIKVars{robot, init_state: starting_config.clone(), xopt: starting_config.clone(),
+            prev_state: starting_config.clone(), prev_state2: starting_config.clone(), prev_state3: starting_config.clone(),
+            goal_positions: goal_positions, goal_quats: goal_quats, tolerances: tolerances, 
+            init_ee_positions, init_ee_quats, ee_only}
     }
 
     pub fn update(&mut self, xopt: Vec<f64>) {
