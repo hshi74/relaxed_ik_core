@@ -12,12 +12,9 @@ fn main() {
     let mut relaxed_ik = relaxed_ik::RelaxedIK::load_settings(default_path_to_setting.as_str());
 
     for i in 0..10{
-        for j in 0..relaxed_ik.vars.robot.num_chains {
-            for k in 0..relaxed_ik.vars.robot.chain_indices[j].len() {
-                if relaxed_ik.vars.ee_only && k > 0 { continue;}
-                // gradually move along the y axis
-                relaxed_ik.vars.goal_positions[j][k] += Vector3::new(0.0, 0.01, 0.0);
-            }
+        for j in 0..relaxed_ik.vars.goal_positions.len() {
+            // gradually move along the y axis
+            relaxed_ik.vars.goal_positions[j] += Vector3::new(0.0, 0.01, 0.0);
         }
         let x = relaxed_ik.solve();
         println!("Joint solutions: {:?}", x);

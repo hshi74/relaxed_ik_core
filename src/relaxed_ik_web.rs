@@ -73,27 +73,22 @@ impl RelaxedIK {
             serde_wasm_bindgen::from_value(tolerance).unwrap()
         };
 
-        let mut ctr = 0;
-        for i in 0..self.vars.robot.num_chains  {
-            for j in 0..self.vars.robot.chain_indices[i].len() {
-                if self.vars.ee_only && j > 0 { continue;}
-                let pos = Vector3::new(pos_vec[3*ctr], pos_vec[3*ctr+1], pos_vec[3*ctr+2]);
-                let tmp_q = Quaternion::new(quat_vec[4*ctr+3], quat_vec[4*ctr], quat_vec[4*ctr+1], quat_vec[4*ctr+2]);
-                let quat =  UnitQuaternion::from_quaternion(tmp_q);
-                let tole = Vector6::new( 
-                    tole_vec[6*ctr], tole_vec[6*ctr+1], tole_vec[6*ctr+2],
-                    tole_vec[6*ctr+3], tole_vec[6*ctr+4], tole_vec[6*ctr+5]
-                );
-                if relative {
-                    self.vars.goal_positions[i][j] = self.vars.init_ee_positions[i] + pos;
-                    self.vars.goal_quats[i][j] = quat * self.vars.init_ee_quats[i];
-                } else {
-                    self.vars.goal_positions[i][j] = pos.clone();
-                    self.vars.goal_quats[i][j] = quat.clone();
-                }
-                self.vars.tolerances[i][j] = tole.clone();
-                ctr += 1;
+        for i in 0..self.vars.goal_positions.len()  {
+            let pos = Vector3::new(pos_vec[3*i], pos_vec[3*i+1], pos_vec[3*i+2]);
+            let tmp_q = Quaternion::new(quat_vec[4*i+3], quat_vec[4*i], quat_vec[4*i+1], quat_vec[4*i+2]);
+            let quat =  UnitQuaternion::from_quaternion(tmp_q);
+            let tole = Vector6::new( 
+                tole_vec[6*i], tole_vec[6*i+1], tole_vec[6*i+2],
+                tole_vec[6*i+3], tole_vec[6*i+4], tole_vec[6*i+5]
+            );
+            if relative {
+                self.vars.goal_positions[i] = self.vars.init_ee_positions[i] + pos;
+                self.vars.goal_quats[i] = quat * self.vars.init_ee_quats[i];
+            } else {
+                self.vars.goal_positions[i] = pos.clone();
+                self.vars.goal_quats[i] = quat.clone();
             }
+            self.vars.tolerances[i] = tole.clone();
         }
 
         let mut out_x = self.vars.xopt.clone();

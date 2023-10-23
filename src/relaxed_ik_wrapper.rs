@@ -4,6 +4,7 @@ use nalgebra::{Vector3, Vector6, UnitQuaternion, Quaternion,Translation3, Isomet
 use std::os::raw::{*};
 use std::str;
 use crate::utils_rust::file_utils::{*};
+use crate::groove::objective_master::ObjectiveMaster;
 
 // http://jakegoulding.com/rust-ffi-omnibus/objects/
 #[no_mangle]
@@ -39,6 +40,16 @@ pub unsafe extern "C" fn reset(ptr: *mut RelaxedIK, joint_state: *const c_double
 }
 
 #[no_mangle]
+pub unsafe extern "C" fn set_ee_only(ptr: *mut RelaxedIK, ee_only: c_int) {
+    let relaxed_ik = unsafe {
+        assert!(!ptr.is_null());
+        &mut *ptr
+    };
+
+    relaxed_ik.set_ee_only(ee_only != 0);
+}
+
+#[no_mangle]
 pub unsafe extern "C" fn solve_position(ptr: *mut RelaxedIK, pos_goals: *const c_double, pos_length: c_int, 
     quat_goals: *const c_double, quat_length: c_int,
     tolerance: *const c_double, tolerance_length: c_int) -> Opt {
@@ -52,15 +63,15 @@ pub unsafe extern "C" fn solve_position(ptr: *mut RelaxedIK, pos_goals: *const c
     assert!(!quat_goals.is_null(), "Null pointer for quat goals!");
     assert!(!tolerance.is_null(), "Null pointer for tolerance!"); 
 
-    assert!(pos_length as usize == relaxed_ik.vars.robot.num_chains * 3 , 
-        "Pos vels are expected to have {} numbers, but got {}", 
-        relaxed_ik.vars.robot.num_chains * 3, pos_length);
-    assert!(quat_length as usize == relaxed_ik.vars.robot.num_chains * 4,
-        "Rot vels are expected to have {} numbers, but got {}", 
-        relaxed_ik.vars.robot.num_chains * 4, quat_length);
-    assert!(tolerance_length as usize == relaxed_ik.vars.robot.num_chains * 6, 
-        "Tolerance are expected to have {} numbers, but got {}", 
-        relaxed_ik.vars.robot.num_chains * 6, tolerance_length);
+    // assert!(pos_length as usize == relaxed_ik.vars.robot.num_chains * 3 , 
+    //     "Pos vels are expected to have {} numbers, but got {}", 
+    //     relaxed_ik.vars.robot.num_chains * 3, pos_length);
+    // assert!(quat_length as usize == relaxed_ik.vars.robot.num_chains * 4,
+    //     "Rot vels are expected to have {} numbers, but got {}", 
+    //     relaxed_ik.vars.robot.num_chains * 4, quat_length);
+    // assert!(tolerance_length as usize == relaxed_ik.vars.robot.num_chains * 6, 
+    //     "Tolerance are expected to have {} numbers, but got {}", 
+    //     relaxed_ik.vars.robot.num_chains * 6, tolerance_length);
 
     let pos_slice: &[c_double] = std::slice::from_raw_parts(pos_goals, pos_length as usize);
     let quat_slice: &[c_double] = std::slice::from_raw_parts(quat_goals, quat_length as usize);
@@ -93,15 +104,15 @@ pub unsafe extern "C" fn solve_velocity(ptr: *mut RelaxedIK, pos_vels: *const c_
     assert!(!rot_vels.is_null(), "Null pointer for rot vels!");
     assert!(!tolerance.is_null(), "Null pointer for tolerance!"); 
 
-    assert!(pos_length as usize == relaxed_ik.vars.robot.num_chains * 3 , 
-        "Pos vels are expected to have {} numbers, but got {}", 
-        relaxed_ik.vars.robot.num_chains * 3, pos_length);
-    assert!(rot_length as usize == relaxed_ik.vars.robot.num_chains * 3,
-        "Rot vels are expected to have {} numbers, but got {}", 
-        relaxed_ik.vars.robot.num_chains * 3, rot_length);
-    assert!(tolerance_length as usize == relaxed_ik.vars.robot.num_chains * 6, 
-        "Tolerance are expected to have {} numbers, but got {}", 
-        relaxed_ik.vars.robot.num_chains * 6, tolerance_length);
+    // assert!(pos_length as usize == relaxed_ik.vars.robot.num_chains * 3 , 
+    //     "Pos vels are expected to have {} numbers, but got {}", 
+    //     relaxed_ik.vars.robot.num_chains * 3, pos_length);
+    // assert!(rot_length as usize == relaxed_ik.vars.robot.num_chains * 3,
+    //     "Rot vels are expected to have {} numbers, but got {}", 
+    //     relaxed_ik.vars.robot.num_chains * 3, rot_length);
+    // assert!(tolerance_length as usize == relaxed_ik.vars.robot.num_chains * 6, 
+    //     "Tolerance are expected to have {} numbers, but got {}", 
+    //     relaxed_ik.vars.robot.num_chains * 6, tolerance_length);
 
     let pos_slice: &[c_double] = std::slice::from_raw_parts(pos_vels, pos_length as usize);
     let rot_slice: &[c_double] = std::slice::from_raw_parts(rot_vels, rot_length as usize);
@@ -127,15 +138,55 @@ pub unsafe extern "C" fn get_ee_poses(ptr: *mut RelaxedIK) -> Opt {
     };
 
     let mut poses = Vec::new();
-    let pose = relaxed_ik.vars.robot.get_ee_pos_and_quat_immutable(&relaxed_ik.vars.xopt);
-    for i in 0..pose.len() {
-        poses.push(pose[i].0.x);
-        poses.push(pose[i].0.y);
-        poses.push(pose[i].0.z);
-        poses.push(pose[i].1.coords.w);
-        poses.push(pose[i].1.coords.x);
-        poses.push(pose[i].1.coords.y);
-        poses.push(pose[i].1.coords.z);
+    let ee_pose = relaxed_ik.vars.robot.get_ee_pos_and_quat_immutable(&relaxed_ik.vars.xopt);
+    for i in 0..ee_pose.len() {
+        poses.push(ee_pose[i].0.x);
+        poses.push(ee_pose[i].0.y);
+        poses.push(ee_pose[i].0.z);
+        poses.push(ee_pose[i].1.coords.w);
+        poses.push(ee_pose[i].1.coords.x);
+        poses.push(ee_pose[i].1.coords.y);
+        poses.push(ee_pose[i].1.coords.z);
+    }
+    let ptr = poses.as_ptr();
+    let len = poses.len();
+    std::mem::forget(poses);
+    Opt {data: ptr, length: len as c_int}
+}
+
+#[no_mangle]
+pub unsafe extern "C" fn get_frames(ptr: *mut RelaxedIK) -> Opt {
+    let relaxed_ik = unsafe {
+        assert!(!ptr.is_null());
+        &mut *ptr
+    };
+    let robot = &relaxed_ik.vars.robot;
+
+    let mut poses = Vec::new();
+    let frames = robot.get_frames_immutable(&relaxed_ik.vars.xopt);
+    for joint_idx in 0..robot.num_dofs {
+        'outer: for i in 0..robot.chain_indices.len() {
+            for j in 0..robot.chain_indices[i].len() {    
+                if joint_idx == robot.chain_indices[i][j] {
+                    let mut ctr = j + 1;
+                    let mut k = 0;
+                    while ctr > 0 {
+                        if robot.arms[i].joint_types[k] != "fixed" {
+                            ctr -= 1;
+                        }
+                        k += 1;
+                    }
+                    poses.push(frames[i].0[k-1].x);
+                    poses.push(frames[i].0[k-1].y);
+                    poses.push(frames[i].0[k-1].z);
+                    poses.push(frames[i].1[k-1].coords.w);
+                    poses.push(frames[i].1[k-1].coords.x);
+                    poses.push(frames[i].1[k-1].coords.y);
+                    poses.push(frames[i].1[k-1].coords.z);
+                    break 'outer;
+                }
+            }
+        }
     }
     let ptr = poses.as_ptr();
     let len = poses.len();
@@ -177,19 +228,13 @@ pub unsafe extern "C" fn solve(ptr: *mut RelaxedIK, pos_goals: *const c_double, 
 fn solve_position_helper(relaxed_ik: &mut RelaxedIK, pos_goals: Vec<f64>, quat_goals: Vec<f64>,
                 tolerance: Vec<f64>) -> Vec<f64> {
 
-    let mut ctr = 0;
-    for i in 0..relaxed_ik.vars.robot.num_chains  {
-        for j in 0..relaxed_ik.vars.robot.chain_indices[i].len() {
-            if relaxed_ik.vars.ee_only && j > 0 { continue;}
-            relaxed_ik.vars.goal_positions[i][j] = Vector3::new(pos_goals[3*ctr], pos_goals[3*ctr+1], pos_goals[3*ctr+2]);
-            let tmp_q = Quaternion::new(quat_goals[4*ctr+3], quat_goals[4*ctr], quat_goals[4*ctr+1], quat_goals[4*ctr+2]);
-            relaxed_ik.vars.goal_quats[i][j] =  UnitQuaternion::from_quaternion(tmp_q);
-            relaxed_ik.vars.tolerances[i][j] = Vector6::new( 
-                tolerance[6*ctr], tolerance[6*ctr+1], tolerance[6*ctr+2],
-                tolerance[6*ctr+3], tolerance[6*ctr+4], tolerance[6*ctr+5]
-            );
-            ctr += 1;
-        }
+    for i in 0..relaxed_ik.vars.goal_positions.len()  {
+        relaxed_ik.vars.goal_positions[i] = Vector3::new(pos_goals[3*i], pos_goals[3*i+1], pos_goals[3*i+2]);
+        relaxed_ik.vars.goal_quats[i] =  UnitQuaternion::from_quaternion(Quaternion::new(quat_goals[4*i+3], quat_goals[4*i], quat_goals[4*i+1], quat_goals[4*i+2]));
+        relaxed_ik.vars.tolerances[i] = Vector6::new( 
+            tolerance[6*i], tolerance[6*i+1], tolerance[6*i+2],
+            tolerance[6*i+3], tolerance[6*i+4], tolerance[6*i+5]
+        );
     }
                     
     let x = relaxed_ik.solve();
@@ -199,21 +244,17 @@ fn solve_position_helper(relaxed_ik: &mut RelaxedIK, pos_goals: Vec<f64>, quat_g
 fn solve_velocity_helper(relaxed_ik: &mut RelaxedIK, pos_vels: Vec<f64>, rot_vels: Vec<f64>,
     tolerance: Vec<f64>) -> Vec<f64> {
 
-    let mut ctr = 0;
-    for i in 0..relaxed_ik.vars.robot.num_chains {
-        for j in 0..relaxed_ik.vars.robot.chain_indices[i].len() {
-            if relaxed_ik.vars.ee_only && j > 0 { continue;}
-            relaxed_ik.vars.goal_positions[i][j] += Vector3::new(pos_vels[3*ctr], pos_vels[3*ctr+1], pos_vels[3*ctr+2]);
-            let axisangle = Vector3::new(rot_vels[3*ctr], rot_vels[3*ctr+1], rot_vels[3*ctr+2]);
-            let tmp_q = UnitQuaternion::from_scaled_axis(axisangle);
-            let org_q = relaxed_ik.vars.goal_quats[i][j].clone();
-            relaxed_ik.vars.goal_quats[i][j] = tmp_q * org_q;
-            relaxed_ik.vars.tolerances[i][j] = Vector6::new(
-                tolerance[6*ctr], tolerance[6*ctr+1], tolerance[6*ctr+2],
-                tolerance[6*ctr+3], tolerance[6*ctr+4], tolerance[6*ctr+5]
-            );
-            ctr += 1;
-        }
+    let mut i = 0;
+    for i in 0..relaxed_ik.vars.goal_positions.len()  {
+        relaxed_ik.vars.goal_positions[i] += Vector3::new(pos_vels[3*i], pos_vels[3*i+1], pos_vels[3*i+2]);
+        let axisangle = Vector3::new(rot_vels[3*i], rot_vels[3*i+1], rot_vels[3*i+2]);
+        let tmp_q = UnitQuaternion::from_scaled_axis(axisangle);
+        let org_q = relaxed_ik.vars.goal_quats[i].clone();
+        relaxed_ik.vars.goal_quats[i] = tmp_q * org_q;
+        relaxed_ik.vars.tolerances[i] = Vector6::new(
+            tolerance[6*i], tolerance[6*i+1], tolerance[6*i+2],
+            tolerance[6*i+3], tolerance[6*i+4], tolerance[6*i+5]
+        );
     }
 
     let x = relaxed_ik.solve();

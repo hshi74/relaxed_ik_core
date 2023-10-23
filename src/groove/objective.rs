@@ -87,18 +87,20 @@ impl MatchEEPosiDoF {
 impl ObjectiveTrait for MatchEEPosiDoF {
     fn call(&self, x: &[f64], v: &vars::RelaxedIKVars, frames: &Vec<(Vec<nalgebra::Vector3<f64>>, Vec<nalgebra::UnitQuaternion<f64>>)>) -> f64 {
         let last_elem = frames[self.arm_idx].0.len() - 1;
-        let goal_quat = v.goal_quats[self.arm_idx][0];
+        let goal_quat = v.goal_quats[self.arm_idx];
         // E_{gc} = R_{gw} * T_{gw} * T_{wc} * R_{wc}, R_{wc} won't matter since we are only interested in the translation
         // so  we get: T_{gc} = R_{gw} * T_{gw} * T_{wc}
-        let T_gw_T_wc =  nalgebra::Vector3::new(    frames[self.arm_idx].0[last_elem].x - v.goal_positions[self.arm_idx][0].x, 
-                                                    frames[self.arm_idx].0[last_elem].y - v.goal_positions[self.arm_idx][0].y, 
-                                                    frames[self.arm_idx].0[last_elem].z - v.goal_positions[self.arm_idx][0].z );
+        let T_gw_T_wc =  nalgebra::Vector3::new(    
+            frames[self.arm_idx].0[last_elem].x - v.goal_positions[self.arm_idx].x, 
+            frames[self.arm_idx].0[last_elem].y - v.goal_positions[self.arm_idx].y, 
+            frames[self.arm_idx].0[last_elem].z - v.goal_positions[self.arm_idx].z
+        );
 
         let T_gc = goal_quat.inverse() * T_gw_T_wc;
  
         let dist: f64 = T_gc[self.axis];
 
-        let bound =  v.tolerances[self.arm_idx][0][self.axis];
+        let bound =  v.tolerances[self.arm_idx][self.axis];
 
         if (bound <= 1e-2) {
             groove_loss(dist, 0., 2, 0.1, 10.0, 2)
@@ -107,7 +109,7 @@ impl ObjectiveTrait for MatchEEPosiDoF {
         }
     }
     fn call_lite(&self, x: &[f64], v: &vars::RelaxedIKVars, ee_poses: &Vec<(nalgebra::Vector3<f64>, nalgebra::UnitQuaternion<f64>)>) -> f64 {
-        let x_val = ( ee_poses[self.arm_idx].0 - v.goal_positions[self.arm_idx][0] ).norm();
+        let x_val = ( ee_poses[self.arm_idx].0 - v.goal_positions[self.arm_idx] ).norm();
         groove_loss(x_val, 0., 2, 0.1, 10.0, 2)
     }
 }
@@ -123,7 +125,7 @@ impl ObjectiveTrait for MatchEERotaDoF {
     fn call(&self, x: &[f64], v: &vars::RelaxedIKVars, frames: &Vec<(Vec<nalgebra::Vector3<f64>>, Vec<nalgebra::UnitQuaternion<f64>>)>) -> f64 {
         let last_elem = frames[self.arm_idx].1.len() - 1;
         let ee_quat = frames[self.arm_idx].1[last_elem];
-        let goal_quat = v.goal_quats[self.arm_idx][0];
+        let goal_quat = v.goal_quats[self.arm_idx];
         let rotation = goal_quat.inverse()*ee_quat;
 
 
@@ -135,7 +137,7 @@ impl ObjectiveTrait for MatchEERotaDoF {
         let mut angle: f64 = 0.0;
         angle += scaled_axis[self.axis].abs();
 
-        let bound =  v.tolerances[self.arm_idx][0][self.axis + 3];
+        let bound =  v.tolerances[self.arm_idx][self.axis + 3];
 
         if (bound <= 1e-2) {
             groove_loss(angle, 0., 2, 0.1, 10.0, 2)
@@ -150,34 +152,61 @@ impl ObjectiveTrait for MatchEERotaDoF {
     }
 
     fn call_lite(&self, x: &[f64], v: &vars::RelaxedIKVars, ee_poses: &Vec<(nalgebra::Vector3<f64>, nalgebra::UnitQuaternion<f64>)>) -> f64 {
-        let x_val = ( ee_poses[self.arm_idx].0 - v.goal_positions[self.arm_idx][0] ).norm();
+        let x_val = ( ee_poses[self.arm_idx].0 - v.goal_positions[self.arm_idx] ).norm();
         groove_loss(x_val, 0., 2, 0.1, 10.0, 2)
     }
 }
 
 
 pub struct MatchJointPosiDoF {
-    pub arm_idx: usize,
     pub joint_idx: usize,
     pub axis: usize
 }
 impl MatchJointPosiDoF {
-    pub fn new(arm_idx: usize, joint_idx: usize, axis: usize) -> Self {Self{arm_idx, joint_idx, axis}}
+    pub fn new(joint_idx: usize, axis: usize) -> Self {Self{joint_idx, axis}}
 }
 impl ObjectiveTrait for MatchJointPosiDoF {
-    fn call(&self, x: &[f64], v: &vars::RelaxedIKVars, frames: &Vec<(Vec<nalgebra::Vector3<f64>>, Vec<nalgebra::UnitQuaternion<f64>>)>) -> f64 {
-        let goal_quat = v.goal_quats[self.arm_idx][self.joint_idx];
-        // E_{gc} = R_{gw} * T_{gw} * T_{wc} * R_{wc}, R_{wc} won't matter since we are only interested in the translation
-        // so  we get: T_{gc} = R_{gw} * T_{gw} * T_{wc}
-        let T_gw_T_wc =  nalgebra::Vector3::new(    frames[self.arm_idx].0[self.joint_idx].x - v.goal_positions[self.arm_idx][self.joint_idx].x, 
-                                                    frames[self.arm_idx].0[self.joint_idx].y - v.goal_positions[self.arm_idx][self.joint_idx].y, 
-                                                    frames[self.arm_idx].0[self.joint_idx].z - v.goal_positions[self.arm_idx][self.joint_idx].z );
+    fn call(&self, x: &[f64], v: &vars::RelaxedIKVars, frames: &Vec<(Vec<nalgebra::Vector3<f64>>, Vec<nalgebra::UnitQuaternion<f64>>)>) -> f64 {  
+        let mut dist = 0.0;
+        // println!("joint_idx: {}", self.joint_idx);
+        // println!("indicies: {:?}", v.robot.chain_indices);
+        'outer: for i in 0..v.robot.chain_indices.len() {
+            for j in 0..v.robot.chain_indices[i].len() {    
+                if self.joint_idx == v.robot.chain_indices[i][j] {
+                    let mut ctr = j + 1;
+                    let mut k = 0;
+                    while ctr > 0 {
+                        if v.robot.arms[i].joint_types[k] != "fixed" {
+                            ctr -= 1;
+                        }
+                        k += 1;
+                    }
+                            
+                    let goal_quat = v.goal_quats[self.joint_idx];
+                    // E_{gc} = R_{gw} * T_{gw} * T_{wc} * R_{wc}, R_{wc} won't matter since we are only interested in the translation
+                    // so  we get: T_{gc} = R_{gw} * T_{gw} * T_{wc}
 
-        let T_gc = goal_quat.inverse() * T_gw_T_wc;
- 
-        let dist: f64 = T_gc[self.axis];
+                    let T_gw_T_wc =  nalgebra::Vector3::new(
+                        frames[i].0[k-1].x - v.goal_positions[self.joint_idx].x, 
+                        frames[i].0[k-1].y - v.goal_positions[self.joint_idx].y, 
+                        frames[i].0[k-1].z - v.goal_positions[self.joint_idx].z
+                    );
 
-        let bound =  v.tolerances[self.arm_idx][self.joint_idx][self.axis];
+                    let T_gc = goal_quat.inverse() * T_gw_T_wc;
+            
+                    dist = T_gc[self.axis];
+
+                    // if frames[i].0[k-1].x > 0.0 {
+                    //     // println!("i: {} j: {}, k: {}, joint_idx: {}, chain_idx: {}, joint_type: {:?}, pos: {:?}, goal: {:?}", i, j, k, self.joint_idx, v.robot.chain_indices[i][j], v.robot.arms[i].joint_types[k-1], frames[i].0[k-1], v.goal_positions[self.joint_idx]);
+                    //     println!("goal_quat : {:?}, T_gw_T_wc: {:?}, T_gc: {:?}", goal_quat, T_gw_T_wc, T_gc);
+                    //     println!("dist : {}", dist);
+                    // }
+                    break 'outer;
+                }
+            }
+        }
+        
+        let bound =  v.tolerances[self.joint_idx][self.axis];
 
         if (bound <= 1e-2) {
             groove_loss(dist, 0., 2, 0.1, 10.0, 2)
@@ -186,7 +215,7 @@ impl ObjectiveTrait for MatchJointPosiDoF {
         }
     }
     fn call_lite(&self, x: &[f64], v: &vars::RelaxedIKVars, ee_poses: &Vec<(nalgebra::Vector3<f64>, nalgebra::UnitQuaternion<f64>)>) -> f64 {
-        let x_val = ( ee_poses[self.joint_idx].0 - v.goal_positions[self.arm_idx][self.joint_idx] ).norm();
+        let x_val = ( ee_poses[self.joint_idx].0 - v.goal_positions[self.joint_idx] ).norm();
         groove_loss(x_val, 0., 2, 0.1, 10.0, 2)
     }
 }
@@ -433,13 +462,13 @@ impl MatchEEPosGoals {
 impl ObjectiveTrait for MatchEEPosGoals {
     fn call(&self, x: &[f64], v: &vars::RelaxedIKVars, frames: &Vec<(Vec<nalgebra::Vector3<f64>>, Vec<nalgebra::UnitQuaternion<f64>>)>) -> f64 {
         let last_elem = frames[self.arm_idx].0.len() - 1;
-        let x_val = ( frames[self.arm_idx].0[last_elem] - v.goal_positions[self.arm_idx][0] ).norm();
+        let x_val = ( frames[self.arm_idx].0[last_elem] - v.goal_positions[self.arm_idx] ).norm();
 
         groove_loss(x_val, 0., 2, 0.1, 10.0, 2)
     }
 
     fn call_lite(&self, x: &[f64], v: &vars::RelaxedIKVars, ee_poses: &Vec<(nalgebra::Vector3<f64>, nalgebra::UnitQuaternion<f64>)>) -> f64 {
-        let x_val = ( ee_poses[self.arm_idx].0 - v.goal_positions[self.arm_idx][0] ).norm();
+        let x_val = ( ee_poses[self.arm_idx].0 - v.goal_positions[self.arm_idx] ).norm();
         groove_loss(x_val, 0., 2, 0.1, 10.0, 2)
     }
 }
@@ -457,8 +486,8 @@ impl ObjectiveTrait for MatchEEQuatGoals {
         let tmp = Quaternion::new(-frames[self.arm_idx].1[last_elem].w, -frames[self.arm_idx].1[last_elem].i, -frames[self.arm_idx].1[last_elem].j, -frames[self.arm_idx].1[last_elem].k);
         let ee_quat2 = UnitQuaternion::from_quaternion(tmp);
 
-        let disp = angle_between_quaternion(v.goal_quats[self.arm_idx][0], frames[self.arm_idx].1[last_elem]);
-        let disp2 = angle_between_quaternion(v.goal_quats[self.arm_idx][0], ee_quat2);
+        let disp = angle_between_quaternion(v.goal_quats[self.arm_idx], frames[self.arm_idx].1[last_elem]);
+        let disp2 = angle_between_quaternion(v.goal_quats[self.arm_idx], ee_quat2);
         let x_val = disp.min(disp2);
 
         groove_loss(x_val, 0., 2, 0.1, 10.0, 2)
@@ -468,8 +497,8 @@ impl ObjectiveTrait for MatchEEQuatGoals {
         let tmp = Quaternion::new(-ee_poses[self.arm_idx].1.w, -ee_poses[self.arm_idx].1.i, -ee_poses[self.arm_idx].1.j, -ee_poses[self.arm_idx].1.k);
         let ee_quat2 = UnitQuaternion::from_quaternion(tmp);
 
-        let disp = angle_between_quaternion(v.goal_quats[self.arm_idx][0], ee_poses[self.arm_idx].1);
-        let disp2 = angle_between_quaternion(v.goal_quats[self.arm_idx][0], ee_quat2);
+        let disp = angle_between_quaternion(v.goal_quats[self.arm_idx], ee_poses[self.arm_idx].1);
+        let disp2 = angle_between_quaternion(v.goal_quats[self.arm_idx], ee_quat2);
         let x_val = disp.min(disp2);
         groove_loss(x_val, 0., 2, 0.1, 10.0, 2)
     }

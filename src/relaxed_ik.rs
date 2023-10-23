@@ -34,6 +34,11 @@ impl RelaxedIK {
         self.vars.reset( x.clone());
     }
 
+    pub fn set_ee_only(&mut self, ee_only: bool) {
+        self.vars.set_ee_only(ee_only);
+        self.om = ObjectiveMaster::relaxed_ik(&self.vars.robot.chain_indices, self.vars.ee_only);
+    }
+
     pub fn solve(&mut self) -> Vec<f64> {
         // let start = std::time::Instant::now(); // Start timer
         let mut out_x = self.vars.xopt.clone();

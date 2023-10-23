@@ -27,7 +27,8 @@ impl ObjectiveMaster {
         let mut objectives: Vec<Box<dyn ObjectiveTrait + Send>> = Vec::new();
         let mut weight_priors: Vec<f64> = Vec::new();
         let num_chains = chain_indices.len();
-        
+        let num_dofs = chain_indices.iter().flat_map(|v| v.iter()).cloned().max().unwrap() + 1;
+
         if ee_only {
             for i in 0..num_chains {
                 objectives.push(Box::new(MatchEEPosiDoF::new(i, 0)));
@@ -46,19 +47,16 @@ impl ObjectiveMaster {
                 // weight_priors.push(1.0);
             }
         } else {
-            for i in 0..num_chains {
-                for j in 0..chain_indices[i].len() {
-                    objectives.push(Box::new(MatchJointPosiDoF::new(i, j, 0)));
-                    weight_priors.push(50.0);
-                    objectives.push(Box::new(MatchJointPosiDoF::new(i, j, 1)));
-                    weight_priors.push(50.0);
-                    objectives.push(Box::new(MatchJointPosiDoF::new(i, j, 2)));
-                    weight_priors.push(50.0);
-                }
+            for i in 0..num_dofs {
+                objectives.push(Box::new(MatchJointPosiDoF::new(i, 0)));
+                weight_priors.push(50.0);
+                objectives.push(Box::new(MatchJointPosiDoF::new(i, 1)));
+                weight_priors.push(50.0);
+                objectives.push(Box::new(MatchJointPosiDoF::new(i, 2)));
+                weight_priors.push(50.0);
             }
         }
 
-        let num_dofs = chain_indices.iter().flat_map(|v| v.iter()).cloned().max().unwrap() + 1;
         for j in 0..num_dofs {
             objectives.push(Box::new(EachJointLimits::new(j)));
             weight_priors.push(0.1);
