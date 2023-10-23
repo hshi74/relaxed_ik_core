@@ -27,7 +27,7 @@ impl RelaxedIK {
 
         let vars = RelaxedIKVars::from_jsvalue(cfg, &urdf);
 
-        let om = ObjectiveMaster::relaxed_ik(&vars.robot.chain_indices, vars.ee_only);
+        let om = ObjectiveMaster::relaxed_ik(&vars.robot.chain_indices, vars.ee_only, &vars.valid_chains);
         let groove = OptimizationEngineOpen::new(vars.robot.num_dofs.clone());
         Self{vars, om, groove}
     }
@@ -44,7 +44,7 @@ impl RelaxedIK {
             }
         };
 
-        self.vars.reset( starting_config.clone());
+        self.vars.reset( starting_config.clone(), starting_config.clone(), starting_config.clone(), starting_config.clone());
     }
 
     pub fn solve_position(&mut self, pos_goal:  JsValue,  quat_goal:  JsValue, tolerance: JsValue) -> Array{

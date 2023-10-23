@@ -28,15 +28,28 @@ pub unsafe extern "C" fn relaxed_ik_free(ptr: *mut RelaxedIK) {
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn reset(ptr: *mut RelaxedIK, joint_state: *const c_double, joint_state_length: c_int) {
+pub unsafe extern "C" fn reset(ptr: *mut RelaxedIK, prev_state3: *const c_double, prev_state3_length: c_int, 
+    prev_state2: *const c_double, prev_state2_length: c_int, prev_state: *const c_double, prev_state_length: c_int, 
+    init_state: *const c_double, init_state_length: c_int, 
+) {
     let relaxed_ik = unsafe {
         assert!(!ptr.is_null());
         &mut *ptr
     };
 
-    let x_slice: &[c_double] = std::slice::from_raw_parts(joint_state, joint_state_length as usize);
-    let x_vec = x_slice.to_vec();
-    relaxed_ik.reset(x_vec);
+    let prev_state3_slice: &[c_double] = std::slice::from_raw_parts(prev_state3, prev_state3_length as usize);
+    let prev_state3_vec = prev_state3_slice.to_vec();
+
+    let prev_state2_slice: &[c_double] = std::slice::from_raw_parts(prev_state2, prev_state2_length as usize);
+    let prev_state2_vec = prev_state2_slice.to_vec();
+
+    let prev_state_slice: &[c_double] = std::slice::from_raw_parts(prev_state, prev_state_length as usize);
+    let prev_state_vec = prev_state_slice.to_vec();
+
+    let init_state_slice: &[c_double] = std::slice::from_raw_parts(init_state, init_state_length as usize);
+    let init_state_vec = init_state_slice.to_vec();
+    
+    relaxed_ik.reset(prev_state3_vec, prev_state2_vec, prev_state_vec, init_state_vec);
 }
 
 #[no_mangle]
@@ -47,6 +60,20 @@ pub unsafe extern "C" fn set_ee_only(ptr: *mut RelaxedIK, ee_only: c_int) {
     };
 
     relaxed_ik.set_ee_only(ee_only != 0);
+}
+
+
+#[no_mangle]
+pub unsafe extern "C" fn set_valid_chains(ptr: *mut RelaxedIK, valid_chains: *const c_int, valid_chain_length: c_int) {
+    let relaxed_ik = unsafe {
+        assert!(!ptr.is_null());
+        &mut *ptr
+    };
+
+    let valid_chain_slice: &[c_int] = std::slice::from_raw_parts(valid_chains, valid_chain_length as usize);
+    let valid_chains_usize: Vec<usize> = valid_chain_slice.iter().map(|&x| x as usize).collect();
+
+    relaxed_ik.set_valid_chains(&valid_chains_usize);
 }
 
 #[no_mangle]
@@ -147,6 +174,31 @@ pub unsafe extern "C" fn get_ee_poses(ptr: *mut RelaxedIK) -> Opt {
         poses.push(ee_pose[i].1.coords.x);
         poses.push(ee_pose[i].1.coords.y);
         poses.push(ee_pose[i].1.coords.z);
+    }
+    let ptr = poses.as_ptr();
+    let len = poses.len();
+    std::mem::forget(poses);
+    Opt {data: ptr, length: len as c_int}
+}
+
+#[no_mangle]
+pub unsafe extern "C" fn get_wrist_poses(ptr: *mut RelaxedIK) -> Opt {
+    let relaxed_ik = unsafe {
+        assert!(!ptr.is_null());
+        &mut *ptr
+    };
+    let robot = &relaxed_ik.vars.robot;
+
+    let mut poses = Vec::new();
+    let frames = robot.get_frames_immutable(&relaxed_ik.vars.xopt);
+    for i in vec![0, 5] { // 0, 5 are the base indices
+        poses.push(frames[i].0[7].x);
+        poses.push(frames[i].0[7].y);
+        poses.push(frames[i].0[7].z);
+        poses.push(frames[i].1[7].coords.w);
+        poses.push(frames[i].1[7].coords.x);
+        poses.push(frames[i].1[7].coords.y);
+        poses.push(frames[i].1[7].coords.z);
     }
     let ptr = poses.as_ptr();
     let len = poses.len();

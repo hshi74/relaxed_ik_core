@@ -102,10 +102,11 @@ impl ObjectiveTrait for MatchEEPosiDoF {
 
         let bound =  v.tolerances[self.arm_idx][self.axis];
 
-        if (bound <= 1e-2) {
+        if (bound <= 1e-3) {
             groove_loss(dist, 0., 2, 0.1, 10.0, 2)
         } else {
-            swamp_groove_loss(dist, 0.0, -bound, bound, bound*2.0, 1.0, 0.01, 100.0, 20) 
+            // swamp_groove_loss(dist, 0.0, -bound, bound, bound*2.0, 1.0, 0.01, 100.0, 20) 
+            swamp_loss(dist, -bound, bound, 1.0, 0.01, 20)
         }
     }
     fn call_lite(&self, x: &[f64], v: &vars::RelaxedIKVars, ee_poses: &Vec<(nalgebra::Vector3<f64>, nalgebra::UnitQuaternion<f64>)>) -> f64 {

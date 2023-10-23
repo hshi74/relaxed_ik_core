@@ -10,7 +10,7 @@ pub struct ObjectiveMaster {
 }
 
 impl ObjectiveMaster {
-    pub fn standard_ik(num_chains: usize, ee_only: bool) -> Self {
+    pub fn standard_ik(num_chains: usize) -> Self {
         let mut objectives: Vec<Box<dyn ObjectiveTrait + Send>> = Vec::new();
         let mut weight_priors: Vec<f64> = Vec::new();
         for i in 0..num_chains {
@@ -23,7 +23,7 @@ impl ObjectiveMaster {
     }
 
 
-    pub fn relaxed_ik(chain_indices: &[Vec<usize>], ee_only: bool) -> Self {
+    pub fn relaxed_ik(chain_indices: &[Vec<usize>], ee_only: bool, valid_chains: &[usize]) -> Self {
         let mut objectives: Vec<Box<dyn ObjectiveTrait + Send>> = Vec::new();
         let mut weight_priors: Vec<f64> = Vec::new();
         let num_chains = chain_indices.len();
@@ -32,11 +32,8 @@ impl ObjectiveMaster {
         if ee_only {
             for i in 0..num_chains {
                 objectives.push(Box::new(MatchEEPosiDoF::new(i, 0)));
-                weight_priors.push(50.0);
                 objectives.push(Box::new(MatchEEPosiDoF::new(i, 1)));
-                weight_priors.push(50.0);
                 objectives.push(Box::new(MatchEEPosiDoF::new(i, 2)));
-                weight_priors.push(50.0);
                 // objectives.push(Box::new(MatchEERotaDoF::new(i, 0)));
                 // weight_priors.push(10.0);
                 // objectives.push(Box::new(MatchEERotaDoF::new(i, 1)));
@@ -45,6 +42,16 @@ impl ObjectiveMaster {
                 // weight_priors.push(10.0);
                 // objectives.push(Box::new(EnvCollision::new(i)));
                 // weight_priors.push(1.0);
+
+                if valid_chains.contains(&i) {
+                    weight_priors.push(50.0);
+                    weight_priors.push(50.0);
+                    weight_priors.push(50.0);
+                } else {
+                    weight_priors.push(1.0);
+                    weight_priors.push(1.0);
+                    weight_priors.push(1.0);
+                }
             }
         } else {
             for i in 0..num_dofs {
@@ -62,12 +69,12 @@ impl ObjectiveMaster {
             weight_priors.push(0.1);
         }
 
-        // objectives.push(Box::new(MinimizeVelocity));
-        // weight_priors.push(0.7);
-        // objectives.push(Box::new(MinimizeAcceleration));
-        // weight_priors.push(0.5);
-        // objectives.push(Box::new(MinimizeJerk));
-        // weight_priors.push(0.3);
+        objectives.push(Box::new(MinimizeVelocity));
+        weight_priors.push(0.7);
+        objectives.push(Box::new(MinimizeAcceleration));
+        weight_priors.push(0.5);
+        objectives.push(Box::new(MinimizeJerk));
+        weight_priors.push(0.3);
         // objectives.push(Box::new(MaximizeManipulability));
         // weight_priors.push(1.0);
 
