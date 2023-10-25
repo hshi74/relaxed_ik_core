@@ -34,7 +34,7 @@ pub struct RelaxedIKVars {
     pub init_ee_positions: Vec<Vector3<f64>>,
     pub init_ee_quats: Vec<UnitQuaternion<f64>>,
     pub ee_only: bool,
-    pub valid_chains: Vec<usize>
+    pub target_chains: Vec<usize>
 }
 impl RelaxedIKVars {
     pub fn from_local_settings(path_to_setting: &str) -> Self {
@@ -97,7 +97,7 @@ impl RelaxedIKVars {
         }
 
         let ee_only = true;
-        let valid_chains: Vec<usize> = (0..num_chains).collect();
+        let target_chains: Vec<usize> = (0..num_chains).collect();
         
         let mut goal_positions: Vec<Vector3<f64>> = Vec::new();
         let mut goal_quats: Vec<UnitQuaternion<f64>> = Vec::new();
@@ -111,7 +111,7 @@ impl RelaxedIKVars {
         RelaxedIKVars{robot, init_state: starting_config.clone(), xopt: starting_config.clone(),
             prev_state: starting_config.clone(), prev_state2: starting_config.clone(), prev_state3: starting_config.clone(),
             goal_positions: goal_positions, goal_quats: goal_quats, tolerances: tolerances, 
-            init_ee_positions, init_ee_quats, ee_only,valid_chains}
+            init_ee_positions, init_ee_quats, ee_only,target_chains}
     }
     
     // for webassembly
@@ -139,7 +139,7 @@ impl RelaxedIKVars {
         }
         
         let ee_only = true;
-        let valid_chains: Vec<usize> = (0..num_chains).collect();
+        let target_chains: Vec<usize> = (0..num_chains).collect();
         
         let mut goal_positions: Vec<Vector3<f64>> = Vec::new();
         let mut goal_quats: Vec<UnitQuaternion<f64>> = Vec::new();
@@ -153,7 +153,7 @@ impl RelaxedIKVars {
         RelaxedIKVars{robot, init_state: starting_config.clone(), xopt: starting_config.clone(),
             prev_state: starting_config.clone(), prev_state2: starting_config.clone(), prev_state3: starting_config.clone(),
             goal_positions: goal_positions, goal_quats: goal_quats, tolerances: tolerances, 
-            init_ee_positions, init_ee_quats, ee_only, valid_chains}
+            init_ee_positions, init_ee_quats, ee_only, target_chains}
     }
 
     pub fn update(&mut self, xopt: Vec<f64>) {
@@ -198,7 +198,7 @@ impl RelaxedIKVars {
             }
         }
         else {
-            for i in 0..self.robot.num_dofs {
+            for i in 0..pose.len()+self.robot.num_dofs {
                 goal_positions.push(Vector3::new(0., 0., 0.));
                 goal_quats.push(UnitQuaternion::identity());
                 tolerances.push(Vector6::new(0., 0., 0., 0., 0., 0.));
@@ -210,7 +210,7 @@ impl RelaxedIKVars {
         self.tolerances = tolerances;
     }
 
-    pub fn set_valid_chains(&mut self, valid_chains: &[usize]) {
-        self.valid_chains = valid_chains.to_vec();
+    pub fn set_target_chains(&mut self, target_chains: &[usize]) {
+        self.target_chains = target_chains.to_vec();
     }
 }

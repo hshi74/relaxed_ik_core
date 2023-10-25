@@ -183,14 +183,14 @@ impl ObjectiveTrait for MatchJointPosiDoF {
                         k += 1;
                     }
                             
-                    let goal_quat = v.goal_quats[self.joint_idx];
+                    let goal_quat = v.goal_quats[v.robot.num_chains + self.joint_idx];
                     // E_{gc} = R_{gw} * T_{gw} * T_{wc} * R_{wc}, R_{wc} won't matter since we are only interested in the translation
                     // so  we get: T_{gc} = R_{gw} * T_{gw} * T_{wc}
 
                     let T_gw_T_wc =  nalgebra::Vector3::new(
-                        frames[i].0[k-1].x - v.goal_positions[self.joint_idx].x, 
-                        frames[i].0[k-1].y - v.goal_positions[self.joint_idx].y, 
-                        frames[i].0[k-1].z - v.goal_positions[self.joint_idx].z
+                        frames[i].0[k-1].x - v.goal_positions[v.robot.num_chains + self.joint_idx].x, 
+                        frames[i].0[k-1].y - v.goal_positions[v.robot.num_chains + self.joint_idx].y, 
+                        frames[i].0[k-1].z - v.goal_positions[v.robot.num_chains + self.joint_idx].z
                     );
 
                     let T_gc = goal_quat.inverse() * T_gw_T_wc;

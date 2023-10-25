@@ -23,7 +23,7 @@ impl RelaxedIK {
         println!("RelaxedIK is using below setting file {}", path_to_setting);
 
         let vars = RelaxedIKVars::from_local_settings(path_to_setting);
-        let om: ObjectiveMaster = ObjectiveMaster::relaxed_ik(&vars.robot.chain_indices, vars.ee_only, &vars.valid_chains);
+        let om: ObjectiveMaster = ObjectiveMaster::relaxed_ik(&vars.robot.chain_indices, vars.ee_only, &vars.target_chains);
 
         let groove = OptimizationEngineOpen::new(vars.robot.num_dofs.clone());
 
@@ -36,12 +36,12 @@ impl RelaxedIK {
 
     pub fn set_ee_only(&mut self, ee_only: bool) {
         self.vars.set_ee_only(ee_only);
-        self.om = ObjectiveMaster::relaxed_ik(&self.vars.robot.chain_indices, self.vars.ee_only, &self.vars.valid_chains);
+        self.om = ObjectiveMaster::relaxed_ik(&self.vars.robot.chain_indices, self.vars.ee_only, &self.vars.target_chains);
     }
 
-    pub fn set_valid_chains(&mut self, valid_chains: &[usize]) {
-        self.vars.set_valid_chains(valid_chains);
-        self.om = ObjectiveMaster::relaxed_ik(&self.vars.robot.chain_indices, self.vars.ee_only, &self.vars.valid_chains);
+    pub fn set_target_chains(&mut self, target_chains: &[usize]) {
+        self.vars.set_target_chains(target_chains);
+        self.om = ObjectiveMaster::relaxed_ik(&self.vars.robot.chain_indices, self.vars.ee_only, &self.vars.target_chains);
     }
 
     pub fn solve(&mut self) -> Vec<f64> {
@@ -49,7 +49,7 @@ impl RelaxedIK {
         let mut out_x = self.vars.xopt.clone();
 
 
-        self.groove.optimize(&mut out_x, &self.vars, &self.om, 100);
+        self.groove.optimize(&mut out_x, &self.vars, &self.om, 1000);
         
         let frames = self.vars.robot.get_frames_immutable(&out_x);
         

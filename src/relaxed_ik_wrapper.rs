@@ -64,16 +64,16 @@ pub unsafe extern "C" fn set_ee_only(ptr: *mut RelaxedIK, ee_only: c_int) {
 
 
 #[no_mangle]
-pub unsafe extern "C" fn set_valid_chains(ptr: *mut RelaxedIK, valid_chains: *const c_int, valid_chain_length: c_int) {
+pub unsafe extern "C" fn set_target_chains(ptr: *mut RelaxedIK, target_chains: *const c_int, target_chain_length: c_int) {
     let relaxed_ik = unsafe {
         assert!(!ptr.is_null());
         &mut *ptr
     };
 
-    let valid_chain_slice: &[c_int] = std::slice::from_raw_parts(valid_chains, valid_chain_length as usize);
-    let valid_chains_usize: Vec<usize> = valid_chain_slice.iter().map(|&x| x as usize).collect();
+    let target_chain_slice: &[c_int] = std::slice::from_raw_parts(target_chains, target_chain_length as usize);
+    let target_chains_usize: Vec<usize> = target_chain_slice.iter().map(|&x| x as usize).collect();
 
-    relaxed_ik.set_valid_chains(&valid_chains_usize);
+    relaxed_ik.set_target_chains(&target_chains_usize);
 }
 
 #[no_mangle]

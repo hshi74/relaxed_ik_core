@@ -1,4 +1,4 @@
-urdf: myohand_kinematics_hand_only_axis_aligned.urdf
+urdf: myohand_kinematics_two_hands_scaled.urdf
 link_radius: 0.05
 base_links:
   - world

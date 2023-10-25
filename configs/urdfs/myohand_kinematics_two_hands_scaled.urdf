@@ -1,0 +1,1471 @@
+<robot name="converted_robot">
+   <link name="world" />
+
+   
+   <joint type="prismatic" name="translate_x_joint">
+      <parent link="world" />
+      <child link="joint_tx_link" />
+      <origin xyz="0.0 0.0 0.0" rpy="0 0 0" />
+      <axis xyz="1 0 0" />
+      <limit effort="20.0" lower="-1.0" upper="1.0" velocity="5.0" />
+   </joint>
+
+   <joint type="prismatic" name="translate_y_joint">
+      <parent link="joint_tx_link" />
+      <child link="joint_ty_link" />
+      <origin xyz="0.0 0.0 0.0" rpy="0 0 0" />
+      <axis xyz="0 1 0" />
+      <limit effort="20.0" lower="-1.0" upper="1.0" velocity="5.0" />
+   </joint>
+
+   <joint type="prismatic" name="translate_z_joint">
+      <parent link="joint_ty_link" />
+      <child link="joint_tz_link" />
+      <origin xyz="0.0 0.0 0.0" rpy="0 0 0" />
+      <axis xyz="0 0 1" />
+      <limit effort="20.0" lower="-1.0" upper="1.0" velocity="5.0" />
+   </joint>
+
+   
+   <joint type="revolute" name="rotate_x_joint">
+      <parent link="joint_tz_link" />
+      <child link="joint_rx_link" />
+      <origin xyz="0.0 0.0 0.0" rpy="0 0 0" />
+      <axis xyz="1 0 0" />
+      <limit effort="100" lower="-3.141593" upper="3.141593" velocity="100" />
+   </joint>
+
+   <joint type="revolute" name="rotate_y_joint">
+      <parent link="joint_rx_link" />
+      <child link="joint_ry_link" />
+      <origin xyz="0.0 0.0 0.0" rpy="0 0 0" />
+      <axis xyz="0 1 0" />
+      <limit effort="100" lower="-3.141593" upper="3.141593" velocity="100" />
+   </joint>
+
+   <joint type="revolute" name="rotate_z_joint">
+      <parent link="joint_ry_link" />
+      <child link="joint_rz_link" />
+      <origin xyz="0.0 0.0 0.0" rpy="0 0 0" />
+      <axis xyz="0 0 1" />
+      <limit effort="100" lower="-3.141593" upper="3.141593" velocity="100" />
+   </joint>
+
+   
+   <link name="joint_tx_link" />
+   <link name="joint_ty_link" />
+   <link name="joint_tz_link" />
+   <link name="joint_rx_link" />
+   <link name="joint_ry_link" />
+   <link name="joint_rz_link" />
+
+   <joint type="fixed" name="wrist_fixed">
+      <parent link="joint_rz_link" />
+      <child link="lunate" />
+      <origin xyz="0.0 0.0 0.0" rpy="0 0 0" />
+   </joint>
+   <link name="lunate">
+      <inertial>
+         <origin xyz="0 0 0" rpy="0 0 0 " />
+         <mass value="0.0012000263535597198" />
+         <inertia ixx="0.0001" iyy="0.0001" izz="0.0001" ixy="0" ixz="0" iyz="0" />
+      </inertial>
+      <visual name="lunate">
+         <origin xyz="0.0 0.0 0.0" rpy="0 0 0" />
+         <geometry>
+            <mesh filename="file:///home/haochen/catkin_ws/src/relaxed_ik_ros1/relaxed_ik_core/configs/urdfs/meshes/lunate.stl" scale="1.0912156403965485 1.0912156403965485 1.0912156403965485" />
+         </geometry>
+         <material name="white" />
+      </visual>
+   </link>
+   <link name="scaphoid">
+      <inertial>
+         <origin xyz="0.0 0.0 0.0" rpy="0.0 0.0 0.0" />
+         <mass value="0.02" />
+         <inertia ixx="0.0001" iyy="0.0001" izz="0.0001" ixy="0" ixz="0" iyz="0" />
+      </inertial>
+      <visual name="scaphoid">
+         <origin xyz="-2.6012832737077287e-05 -9.841030817061655e-06 4.18360878785008e-05" rpy="-0.5692290431693718 -0.33878345041747715 0.21369142489696064" />
+         <geometry>
+            <mesh filename="file:///home/haochen/catkin_ws/src/relaxed_ik_ros1/relaxed_ik_core/configs/urdfs/meshes/scaphoid.stl" scale="1.0912156403965485 1.0912156403965485 1.0912156403965485" />
+         </geometry>
+         <material name="white" />
+      </visual>
+   </link>
+   <joint type="fixed" name="lunate2scaphoid_fixed">
+      <parent link="lunate" />
+      <child link="scaphoid" />
+      <origin xyz="0.013471057080695391 -0.0048711866187301925 -0.0013683844130572718" rpy="0.0 0.0 0.0" />
+   </joint>
+   <link name="pisiform">
+      <inertial>
+         <origin xyz="0.0 0.0 0.0" rpy="0.0 0.0 0.0" />
+         <mass value="0.02" />
+         <inertia ixx="0.0001" iyy="0.0001" izz="0.0001" ixy="0" ixz="0" iyz="0" />
+      </inertial>
+      <visual name="pisiform">
+         <origin xyz="0.0019402791022578886 -0.000990158516763607 -7.846043753356097e-05" rpy="1.2462055088005255 0.49559439583995424 -0.34929645069987836" />
+         <geometry>
+            <mesh filename="file:///home/haochen/catkin_ws/src/relaxed_ik_ros1/relaxed_ik_core/configs/urdfs/meshes/pisiform.stl" scale="1.0912156403965485 1.0912156403965485 1.0912156403965485" />
+         </geometry>
+         <material name="white" />
+      </visual>
+   </link>
+   <joint type="fixed" name="lunate2pisiform_fixed">
+      <parent link="lunate" />
+      <child link="pisiform" />
+      <origin xyz="-0.014609194993628992 -0.010787757820960281 -0.011559247278720639" rpy="0.0 0.0 0.0" />
+   </joint>
+   <link name="triquetrum">
+      <inertial>
+         <origin xyz="0.0 0.0 0.0" rpy="0.0 0.0 0.0" />
+         <mass value="0.02" />
+         <inertia ixx="0.0001" iyy="0.0001" izz="0.0001" ixy="0" ixz="0" iyz="0" />
+      </inertial>
+      <visual name="triquetrum">
+         <origin xyz="6.471771705712068e-07 -1.2249553131735085e-06 -3.7030720965944225e-06" rpy="1.9269139677822995 -0.29745876180457564 -0.5516387254770375" />
+         <geometry>
+            <mesh filename="file:///home/haochen/catkin_ws/src/relaxed_ik_ros1/relaxed_ik_core/configs/urdfs/meshes/triquetrum.stl" scale="1.0912156403965485 1.0912156403965485 1.0912156403965485" />
+         </geometry>
+         <material name="white" />
+      </visual>
+   </link>
+   <joint type="fixed" name="lunate2triquetrum_fixed">
+      <parent link="lunate" />
+      <child link="triquetrum" />
+      <origin xyz="-0.011767669466036381 -0.008183026087333716 -0.001406576960471151" rpy="0.0 0.0 0.0" />
+   </joint>
+   <link name="capitate">
+      <inertial>
+         <origin xyz="2.4997529376086936e-06 -4.319736123192584e-06 1.3404175140860993e-06" rpy="1.2103081004613072 -0.2920747955988763 -0.020398215496376104" />
+         <mass value="0.001912230829037991" />
+         <inertia ixx="0.0001" iyy="0.0001" izz="0.0001" ixy="0" ixz="0" iyz="0" />
+      </inertial>
+      <visual name="capitate">
+         <origin xyz="2.727769502645824e-06 -4.713763620013699e-06 1.4626845560322125e-06" rpy="1.2103081004613072 -0.29207479559887606 -0.020398215496375882" />
+         <geometry>
+            <mesh filename="file:///home/haochen/catkin_ws/src/relaxed_ik_ros1/relaxed_ik_core/configs/urdfs/meshes/capitate.stl" scale="1.0912156403965485 1.0912156403965485 1.0912156403965485" />
+         </geometry>
+         <material name="white" />
+      </visual>
+   </link>
+   <joint type="fixed" name="lunate2capitate_fixed">
+      <parent link="lunate" />
+      <child link="capitate" />
+      <origin xyz="0.004356132836463022 -0.016427160250529642 0.0025392587952027686" rpy="0.0 0.0 0.0" />
+   </joint>
+   <link name="trapezium">
+      <inertial>
+         <origin xyz="0.0 0.0 0.0" rpy="0.0 0.0 0.0" />
+         <mass value="0.02" />
+         <inertia ixx="0.0001" iyy="0.0001" izz="0.0001" ixy="0" ixz="0" iyz="0" />
+      </inertial>
+      <visual name="trapezium">
+         <origin xyz="-6.197983312852977e-06 1.6671312300062698e-06 -8.008384923814561e-07" rpy="-0.25650854392346234 -0.8000548292338777 2.2561533548010577" />
+         <geometry>
+            <mesh filename="file:///home/haochen/catkin_ws/src/relaxed_ik_ros1/relaxed_ik_core/configs/urdfs/meshes/trapezium.stl" scale="1.0912156403965485 1.0912156403965485 1.0912156403965485" />
+         </geometry>
+         <material name="white" />
+      </visual>
+   </link>
+   <joint type="fixed" name="capitate2trapezium_fixed">
+      <parent link="capitate" />
+      <child link="trapezium" />
+      <origin xyz="0.016687960788584415 -0.00498576426097183 -0.01124825082120762" rpy="0.0 0.0 0.0" />
+   </joint>
+   <link name="firstmc">
+      <inertial>
+         <origin xyz="0.01309968089388166 -0.0068745282609964375 -0.009698928892781572" rpy="-2.1572247499833628 -0.31560297757072453 -1.7510692763715643" />
+         <mass value="0.016" />
+         <inertia ixx="0.0001" iyy="0.0001" izz="0.0001" ixy="0" ixz="0" iyz="0" />
+      </inertial>
+      <visual name="1mc">
+         <origin xyz="0.015221742517602882 -0.007904877736212118 -0.009576319475505619" rpy="-2.237451597882739 -0.5181491466513541 -1.6277365169800728" />
+         <geometry>
+            <mesh filename="file:///home/haochen/catkin_ws/src/relaxed_ik_ros1/relaxed_ik_core/configs/urdfs/meshes/1mc.stl" scale="1.0912156403965485 1.0912156403965485 1.0912156403965485" />
+         </geometry>
+         <material name="white" />
+      </visual>
+   </link>
+   <link name="cmc_abduction_dummy">
+      <inertial>
+         <origin xyz="0.0 0.0 0.0" rpy="-0.7286789533902661 0.04241170412851947 -0.01617642349516324" />
+         <mass value="0.001" />
+         <inertia ixx="1e-09" iyy="1e-09" izz="1e-09" ixy="0" ixz="0" iyz="0" />
+      </inertial>
+   </link>
+   <joint type="revolute" name="cmc_abduction">
+      <parent link="trapezium" />
+      <child link="cmc_abduction_dummy" />
+      <origin xyz="0.00785675261085515 -0.005892564458141363 -0.0027280391009913713" rpy="0.7286789533902661 -0.042411704128519245 -0.01617642349516324" />
+      <axis xyz="0 0 1" />
+      <limit lower="-0.5" upper="0.78" effort="100" velocity="100" />
+   </joint>
+   <joint type="revolute" name="cmc_flexion">
+      <parent link="cmc_abduction_dummy" />
+      <child link="firstmc" />
+      <origin xyz="0.0 0.0 0.0" rpy="-1.7353556432102104 0.24272282231633158 -0.5745472836968706" />
+      <axis xyz="0 0 1" />
+      <limit lower="-0.78" upper="0.7" effort="100" velocity="100" />
+   </joint>
+   <link name="proximal_thumb">
+      <inertial>
+         <origin xyz="0.009175945436263407 -0.017323667062881923 -0.003637662002596822" rpy="2.193467119650854 0.33126827277613535 1.3835402268256396" />
+         <mass value="0.0079" />
+         <inertia ixx="0.0001" iyy="0.0001" izz="0.0001" ixy="0" ixz="0" iyz="0" />
+      </inertial>
+      <visual name="thumbprox">
+         <origin xyz="0.008919062701548273 -0.01744202712274187 -0.0034244405719334064" rpy="1.751348942319772 -0.12389205032924067 0.43579123948592824" />
+         <geometry>
+            <mesh filename="file:///home/haochen/catkin_ws/src/relaxed_ik_ros1/relaxed_ik_core/configs/urdfs/meshes/thumbprox.stl" scale="1.0912156403965485 1.0912156403965485 1.0912156403965485" />
+         </geometry>
+         <material name="white" />
+      </visual>
+   </link>
+   <joint type="revolute" name="mp_flexion">
+      <parent link="firstmc" />
+      <child link="proximal_thumb" />
+      <origin xyz="0.029731572672082863 -0.01454820725477413 -0.020878316775212156" rpy="1.2527425101647096 -0.5549106329448805 -0.37755264808441874" />
+      <axis xyz="0 0 1" />
+      <limit lower="-0.785398" upper="0.698132" effort="100" velocity="100" />
+   </joint>
+   <link name="distal_thumb">
+      <inertial>
+         <origin xyz="0.00550527089824059 -0.011306835175704626 0.0008529188979227702" rpy="1.55414831514287 -0.6236827888860802 0.4187783633237224" />
+         <mass value="0.003" />
+         <inertia ixx="0.0001" iyy="0.0001" izz="0.0001" ixy="0" ixz="0" iyz="0" />
+      </inertial>
+      <visual name="thumbdist">
+         <origin xyz="0.004542850788736533 -0.010651253216962928 0.0010582698770227133" rpy="1.522079931177215 -0.031788312575904865 0.4785542231651294" />
+         <geometry>
+            <mesh filename="file:///home/haochen/catkin_ws/src/relaxed_ik_ros1/relaxed_ik_core/configs/urdfs/meshes/thumbdist.stl" scale="1.0912156403965485 1.0912156403965485 1.0912156403965485" />
+         </geometry>
+         <material name="white" />
+      </visual>
+   </link>
+   <joint type="revolute" name="ip_flexion">
+      <parent link="proximal_thumb" />
+      <child link="distal_thumb" />
+      <origin xyz="0.014538435925150108 -0.030045423406755038 -0.006287316830942347" rpy="0.2947943417533358 0.032709979997034955 -0.01102290149135593" />
+      <axis xyz="0 0 1" />
+      <limit lower="-1.309" upper="0.436332" effort="100" velocity="100" />
+   </joint>
+   <link name="trapezoid">
+      <inertial>
+         <origin xyz="0.0 0.0 0.0" rpy="0.0 0.0 0.0" />
+         <mass value="0.02" />
+         <inertia ixx="0.0001" iyy="0.0001" izz="0.0001" ixy="0" ixz="0" iyz="0" />
+      </inertial>
+      <visual name="trapezoid">
+         <origin xyz="1.4991943433975933e-06 -1.611784249149701e-06 2.063852284874042e-07" rpy="0.27598761251820697 0.5558008487263413 0.19209924739735612" />
+         <geometry>
+            <mesh filename="file:///home/haochen/catkin_ws/src/relaxed_ik_ros1/relaxed_ik_core/configs/urdfs/meshes/trapezoid.stl" scale="1.0912156403965485 1.0912156403965485 1.0912156403965485" />
+         </geometry>
+         <material name="white" />
+      </visual>
+   </link>
+   <joint type="fixed" name="capitate2trapezoid_fixed">
+      <parent link="capitate" />
+      <child link="trapezoid" />
+      <origin xyz="0.009976984600145643 -0.004432517931290779 -0.0026887553379370955" rpy="0.0 0.0 0.0" />
+   </joint>
+   <link name="hamate">
+      <inertial>
+         <origin xyz="0.0 0.0 0.0" rpy="0.0 0.0 0.0" />
+         <mass value="0.02" />
+         <inertia ixx="0.0001" iyy="0.0001" izz="0.0001" ixy="0" ixz="0" iyz="0" />
+      </inertial>
+      <visual name="hamate">
+         <origin xyz="-1.253031262831586e-05 -1.4991055504267509e-06 1.659457460345214e-06" rpy="1.941141541594031 -0.4553846643318562 -0.6664160632978575" />
+         <geometry>
+            <mesh filename="file:///home/haochen/catkin_ws/src/relaxed_ik_ros1/relaxed_ik_core/configs/urdfs/meshes/hamate.stl" scale="1.0912156403965485 1.0912156403965485 1.0912156403965485" />
+         </geometry>
+         <material name="white" />
+      </visual>
+   </link>
+   <joint type="fixed" name="capitate2hamate_fixed">
+      <parent link="capitate" />
+      <child link="hamate" />
+      <origin xyz="-0.01196954435950974 -0.0027225830227893886 -0.0008184117302974114" rpy="0.0 0.0 0.0" />
+   </joint>
+   <link name="secondmc">
+      <inertial>
+         <origin xyz="0.0 0.0 0.0" rpy="0.0 0.0 0.0" />
+         <mass value="0.02" />
+         <inertia ixx="0.0001" iyy="0.0001" izz="0.0001" ixy="0" ixz="0" iyz="0" />
+      </inertial>
+      <visual name="2mc">
+         <origin xyz="-0.00011438630272261074 0.00013791558509674163 -0.00015259020960722118" rpy="-1.2288611407496322 -1.0576482637579705 2.9957695490133696" />
+         <geometry>
+            <mesh filename="file:///home/haochen/catkin_ws/src/relaxed_ik_ros1/relaxed_ik_core/configs/urdfs/meshes/2mc.stl" scale="1.0912156403965485 1.0912156403965485 1.0912156403965485" />
+         </geometry>
+         <material name="white" />
+      </visual>
+   </link>
+   <joint type="fixed" name="capitate2secondmc_fixed">
+      <parent link="capitate" />
+      <child link="secondmc" />
+      <origin xyz="0.016024501679223313 -0.04105153239171816 0.005490997102475433" rpy="0.0 0.0 0.0" />
+   </joint>
+   <link name="proxph2">
+      <inertial>
+         <origin xyz="0.0 0.0 0.0" rpy="0.0861356540103359 0.05502674551362019 0.0023719461216022628" />
+         <mass value="0.01" />
+         <inertia ixx="0.0001" iyy="0.0001" izz="0.0001" ixy="0" ixz="0" iyz="0" />
+      </inertial>
+      <visual name="2proxph">
+         <origin xyz="0.004880666929862633 -0.024799814125271602 0.0027061576790072322" rpy="1.3231070703266785 -1.2754347723112274 0.4086444603936795" />
+         <geometry>
+            <mesh filename="file:///home/haochen/catkin_ws/src/relaxed_ik_ros1/relaxed_ik_core/configs/urdfs/meshes/2proxph.stl" scale="1.0912156403965485 1.0912156403965485 1.0912156403965485" />
+         </geometry>
+         <material name="white" />
+      </visual>
+   </link>
+   <link name="mcp2_flexion_dummy">
+      <inertial>
+         <origin xyz="0.0 0.0 0.0" rpy="1.570796326794898 -1.4708802086674053 -1.4708802086674067" />
+         <mass value="0.001" />
+         <inertia ixx="1e-09" iyy="1e-09" izz="1e-09" ixy="0" ixz="0" iyz="0" />
+      </inertial>
+   </link>
+   <joint type="revolute" name="mcp2_flexion">
+      <parent link="secondmc" />
+      <child link="mcp2_flexion_dummy" />
+      <origin xyz="0.0038203459570283166 -0.03081920333171972 0.003950200618235505" rpy="-1.5707963267948977 1.4708802086674053 -1.4708802086674064" />
+      <axis xyz="0 0 1" />
+      <limit lower="0.0" upper="1.5708" effort="100" velocity="100" />
+   </joint>
+   <joint type="revolute" name="mcp2_abduction">
+      <parent link="mcp2_flexion_dummy" />
+      <child link="proxph2" />
+      <origin xyz="0.0 0.0 0.0" rpy="1.996706135703522 -1.4588445662369582 -1.9856122470713664" />
+      <axis xyz="0 0 1" />
+      <limit lower="-0.261799" upper="0.261799" effort="100" velocity="100" />
+   </joint>
+   <link name="midph2">
+      <inertial>
+         <origin xyz="0.0 0.0 0.0" rpy="2.673926789498819 -1.347488638214627 -2.561714096685443" />
+         <mass value="0.003" />
+         <inertia ixx="0.0001" iyy="0.0001" izz="0.0001" ixy="0" ixz="0" iyz="0" />
+      </inertial>
+      <visual name="2midph">
+         <origin xyz="0.0010432335457114643 -0.014944528630233588 0.0002719845766183966" rpy="-1.5630400763369505 -0.0019507371444631438 -3.1305336815452" />
+         <geometry>
+            <mesh filename="file:///home/haochen/catkin_ws/src/relaxed_ik_ros1/relaxed_ik_core/configs/urdfs/meshes/2midph.stl" scale="1.0912156403965485 1.0912156403965485 1.0912156403965485" />
+         </geometry>
+         <material name="white" />
+      </visual>
+   </link>
+   <joint type="revolute" name="pm2_flexion">
+      <parent link="proxph2" />
+      <child link="midph2" />
+      <origin xyz="0.008515612588301575 -0.04553843896040008 0.0036331389517985863" rpy="-3.1093030719372434 1.3265450030648043 -2.985625911527994" />
+      <axis xyz="0 0 1" />
+      <limit lower="0.0" upper="1.5708" effort="100" velocity="100" />
+   </joint>
+   <link name="distph2">
+      <inertial>
+         <origin xyz="0.0 0.0 0.0" rpy="1.5707963267948983 -1.47079632685829 -1.4707963268582915" />
+         <mass value="0.002" />
+         <inertia ixx="0.0001" iyy="0.0001" izz="0.0001" ixy="0" ixz="0" iyz="0" />
+      </inertial>
+      <visual name="2distph">
+         <origin xyz="0.0006079583664602333 -0.00932993497329737 0.00023430640444269327" rpy="-1.5239710771919284 -0.03676633885392766 -3.140805196244449" />
+         <geometry>
+            <mesh filename="file:///home/haochen/catkin_ws/src/relaxed_ik_ros1/relaxed_ik_core/configs/urdfs/meshes/2distph.stl" scale="1.0912156403965485 1.0912156403965485 1.0912156403965485" />
+         </geometry>
+         <material name="white" />
+      </visual>
+   </link>
+   <joint type="revolute" name="md2_flexion">
+      <parent link="midph2" />
+      <child link="distph2" />
+      <origin xyz="0.001323394321107002 -0.027395033344922114 0.0005722576625926559" rpy="0.0221383296958119 -0.1977786936551691 2.5098334244206405e-05" />
+      <axis xyz="0 0 1" />
+      <limit lower="0.0" upper="1.5708" effort="100" velocity="100" />
+   </joint>
+   <link name="thirdmc">
+      <inertial>
+         <origin xyz="0.0 0.0 0.0" rpy="0.0 0.0 0.0" />
+         <mass value="0.02" />
+         <inertia ixx="0.0001" iyy="0.0001" izz="0.0001" ixy="0" ixz="0" iyz="0" />
+      </inertial>
+      <visual name="3mc">
+         <origin xyz="1.3339891705492994e-05 0.000564020706468723 -0.00026277609802395467" rpy="1.4450266262998412 0.1803584102818272 -0.007490416792627297" />
+         <geometry>
+            <mesh filename="file:///home/haochen/catkin_ws/src/relaxed_ik_ros1/relaxed_ik_core/configs/urdfs/meshes/3mc.stl" scale="1.0912156403965485 1.0912156403965485 1.0912156403965485" />
+         </geometry>
+         <material name="white" />
+      </visual>
+   </link>
+   <joint type="fixed" name="capitate2thirdmc_fixed">
+      <parent link="capitate" />
+      <child link="thirdmc" />
+      <origin xyz="0.0005205098604691537 -0.04281821051352017 0.00804989777920534" rpy="0.0 0.0 0.0" />
+   </joint>
+   <link name="proxph3">
+      <inertial>
+         <origin xyz="0.0 0.0 0.0" rpy="0.0 0.1999995919289601 0.0" />
+         <mass value="0.01" />
+         <inertia ixx="0.0001" iyy="0.0001" izz="0.0001" ixy="0" ixz="0" iyz="0" />
+      </inertial>
+      <visual name="3proxph">
+         <origin xyz="0.002125789382810421 -0.025412660578323087 0.004590544777638503" rpy="1.1265372608123134 -1.2987544122063608 0.4693796480506728" />
+         <geometry>
+            <mesh filename="file:///home/haochen/catkin_ws/src/relaxed_ik_ros1/relaxed_ik_core/configs/urdfs/meshes/3proxph.stl" scale="1.0912156403965485 1.0912156403965485 1.0912156403965485" />
+         </geometry>
+         <material name="white" />
+      </visual>
+   </link>
+   <link name="mcp3_flexion_dummy">
+      <inertial>
+         <origin xyz="0.0 0.0 0.0" rpy="0.0 -1.370796734865936 0.0" />
+         <mass value="0.001" />
+         <inertia ixx="1e-09" iyy="1e-09" izz="1e-09" ixy="0" ixz="0" iyz="0" />
+      </inertial>
+   </link>
+   <joint type="revolute" name="mcp3_flexion">
+      <parent link="thirdmc" />
+      <child link="mcp3_flexion_dummy" />
+      <origin xyz="0.00026189175369517164 -0.028688059186025263 0.0019401814086250635" rpy="0.0 1.370796734865936 0.0" />
+      <axis xyz="0 0 1" />
+      <limit lower="0.0" upper="1.5708" effort="100" velocity="100" />
+   </joint>
+   <joint type="revolute" name="mcp3_abduction">
+      <parent link="mcp3_flexion_dummy" />
+      <child link="proxph3" />
+      <origin xyz="0.0 0.0 0.0" rpy="0.0 -1.570796326794896 0.0" />
+      <axis xyz="0 0 1" />
+      <limit lower="-0.261799" upper="0.261799" effort="100" velocity="100" />
+   </joint>
+   <link name="midph3">
+      <inertial>
+         <origin xyz="0.0 0.0 0.0" rpy="0.0 0.0 0.0" />
+         <mass value="0.002" />
+         <inertia ixx="0.0001" iyy="0.0001" izz="0.0001" ixy="0" ixz="0" iyz="0" />
+      </inertial>
+      <visual name="3midph">
+         <origin xyz="0.0007437811749429613 -0.016232856613813035 0.001732507109740961" rpy="-0.7901456653983332 -1.4979259934357858 2.4117147631811826" />
+         <geometry>
+            <mesh filename="file:///home/haochen/catkin_ws/src/relaxed_ik_ros1/relaxed_ik_core/configs/urdfs/meshes/3midph.stl" scale="1.0912156403965485 1.0912156403965485 1.0912156403965485" />
+         </geometry>
+         <material name="white" />
+      </visual>
+   </link>
+   <joint type="revolute" name="pm3_flexion">
+      <parent link="proxph3" />
+      <child link="midph3" />
+      <origin xyz="0.0031152214262214124 -0.04824373467757181 0.0063050565727784105" rpy="0.0 0.1999995919289601 0.0" />
+      <axis xyz="1.0 0.0 0.0" />
+      <limit lower="0.0" upper="1.5708" effort="100" velocity="100" />
+   </joint>
+   <link name="distph3">
+      <inertial>
+         <origin xyz="0.0 0.0 0.0" rpy="0.0 0.0 0.0" />
+         <mass value="0.002" />
+         <inertia ixx="0.0001" iyy="0.0001" izz="0.0001" ixy="0" ixz="0" iyz="0" />
+      </inertial>
+      <visual name="3distph">
+         <origin xyz="0.0006845750437656672 -0.009339593144242736 -3.5443808176891084e-05" rpy="0.4079397820603109 -1.4851549016387633 1.2108481043436288" />
+         <geometry>
+            <mesh filename="file:///home/haochen/catkin_ws/src/relaxed_ik_ros1/relaxed_ik_core/configs/urdfs/meshes/3distph.stl" scale="1.0912156403965485 1.0912156403965485 1.0912156403965485" />
+         </geometry>
+         <material name="white" />
+      </visual>
+   </link>
+   <joint type="revolute" name="md3_flexion">
+      <parent link="midph3" />
+      <child link="distph3" />
+      <origin xyz="0.0014895093491412886 -0.031696540706598546 0.002132235361334856" rpy="0.0 0.0 0.0" />
+      <axis xyz="1.0 0.0 0.0" />
+      <limit lower="0.0" upper="1.5708" effort="100" velocity="100" />
+   </joint>
+   <link name="fourthmc">
+      <inertial>
+         <origin xyz="0.0 0.0 0.0" rpy="0.0 0.0 0.0" />
+         <mass value="0.02" />
+         <inertia ixx="0.0001" iyy="0.0001" izz="0.0001" ixy="0" ixz="0" iyz="0" />
+      </inertial>
+      <visual name="4mc">
+         <origin xyz="4.77966983845608e-05 0.0005804645102251883 -0.00018198006768264596" rpy="1.5268660941250807 -0.37727025049358964 -0.07031755099911208" />
+         <geometry>
+            <mesh filename="file:///home/haochen/catkin_ws/src/relaxed_ik_ros1/relaxed_ik_core/configs/urdfs/meshes/4mc.stl" scale="1.0912156403965485 1.0912156403965485 1.0912156403965485" />
+         </geometry>
+         <material name="white" />
+      </visual>
+   </link>
+   <joint type="fixed" name="capitate2fourthmc_fixed">
+      <parent link="capitate" />
+      <child link="fourthmc" />
+      <origin xyz="-0.013144783604216823 -0.04421496653322775 0.003833440544713075" rpy="0.0 0.0 0.0" />
+   </joint>
+   <link name="proxph4">
+      <inertial>
+         <origin xyz="0.0 0.0 0.0" rpy="0.0 0.4500004640280282 0.0" />
+         <mass value="0.01" />
+         <inertia ixx="0.0001" iyy="0.0001" izz="0.0001" ixy="0" ixz="0" iyz="0" />
+      </inertial>
+      <visual name="4proxph">
+         <origin xyz="-0.0014540353567572928 -0.023561478528372735 0.0023162657504834793" rpy="0.6976319582938976 -1.4758909364414674 0.797666297432624" />
+         <geometry>
+            <mesh filename="file:///home/haochen/catkin_ws/src/relaxed_ik_ros1/relaxed_ik_core/configs/urdfs/meshes/4proxph.stl" scale="1.0912156403965485 1.0912156403965485 1.0912156403965485" />
+         </geometry>
+         <material name="white" />
+      </visual>
+   </link>
+   <link name="mcp4_flexion_dummy">
+      <inertial>
+         <origin xyz="0.0 0.0 0.0" rpy="0.0 -1.120795862766868 0.0" />
+         <mass value="0.001" />
+         <inertia ixx="1e-09" iyy="1e-09" izz="1e-09" ixy="0" ixz="0" iyz="0" />
+      </inertial>
+   </link>
+   <joint type="revolute" name="mcp4_flexion">
+      <parent link="fourthmc" />
+      <child link="mcp4_flexion_dummy" />
+      <origin xyz="-0.001996924621925684 -0.02584980730535384 -0.0001887803057886029" rpy="0.0 1.1207958627668684 0.0" />
+      <axis xyz="0 0 1" />
+      <limit lower="0.0" upper="1.5708" effort="100" velocity="100" />
+   </joint>
+   <joint type="revolute" name="mcp4_abduction">
+      <parent link="mcp4_flexion_dummy" />
+      <child link="proxph4" />
+      <origin xyz="0.0 0.0 0.0" rpy="0.0 -1.570796326794896 0.0" />
+      <axis xyz="0 0 1" />
+      <limit lower="-0.261799" upper="0.261799" effort="100" velocity="100" />
+   </joint>
+   <link name="midph4">
+      <inertial>
+         <origin xyz="0.0 0.0 0.0" rpy="0.0 -1.1707966444174693 0.0" />
+         <mass value="0.003" />
+         <inertia ixx="0.0001" iyy="0.0001" izz="0.0001" ixy="0" ixz="0" iyz="0" />
+      </inertial>
+      <visual name="4midph">
+         <origin xyz="-0.0012854336845298268 -0.014311424955266322 -0.0013640544306725245" rpy="-1.624420311140701 -0.005298798978447428 3.0977891945924623" />
+         <geometry>
+            <mesh filename="file:///home/haochen/catkin_ws/src/relaxed_ik_ros1/relaxed_ik_core/configs/urdfs/meshes/4midph.stl" scale="1.0912156403965485 1.0912156403965485 1.0912156403965485" />
+         </geometry>
+         <material name="white" />
+      </visual>
+   </link>
+   <joint type="revolute" name="pm4_flexion">
+      <parent link="proxph4" />
+      <child link="midph4" />
+      <origin xyz="-0.0028281553639360434 -0.04392688560416306 0.0029961081823990368" rpy="3.141592653589793 1.5207955451442956 3.141592653589793" />
+      <axis xyz="0 0 1" />
+      <limit lower="0.0" upper="1.5708" effort="100" velocity="100" />
+   </joint>
+   <link name="distph4">
+      <inertial>
+         <origin xyz="0.0 0.0 0.0" rpy="0.0 -0.9707969349430002 0.0" />
+         <mass value="0.002" />
+         <inertia ixx="0.0001" iyy="0.0001" izz="0.0001" ixy="0" ixz="0" iyz="0" />
+      </inertial>
+      <visual name="4distph">
+         <origin xyz="-0.001348534577264451 -0.009657786641601841 6.261121284750583e-05" rpy="-1.5832780312239776 -0.030396363417948713 2.965276549615234" />
+         <geometry>
+            <mesh filename="file:///home/haochen/catkin_ws/src/relaxed_ik_ros1/relaxed_ik_core/configs/urdfs/meshes/4distph.stl" scale="1.0912156403965485 1.0912156403965485 1.0912156403965485" />
+         </geometry>
+         <material name="white" />
+      </visual>
+   </link>
+   <joint type="revolute" name="md4_flexion">
+      <parent link="midph4" />
+      <child link="distph4" />
+      <origin xyz="-0.0015504417726234165 -0.02705014450979004 -0.002089521086574618" rpy="0.0 -0.199999709474469 0.0" />
+      <axis xyz="0 0 1" />
+      <limit lower="0.0" upper="1.5708" effort="100" velocity="100" />
+   </joint>
+   <link name="fifthmc">
+      <inertial>
+         <origin xyz="0.0 0.0 0.0" rpy="0.0 0.0 0.0" />
+         <mass value="0.02" />
+         <inertia ixx="0.0001" iyy="0.0001" izz="0.0001" ixy="0" ixz="0" iyz="0" />
+      </inertial>
+      <visual name="5mc">
+         <origin xyz="0.0002124330500874568 0.00045668960348956657 -0.00014038383031514807" rpy="1.6537260233892077 -1.161764483067726 -0.20407074680325432" />
+         <geometry>
+            <mesh filename="file:///home/haochen/catkin_ws/src/relaxed_ik_ros1/relaxed_ik_core/configs/urdfs/meshes/5mc.stl" scale="1.0912156403965485 1.0912156403965485 1.0912156403965485" />
+         </geometry>
+         <material name="white" />
+      </visual>
+   </link>
+   <joint type="fixed" name="capitate2fifthmc_fixed">
+      <parent link="capitate" />
+      <child link="fifthmc" />
+      <origin xyz="-0.023893257662122826 -0.03784663205587349 -0.004602747571192643" rpy="0.0 0.0 0.0" />
+   </joint>
+   <link name="proxph5">
+      <inertial>
+         <origin xyz="0.0 0.0 0.0" rpy="0.0 0.5999993918518967 0.0" />
+         <mass value="0.005" />
+         <inertia ixx="0.0001" iyy="0.0001" izz="0.0001" ixy="0" ixz="0" iyz="0" />
+      </inertial>
+      <visual name="5proxph">
+         <origin xyz="-0.003713049465303791 -0.02108392571969029 0.0009617048071497774" rpy="-1.4569822139036401 -1.381514906722609 2.885196567174457" />
+         <geometry>
+            <mesh filename="file:///home/haochen/catkin_ws/src/relaxed_ik_ros1/relaxed_ik_core/configs/urdfs/meshes/5proxph.stl" scale="1.0912156403965485 1.0912156403965485 1.0912156403965485" />
+         </geometry>
+         <material name="white" />
+      </visual>
+   </link>
+   <link name="mcp5_flexion_dummy">
+      <inertial>
+         <origin xyz="0.0 0.0 0.0" rpy="0.0 -0.9707969349430002 0.0" />
+         <mass value="0.001" />
+         <inertia ixx="1e-09" iyy="1e-09" izz="1e-09" ixy="0" ixz="0" iyz="0" />
+      </inertial>
+   </link>
+   <joint type="revolute" name="mcp5_flexion">
+      <parent link="fifthmc" />
+      <child link="mcp5_flexion_dummy" />
+      <origin xyz="-0.001742671377713288 -0.02338584238933843 -0.0016324585980332365" rpy="0.0 0.9707969349430003 0.0" />
+      <axis xyz="0 0 1" />
+      <limit lower="0.0" upper="1.5708" effort="100" velocity="100" />
+   </joint>
+   <joint type="revolute" name="mcp5_abduction">
+      <parent link="mcp5_flexion_dummy" />
+      <child link="proxph5" />
+      <origin xyz="0.0 0.0 0.0" rpy="0.0 -1.5707963267948963 0.0" />
+      <axis xyz="0 0 1" />
+      <limit lower="-0.261799" upper="0.261799" effort="100" velocity="100" />
+   </joint>
+   <link name="midph5">
+      <inertial>
+         <origin xyz="0.0 0.0 0.0" rpy="0.0 -0.9707969349430002 0.0" />
+         <mass value="0.002" />
+         <inertia ixx="0.0001" iyy="0.0001" izz="0.0001" ixy="0" ixz="0" iyz="0" />
+      </inertial>
+      <visual name="5midph">
+         <origin xyz="0.00020976323052124832 -0.01284424640920926 -0.002279325925178836" rpy="-1.7327462170365329 0.14316308891352914 3.08764894477981" />
+         <geometry>
+            <mesh filename="file:///home/haochen/catkin_ws/src/relaxed_ik_ros1/relaxed_ik_core/configs/urdfs/meshes/5midph.stl" scale="1.0912156403965485 1.0912156403965485 1.0912156403965485" />
+         </geometry>
+         <material name="white" />
+      </visual>
+   </link>
+   <joint type="revolute" name="pm5_flexion">
+      <parent link="proxph5" />
+      <child link="midph5" />
+      <origin xyz="-0.006528255140883939 -0.03880690181942246 0.000659751969878673" rpy="-0.0 1.5707963267948966 0.0" />
+      <axis xyz="0 0 1" />
+      <limit lower="0.0" upper="1.5708" effort="100" velocity="100" />
+   </joint>
+   <link name="distph5">
+      <inertial>
+         <origin xyz="0.0 0.0 0.0" rpy="-0.3006875686285624 -0.6985554313998293 0.11023436132302193" />
+         <mass value="0.001" />
+         <inertia ixx="0.0001" iyy="0.0001" izz="0.0001" ixy="0" ixz="0" iyz="0" />
+      </inertial>
+      <visual name="5distph">
+         <origin xyz="-0.0011069679115155672 -0.008597030397592666 0.00048825809364409523" rpy="-1.5131584280044281 -0.07399081576380362 2.9725845702930727" />
+         <geometry>
+            <mesh filename="file:///home/haochen/catkin_ws/src/relaxed_ik_ros1/relaxed_ik_core/configs/urdfs/meshes/5distph.stl" scale="1.0912156403965485 1.0912156403965485 1.0912156403965485" />
+         </geometry>
+         <material name="white" />
+      </visual>
+   </link>
+   <joint type="revolute" name="md5_flexion">
+      <parent link="midph5" />
+      <child link="distph5" />
+      <origin xyz="0.0002511339545131928 -0.022563065796479438 -0.003967694418063864" rpy="0.20638367854381953 -0.26826088009272797 0.08747994233519721" />
+      <axis xyz="0 0 1" />
+      <limit lower="0.0" upper="1.5708" effort="100" velocity="100" />
+   </joint>
+   <link name="THtip">
+      <inertial>
+         <origin xyz="0.0 0.0 0.0" rpy="0.0 0.0 0.0" />
+         <mass value="0.001" />
+         <inertia ixx="1e-09" iyy="1e-09" izz="1e-09" ixy="0" ixz="0" iyz="0" />
+      </inertial>
+   </link>
+   <joint type="fixed" name="THtip_joint">
+      <parent link="distal_thumb" />
+      <child link="THtip" />
+      <origin xyz="0.010739724593419129 -0.023474990670484867 0.002273107196620667" rpy="-0.500912540251172 0.05012299056598368 -0.012825373716091965" />
+   </joint>
+   <link name="IFtip">
+      <inertial>
+         <origin xyz="0.0 0.0 0.0" rpy="0.0 0.0 0.0" />
+         <mass value="0.001" />
+         <inertia ixx="1e-09" iyy="1e-09" izz="1e-09" ixy="0" ixz="0" iyz="0" />
+      </inertial>
+   </link>
+   <joint type="fixed" name="IFtip_joint">
+      <parent link="distph2" />
+      <child link="IFtip" />
+      <origin xyz="0.001972871390054612 -0.019662907650043963 0.00021061207384855205" rpy="1.5707963267948983 -1.47079632685829 -1.4707963268582915" />
+   </joint>
+   <link name="MFtip">
+      <inertial>
+         <origin xyz="0.0 0.0 0.0" rpy="0.0 0.0 0.0" />
+         <mass value="0.001" />
+         <inertia ixx="1e-09" iyy="1e-09" izz="1e-09" ixy="0" ixz="0" iyz="0" />
+      </inertial>
+   </link>
+   <joint type="fixed" name="MFtip_joint">
+      <parent link="distph3" />
+      <child link="MFtip" />
+      <origin xyz="0.002182431280793097 -0.02073309716753442 -0.0010912156403965485" rpy="0.0 0.0 0.0" />
+   </joint>
+   <link name="RFtip">
+      <inertial>
+         <origin xyz="0.0 0.0 0.0" rpy="0.0 0.0 0.0" />
+         <mass value="0.001" />
+         <inertia ixx="1e-09" iyy="1e-09" izz="1e-09" ixy="0" ixz="0" iyz="0" />
+      </inertial>
+   </link>
+   <joint type="fixed" name="RFtip_joint">
+      <parent link="distph4" />
+      <child link="RFtip" />
+      <origin xyz="-0.0015167656567649471 -0.019641881527137875 -0.0002844733557830997" rpy="0.0 -0.9707969349430002 0.0" />
+   </joint>
+   <link name="LFtip">
+      <inertial>
+         <origin xyz="0.0 0.0 0.0" rpy="0.0 0.0 0.0" />
+         <mass value="0.001" />
+         <inertia ixx="1e-09" iyy="1e-09" izz="1e-09" ixy="0" ixz="0" iyz="0" />
+      </inertial>
+   </link>
+   <joint type="fixed" name="LFtip_joint">
+      <parent link="distph5" />
+      <child link="LFtip" />
+      <origin xyz="-0.00028800192051640867 -0.018833932385459582 0.001111200420124305" rpy="-0.3006875686285624 -0.6985554313998293 0.11023436132302193" />
+   </joint>
+   <material name="white">
+      <color rgba="1 1 1 1" />
+   </material>
+
+   
+   
+   <joint type="prismatic" name="translate_x_joint_left">
+      <parent link="world" />
+      <child link="joint_tx_link_left" />
+      <origin xyz="0.0 0.0 0.0" rpy="0 0 0" />
+      <axis xyz="1 0 0" />
+      <limit effort="20.0" lower="-1.0" upper="1.0" velocity="5.0" />
+   </joint>
+
+   <joint type="prismatic" name="translate_y_joint_left">
+      <parent link="joint_tx_link_left" />
+      <child link="joint_ty_link_left" />
+      <origin xyz="0.0 0.0 0.0" rpy="0 0 0" />
+      <axis xyz="0 1 0" />
+      <limit effort="20.0" lower="-1.0" upper="1.0" velocity="5.0" />
+   </joint>
+
+   <joint type="prismatic" name="translate_z_joint_left">
+      <parent link="joint_ty_link_left" />
+      <child link="joint_tz_link_left" />
+      <origin xyz="0.0 0.0 0.0" rpy="0 0 0" />
+      <axis xyz="0 0 1" />
+      <limit effort="20.0" lower="-1.0" upper="1.0" velocity="5.0" />
+   </joint>
+
+   
+   <joint type="revolute" name="rotate_x_joint_left">
+      <parent link="joint_tz_link_left" />
+      <child link="joint_rx_link_left" />
+      <origin xyz="0.0 0.0 0.0" rpy="0 0 0" />
+      <axis xyz="1 0 0" />
+      <limit effort="100" lower="-3.141593" upper="3.141593" velocity="100" />
+   </joint>
+
+   <joint type="revolute" name="rotate_y_joint_left">
+      <parent link="joint_rx_link_left" />
+      <child link="joint_ry_link_left" />
+      <origin xyz="0.0 0.0 0.0" rpy="0 0 0" />
+      <axis xyz="0 1 0" />
+      <limit effort="100" lower="-3.141593" upper="3.141593" velocity="100" />
+   </joint>
+
+   <joint type="revolute" name="rotate_z_joint_left">
+      <parent link="joint_ry_link_left" />
+      <child link="joint_rz_link_left" />
+      <origin xyz="0.0 0.0 0.0" rpy="0 0 0" />
+      <axis xyz="0 0 1" />
+      <limit effort="100" lower="-3.141593" upper="3.141593" velocity="100" />
+   </joint>
+
+   
+   <link name="joint_tx_link_left" />
+   <link name="joint_ty_link_left" />
+   <link name="joint_tz_link_left" />
+   <link name="joint_rx_link_left" />
+   <link name="joint_ry_link_left" />
+   <link name="joint_rz_link_left" />
+
+   <joint type="fixed" name="wrist_fixed_left">
+      <parent link="joint_rz_link_left" />
+      <child link="lunate_left" />
+      <origin xyz="0.0 0.0 0.0" rpy="0.0 0.0 0.0" />
+   </joint>
+   <link name="lunate_left">
+      <inertial>
+         <origin xyz="0.0 0.0 0.0" rpy="0.0 0.0 0.0" />
+         <mass value="0.0012000263535597198" />
+         <inertia ixx="0.0001" iyy="0.0001" izz="0.0001" ixy="0" ixz="0" iyz="0" />
+      </inertial>
+      <visual name="lunate_left">
+         <origin xyz="0.0 0.0 0.0" rpy="0.0 0.0 0.0" />
+         <geometry>
+            <mesh filename="file:///home/haochen/catkin_ws/src/relaxed_ik_ros1/relaxed_ik_core/configs/urdfs/meshes/lunate_left.stl" scale="1.0912156403965485 1.0912156403965485 1.0912156403965485" />
+         </geometry>
+         <material name="white" />
+      </visual>
+   </link>
+   <link name="scaphoid_left">
+      <inertial>
+         <origin xyz="0.0 0.0 0.0" rpy="0.0 0.0 0.0" />
+         <mass value="0.02" />
+         <inertia ixx="0.0001" iyy="0.0001" izz="0.0001" ixy="0" ixz="0" iyz="0" />
+      </inertial>
+      <visual name="scaphoid_left">
+         <origin xyz="2.6012832737081288e-05 -9.841030817061267e-06 4.183608787850105e-05" rpy="-0.5692290431693717 0.33878345041747737 -0.2136914248969607" />
+         <geometry>
+            <mesh filename="file:///home/haochen/catkin_ws/src/relaxed_ik_ros1/relaxed_ik_core/configs/urdfs/meshes/scaphoid_left.stl" scale="1.0912156403965485 1.0912156403965485 1.0912156403965485" />
+         </geometry>
+         <material name="white" />
+      </visual>
+   </link>
+   <joint type="fixed" name="lunate2scaphoid_fixed_left">
+      <parent link="lunate_left" />
+      <child link="scaphoid_left" />
+      <origin xyz="-0.013471057080695391 -0.0048711866187301925 -0.0013683844130572718" rpy="0.0 0.0 0.0" />
+   </joint>
+   <link name="pisiform_left">
+      <inertial>
+         <origin xyz="0.0 0.0 0.0" rpy="0.0 0.0 0.0" />
+         <mass value="0.02" />
+         <inertia ixx="0.0001" iyy="0.0001" izz="0.0001" ixy="0" ixz="0" iyz="0" />
+      </inertial>
+      <visual name="pisiform_left">
+         <origin xyz="-0.0019402791022578886 -0.000990158516763607 -7.84604375335625e-05" rpy="1.2462055088005255 -0.49559439583995424 0.3492964506998784" />
+         <geometry>
+            <mesh filename="file:///home/haochen/catkin_ws/src/relaxed_ik_ros1/relaxed_ik_core/configs/urdfs/meshes/pisiform_left.stl" scale="1.0912156403965485 1.0912156403965485 1.0912156403965485" />
+         </geometry>
+         <material name="white" />
+      </visual>
+   </link>
+   <joint type="fixed" name="lunate2pisiform_fixed_left">
+      <parent link="lunate_left" />
+      <child link="pisiform_left" />
+      <origin xyz="0.014609194993628992 -0.010787757820960281 -0.011559247278720639" rpy="0.0 0.0 0.0" />
+   </joint>
+   <link name="triquetrum_left">
+      <inertial>
+         <origin xyz="0.0 0.0 0.0" rpy="0.0 0.0 0.0" />
+         <mass value="0.02" />
+         <inertia ixx="0.0001" iyy="0.0001" izz="0.0001" ixy="0" ixz="0" iyz="0" />
+      </inertial>
+      <visual name="triquetrum_left">
+         <origin xyz="-6.471771705709832e-07 -1.2249553131738964e-06 -3.703072096594186e-06" rpy="1.9269139677822995 0.29745876180457564 0.5516387254770375" />
+         <geometry>
+            <mesh filename="file:///home/haochen/catkin_ws/src/relaxed_ik_ros1/relaxed_ik_core/configs/urdfs/meshes/triquetrum_left.stl" scale="1.0912156403965485 1.0912156403965485 1.0912156403965485" />
+         </geometry>
+         <material name="white" />
+      </visual>
+   </link>
+   <joint type="fixed" name="lunate2triquetrum_fixed_left">
+      <parent link="lunate_left" />
+      <child link="triquetrum_left" />
+      <origin xyz="0.011767669466036381 -0.008183026087333716 -0.001406576960471151" rpy="0.0 0.0 0.0" />
+   </joint>
+   <link name="capitate_left">
+      <inertial>
+         <origin xyz="-2.499752937609387e-06 -4.319736123192808e-06 1.3404175140865199e-06" rpy="1.2103081004613072 0.2920747955988765 0.020398215496376215" />
+         <mass value="0.001912230829037991" />
+         <inertia ixx="0.0001" iyy="0.0001" izz="0.0001" ixy="0" ixz="0" iyz="0" />
+      </inertial>
+      <visual name="capitate_left">
+         <origin xyz="-2.7277695026464366e-06 -4.713763620015511e-06 1.4626845560325107e-06" rpy="1.2103081004613072 0.29207479559887606 0.02039821549637577" />
+         <geometry>
+            <mesh filename="file:///home/haochen/catkin_ws/src/relaxed_ik_ros1/relaxed_ik_core/configs/urdfs/meshes/capitate_left.stl" scale="1.0912156403965485 1.0912156403965485 1.0912156403965485" />
+         </geometry>
+         <material name="white" />
+      </visual>
+   </link>
+   <joint type="fixed" name="lunate2capitate_fixed_left">
+      <parent link="lunate_left" />
+      <child link="capitate_left" />
+      <origin xyz="-0.004356132836463022 -0.016427160250529642 0.0025392587952027686" rpy="0.0 0.0 0.0" />
+   </joint>
+   <link name="trapezium_left">
+      <inertial>
+         <origin xyz="0.0 0.0 0.0" rpy="0.0 0.0 0.0" />
+         <mass value="0.02" />
+         <inertia ixx="0.0001" iyy="0.0001" izz="0.0001" ixy="0" ixz="0" iyz="0" />
+      </inertial>
+      <visual name="trapezium_left">
+         <origin xyz="6.197983312853165e-06 1.6671312300058431e-06 -8.008384923818835e-07" rpy="-0.25650854392346245 0.8000548292338778 -2.2561533548010573" />
+         <geometry>
+            <mesh filename="file:///home/haochen/catkin_ws/src/relaxed_ik_ros1/relaxed_ik_core/configs/urdfs/meshes/trapezium_left.stl" scale="1.0912156403965485 1.0912156403965485 1.0912156403965485" />
+         </geometry>
+         <material name="white" />
+      </visual>
+   </link>
+   <joint type="fixed" name="capitate2trapezium_fixed_left">
+      <parent link="capitate_left" />
+      <child link="trapezium_left" />
+      <origin xyz="-0.016687960788584415 -0.004985764260971832 -0.01124825082120762" rpy="0.0 0.0 0.0" />
+   </joint>
+   <link name="firstmc_left">
+      <inertial>
+         <origin xyz="-0.013099680893881645 -0.006874528260996441 -0.009698928892781549" rpy="-2.1572247499833637 0.315602977570725 1.7510692763715636" />
+         <mass value="0.016" />
+         <inertia ixx="0.0001" iyy="0.0001" izz="0.0001" ixy="0" ixz="0" iyz="0" />
+      </inertial>
+      <visual name="1mc_left">
+         <origin xyz="-0.01522174251760287 -0.007904877736212115 -0.009576319475505619" rpy="-2.237451597882739 0.5181491466513539 1.6277365169800726" />
+         <geometry>
+            <mesh filename="file:///home/haochen/catkin_ws/src/relaxed_ik_ros1/relaxed_ik_core/configs/urdfs/meshes/1mc_left.stl" scale="1.0912156403965485 1.0912156403965485 1.0912156403965485" />
+         </geometry>
+         <material name="white" />
+      </visual>
+   </link>
+   <link name="cmc_abduction_dummy_left">
+      <inertial>
+         <origin xyz="-1.734723475976807e-17 -1.0408340855860843e-17 -8.673617379884035e-19" rpy="-0.7286789533902662 -0.04241170412851947 0.01617642349516335" />
+         <mass value="0.001" />
+         <inertia ixx="1e-09" iyy="1e-09" izz="1e-09" ixy="0" ixz="0" iyz="0" />
+      </inertial>
+   </link>
+   <joint type="revolute" name="cmc_abduction_left">
+      <parent link="trapezium_left" />
+      <child link="cmc_abduction_dummy_left" />
+      <origin xyz="-0.007856752610855151 -0.005892564458141364 -0.0027280391009913696" rpy="0.7286789533902661 0.04241170412851947 0.01617642349516324" />
+      <axis xyz="1.747988441681546e-18 -1.0772761261336016e-16 -1.0" />
+      <limit lower="-0.5" upper="0.78" effort="100" velocity="100" />
+   </joint>
+   <joint type="revolute" name="cmc_flexion_left">
+      <parent link="cmc_abduction_dummy_left" />
+      <child link="firstmc_left" />
+      <origin xyz="-6.5919492087118674e-18 -6.5919492087118674e-18 1.1535911115245768e-17" rpy="-1.7353556432102097 -0.24272282231633158 0.5745472836968706" />
+      <axis xyz="-2.8391311673900116e-17 -5.045193471461809e-17 -1.0000000000000002" />
+      <limit lower="-0.78" upper="0.7" effort="100" velocity="100" />
+   </joint>
+   <link name="proximal_thumb_left">
+      <inertial>
+         <origin xyz="-0.009175945436263391 -0.017323667062881902 -0.0036376620025967907" rpy="2.1934671196508537 -0.3312682727761356 -1.3835402268256396" />
+         <mass value="0.0079" />
+         <inertia ixx="0.0001" iyy="0.0001" izz="0.0001" ixy="0" ixz="0" iyz="0" />
+      </inertial>
+      <visual name="thumbprox_left">
+         <origin xyz="-0.008919062701548273 -0.01744202712274182 -0.0034244405719334116" rpy="1.7513489423197717 0.12389205032924067 -0.43579123948592813" />
+         <geometry>
+            <mesh filename="file:///home/haochen/catkin_ws/src/relaxed_ik_ros1/relaxed_ik_core/configs/urdfs/meshes/thumbprox_left.stl" scale="1.0912156403965485 1.0912156403965485 1.0912156403965485" />
+         </geometry>
+         <material name="white" />
+      </visual>
+   </link>
+   <joint type="revolute" name="mp_flexion_left">
+      <parent link="firstmc_left" />
+      <child link="proximal_thumb_left" />
+      <origin xyz="-0.029731572672082877 -0.014548207254774124 -0.020878316775212152" rpy="1.252742510164709 0.5549106329448805 0.3775526480844189" />
+      <axis xyz="-7.360873981229693e-17 -1.0205699454745994e-16 -1.0000000000000002" />
+      <limit lower="-0.785398" upper="0.698132" effort="100" velocity="100" />
+   </joint>
+   <link name="distal_thumb_left">
+      <inertial>
+         <origin xyz="-0.005505270898240551 -0.01130683517570466 0.0008529188979227928" rpy="1.5541483151428697 0.6236827888860805 -0.41877836332372254" />
+         <mass value="0.003" />
+         <inertia ixx="0.0001" iyy="0.0001" izz="0.0001" ixy="0" ixz="0" iyz="0" />
+      </inertial>
+      <visual name="thumbdist_left">
+         <origin xyz="-0.004542850788736518 -0.010651253216962883 0.0010582698770227829" rpy="1.5220799311772146 0.03178831257590442 -0.4785542231651295" />
+         <geometry>
+            <mesh filename="file:///home/haochen/catkin_ws/src/relaxed_ik_ros1/relaxed_ik_core/configs/urdfs/meshes/thumbdist_left.stl" scale="1.0912156403965485 1.0912156403965485 1.0912156403965485" />
+         </geometry>
+         <material name="white" />
+      </visual>
+   </link>
+   <joint type="revolute" name="ip_flexion_left">
+      <parent link="proximal_thumb_left" />
+      <child link="distal_thumb_left" />
+      <origin xyz="-0.014538435925150134 -0.03004542340675508 -0.006287316830942379" rpy="0.29479434175333596 -0.03270997999703473 0.011022901491355958" />
+      <axis xyz="-1.923774407218676e-17 -2.7135002682840594e-16 -1.0000000000000009" />
+      <limit lower="-1.309" upper="0.436332" effort="100" velocity="100" />
+   </joint>
+   <link name="trapezoid_left">
+      <inertial>
+         <origin xyz="0.0 0.0 0.0" rpy="0.0 0.0 0.0" />
+         <mass value="0.02" />
+         <inertia ixx="0.0001" iyy="0.0001" izz="0.0001" ixy="0" ixz="0" iyz="0" />
+      </inertial>
+      <visual name="trapezoid_left">
+         <origin xyz="-1.4991943433973096e-06 -1.611784249150837e-06 2.0638522848694803e-07" rpy="0.27598761251820686 -0.5558008487263413 -0.19209924739735607" />
+         <geometry>
+            <mesh filename="file:///home/haochen/catkin_ws/src/relaxed_ik_ros1/relaxed_ik_core/configs/urdfs/meshes/trapezoid_left.stl" scale="1.0912156403965485 1.0912156403965485 1.0912156403965485" />
+         </geometry>
+         <material name="white" />
+      </visual>
+   </link>
+   <joint type="fixed" name="capitate2trapezoid_fixed_left">
+      <parent link="capitate_left" />
+      <child link="trapezoid_left" />
+      <origin xyz="-0.009976984600145643 -0.004432517931290781 -0.0026887553379370955" rpy="0.0 0.0 0.0" />
+   </joint>
+   <link name="hamate_left">
+      <inertial>
+         <origin xyz="0.0 0.0 0.0" rpy="0.0 0.0 0.0" />
+         <mass value="0.02" />
+         <inertia ixx="0.0001" iyy="0.0001" izz="0.0001" ixy="0" ixz="0" iyz="0" />
+      </inertial>
+      <visual name="hamate_left">
+         <origin xyz="1.2530312628318597e-05 -1.4991055504421594e-06 1.6594574603566102e-06" rpy="1.9411415415940314 0.45538466433185576 0.6664160632978575" />
+         <geometry>
+            <mesh filename="file:///home/haochen/catkin_ws/src/relaxed_ik_ros1/relaxed_ik_core/configs/urdfs/meshes/hamate_left.stl" scale="1.0912156403965485 1.0912156403965485 1.0912156403965485" />
+         </geometry>
+         <material name="white" />
+      </visual>
+   </link>
+   <joint type="fixed" name="capitate2hamate_fixed_left">
+      <parent link="capitate_left" />
+      <child link="hamate_left" />
+      <origin xyz="0.011969544359509742 -0.0027225830227893878 -0.0008184117302974113" rpy="0.0 0.0 0.0" />
+   </joint>
+   <link name="secondmc_left">
+      <inertial>
+         <origin xyz="0.0 0.0 0.0" rpy="0.0 0.0 0.0" />
+         <mass value="0.02" />
+         <inertia ixx="0.0001" iyy="0.0001" izz="0.0001" ixy="0" ixz="0" iyz="0" />
+      </inertial>
+      <visual name="2mc_left">
+         <origin xyz="0.00011438630272261157 0.00013791558509674198 -0.00015259020960722188" rpy="-1.228861140749632 1.0576482637579705 -2.995769549013369" />
+         <geometry>
+            <mesh filename="file:///home/haochen/catkin_ws/src/relaxed_ik_ros1/relaxed_ik_core/configs/urdfs/meshes/2mc_left.stl" scale="1.0912156403965485 1.0912156403965485 1.0912156403965485" />
+         </geometry>
+         <material name="white" />
+      </visual>
+   </link>
+   <joint type="fixed" name="capitate2secondmc_fixed_left">
+      <parent link="capitate_left" />
+      <child link="secondmc_left" />
+      <origin xyz="-0.016024501679223313 -0.04105153239171816 0.005490997102475434" rpy="0.0 0.0 0.0" />
+   </joint>
+   <link name="proxph2_left">
+      <inertial>
+         <origin xyz="-1.734723475976807e-18 0.0 4.336808689942018e-19" rpy="0.0861356540103359 -0.05502674551362019 -0.002371946121602242" />
+         <mass value="0.01" />
+         <inertia ixx="0.0001" iyy="0.0001" izz="0.0001" ixy="0" ixz="0" iyz="0" />
+      </inertial>
+      <visual name="2proxph_left">
+         <origin xyz="-0.004880666929862634 -0.02479981412527163 0.0027061576790072643" rpy="1.32310707032668 1.2754347723112271 -0.40864446039367786" />
+         <geometry>
+            <mesh filename="file:///home/haochen/catkin_ws/src/relaxed_ik_ros1/relaxed_ik_core/configs/urdfs/meshes/2proxph_left.stl" scale="1.0912156403965485 1.0912156403965485 1.0912156403965485" />
+         </geometry>
+         <material name="white" />
+      </visual>
+   </link>
+   <link name="mcp2_flexion_dummy_left">
+      <inertial>
+         <origin xyz="3.469446951953614e-18 2.7755575615628914e-17 3.469446951953614e-18" rpy="1.5707963267948961 1.4708802086674053 1.4708802086674049" />
+         <mass value="0.001" />
+         <inertia ixx="1e-09" iyy="1e-09" izz="1e-09" ixy="0" ixz="0" iyz="0" />
+      </inertial>
+   </link>
+   <joint type="revolute" name="mcp2_flexion_left">
+      <parent link="secondmc_left" />
+      <child link="mcp2_flexion_dummy_left" />
+      <origin xyz="-0.0038203459570283166 -0.03081920333171972 0.003950200618235505" rpy="-1.5707963267948977 -1.4708802086674053 1.4708802086674064" />
+      <axis xyz="-5.2438525824824176e-20 7.039945989835385e-18 -1.0" />
+      <limit lower="0.0" upper="1.5708" effort="100" velocity="100" />
+   </joint>
+   <joint type="revolute" name="mcp2_abduction_left">
+      <parent link="mcp2_flexion_dummy_left" />
+      <child link="proxph2_left" />
+      <origin xyz="6.5919492087118674e-18 2.636779683484747e-17 4.9439619065339e-18" rpy="1.996706135703523 1.4588445662369582 1.9856122470713673" />
+      <axis xyz="-2.8382323702885056e-16 2.4019512150402412e-17 -0.9999999999999999" />
+      <limit lower="-0.261799" upper="0.261799" effort="100" velocity="100" />
+   </joint>
+   <link name="midph2_left">
+      <inertial>
+         <origin xyz="-6.938893903907228e-18 -8.326672684688674e-17 -3.642919299551295e-17" rpy="2.6739267894988212 1.3474886382146267 2.5617140966854453" />
+         <mass value="0.003" />
+         <inertia ixx="0.0001" iyy="0.0001" izz="0.0001" ixy="0" ixz="0" iyz="0" />
+      </inertial>
+      <visual name="2midph_left">
+         <origin xyz="-0.001043233545711517 -0.014944528630233623 0.00027198457661847255" rpy="-1.5630400763369499 0.0019507371444629218 3.1305336815451996" />
+         <geometry>
+            <mesh filename="file:///home/haochen/catkin_ws/src/relaxed_ik_ros1/relaxed_ik_core/configs/urdfs/meshes/2midph_left.stl" scale="1.0912156403965485 1.0912156403965485 1.0912156403965485" />
+         </geometry>
+         <material name="white" />
+      </visual>
+   </link>
+   <joint type="revolute" name="pm2_flexion_left">
+      <parent link="proxph2_left" />
+      <child link="midph2_left" />
+      <origin xyz="-0.00851561258830159 -0.04553843896040004 0.0036331389517985885" rpy="-3.1093030719372425 -1.326545003064804 2.985625911527994" />
+      <axis xyz="-6.004321121326396e-16 -1.7684176337434925e-16 -0.9999999999999996" />
+      <limit lower="0.0" upper="1.5708" effort="100" velocity="100" />
+   </joint>
+   <link name="distph2_left">
+      <inertial>
+         <origin xyz="-1.3877787807814457e-17 2.7755575615628914e-17 0.0" rpy="1.5707963267948983 1.4707963268582902 1.4707963268582915" />
+         <mass value="0.002" />
+         <inertia ixx="0.0001" iyy="0.0001" izz="0.0001" ixy="0" ixz="0" iyz="0" />
+      </inertial>
+      <visual name="2distph_left">
+         <origin xyz="-0.0006079583664602546 -0.009329934973297337 0.00023430640444268154" rpy="-1.5239710771919284 0.03676633885392744 3.140805196244449" />
+         <geometry>
+            <mesh filename="file:///home/haochen/catkin_ws/src/relaxed_ik_ros1/relaxed_ik_core/configs/urdfs/meshes/2distph_left.stl" scale="1.0912156403965485 1.0912156403965485 1.0912156403965485" />
+         </geometry>
+         <material name="white" />
+      </visual>
+   </link>
+   <joint type="revolute" name="md2_flexion_left">
+      <parent link="midph2_left" />
+      <child link="distph2_left" />
+      <origin xyz="-0.001323394321106983 -0.027395033344922184 0.0005722576625926627" rpy="0.022138329695812073 0.19777869365516998 -2.5098334244374673e-05" />
+      <axis xyz="-2.4455606779405633e-18 -4.090344666757575e-17 -0.9999999999999998" />
+      <limit lower="0.0" upper="1.5708" effort="100" velocity="100" />
+   </joint>
+   <link name="thirdmc_left">
+      <inertial>
+         <origin xyz="0.0 0.0 0.0" rpy="0.0 0.0 0.0" />
+         <mass value="0.02" />
+         <inertia ixx="0.0001" iyy="0.0001" izz="0.0001" ixy="0" ixz="0" iyz="0" />
+      </inertial>
+      <visual name="3mc_left">
+         <origin xyz="-1.3339891705493402e-05 0.0005640207064687221 -0.00026277609802395526" rpy="1.4450266262998412 -0.18035841028182698 0.007490416792627297" />
+         <geometry>
+            <mesh filename="file:///home/haochen/catkin_ws/src/relaxed_ik_ros1/relaxed_ik_core/configs/urdfs/meshes/3mc_left.stl" scale="1.0912156403965485 1.0912156403965485 1.0912156403965485" />
+         </geometry>
+         <material name="white" />
+      </visual>
+   </link>
+   <joint type="fixed" name="capitate2thirdmc_fixed_left">
+      <parent link="capitate_left" />
+      <child link="thirdmc_left" />
+      <origin xyz="-0.0005205098604691534 -0.04281821051352017 0.00804989777920534" rpy="0.0 0.0 0.0" />
+   </joint>
+   <link name="proxph3_left">
+      <inertial>
+         <origin xyz="0.0 1.3877787807814457e-17 -1.734723475976807e-18" rpy="0.0 -0.19999959192895989 0.0" />
+         <mass value="0.01" />
+         <inertia ixx="0.0001" iyy="0.0001" izz="0.0001" ixy="0" ixz="0" iyz="0" />
+      </inertial>
+      <visual name="3proxph_left">
+         <origin xyz="-0.002125789382810408 -0.0254126605783231 0.004590544777638536" rpy="1.1265372608123134 1.2987544122063608 -0.46937964805067295" />
+         <geometry>
+            <mesh filename="file:///home/haochen/catkin_ws/src/relaxed_ik_ros1/relaxed_ik_core/configs/urdfs/meshes/3proxph_left.stl" scale="1.0912156403965485 1.0912156403965485 1.0912156403965485" />
+         </geometry>
+         <material name="white" />
+      </visual>
+   </link>
+   <link name="mcp3_flexion_dummy_left">
+      <inertial>
+         <origin xyz="4.336808689942018e-19 0.0 0.0" rpy="0.0 1.370796734865936 0.0" />
+         <mass value="0.001" />
+         <inertia ixx="1e-09" iyy="1e-09" izz="1e-09" ixy="0" ixz="0" iyz="0" />
+      </inertial>
+   </link>
+   <joint type="revolute" name="mcp3_flexion_left">
+      <parent link="thirdmc_left" />
+      <child link="mcp3_flexion_dummy_left" />
+      <origin xyz="-0.00026189175369517115 -0.028688059186025267 0.0019401814086250635" rpy="0.0 -1.370796734865936 0.0" />
+      <axis xyz="1.842288986358278e-17 0.0 -1.0" />
+      <limit lower="0.0" upper="1.5708" effort="100" velocity="100" />
+   </joint>
+   <joint type="revolute" name="mcp3_abduction_left">
+      <parent link="mcp3_flexion_dummy_left" />
+      <child link="proxph3_left" />
+      <origin xyz="3.0899761915836877e-19 -1.3183898417423735e-17 0.0" rpy="-0.0 1.5707963267948961 0.0" />
+      <axis xyz="-4.59135596783022e-18 0.0 -1.0" />
+      <limit lower="-0.261799" upper="0.261799" effort="100" velocity="100" />
+   </joint>
+   <link name="midph3_left">
+      <inertial>
+         <origin xyz="0.0 0.0 0.0" rpy="0.0 0.0 0.0" />
+         <mass value="0.002" />
+         <inertia ixx="0.0001" iyy="0.0001" izz="0.0001" ixy="0" ixz="0" iyz="0" />
+      </inertial>
+      <visual name="3midph_left">
+         <origin xyz="-0.0007437811749429299 -0.016232856613813084 0.0017325071097409096" rpy="-0.7901456653983319 1.4979259934357856 -2.4117147631811813" />
+         <geometry>
+            <mesh filename="file:///home/haochen/catkin_ws/src/relaxed_ik_ros1/relaxed_ik_core/configs/urdfs/meshes/3midph_left.stl" scale="1.0912156403965485 1.0912156403965485 1.0912156403965485" />
+         </geometry>
+         <material name="white" />
+      </visual>
+   </link>
+   <joint type="revolute" name="pm3_flexion_left">
+      <parent link="proxph3_left" />
+      <child link="midph3_left" />
+      <origin xyz="-0.003115221426221413 -0.0482437346775718 0.0063050565727784105" rpy="0.0 -0.19999959192895989 0.0" />
+      <axis xyz="0.9999999999999999 0.0 -1.1075375161486551e-18" />
+      <limit lower="0.0" upper="1.5708" effort="100" velocity="100" />
+   </joint>
+   <link name="distph3_left">
+      <inertial>
+         <origin xyz="0.0 0.0 0.0" rpy="0.0 0.0 0.0" />
+         <mass value="0.002" />
+         <inertia ixx="0.0001" iyy="0.0001" izz="0.0001" ixy="0" ixz="0" iyz="0" />
+      </inertial>
+      <visual name="3distph_left">
+         <origin xyz="-0.0006845750437656936 -0.009339593144242661 -3.544380817686573e-05" rpy="0.4079397820603101 1.4851549016387628 -1.2108481043436292" />
+         <geometry>
+            <mesh filename="file:///home/haochen/catkin_ws/src/relaxed_ik_ros1/relaxed_ik_core/configs/urdfs/meshes/3distph_left.stl" scale="1.0912156403965485 1.0912156403965485 1.0912156403965485" />
+         </geometry>
+         <material name="white" />
+      </visual>
+   </link>
+   <joint type="revolute" name="md3_flexion_left">
+      <parent link="midph3_left" />
+      <child link="distph3_left" />
+      <origin xyz="-0.0014895093491412892 -0.03169654070659855 0.002132235361334855" rpy="0.0 0.0 0.0" />
+      <axis xyz="0.9999999999999999 0.0 -1.1075375161486551e-18" />
+      <limit lower="0.0" upper="1.5708" effort="100" velocity="100" />
+   </joint>
+   <link name="fourthmc_left">
+      <inertial>
+         <origin xyz="0.0 0.0 0.0" rpy="0.0 0.0 0.0" />
+         <mass value="0.02" />
+         <inertia ixx="0.0001" iyy="0.0001" izz="0.0001" ixy="0" ixz="0" iyz="0" />
+      </inertial>
+      <visual name="4mc_left">
+         <origin xyz="-4.7796698384546585e-05 0.0005804645102251922 -0.00018198006768264073" rpy="1.5268660941250807 0.3772702504935901 0.07031755099911197" />
+         <geometry>
+            <mesh filename="file:///home/haochen/catkin_ws/src/relaxed_ik_ros1/relaxed_ik_core/configs/urdfs/meshes/4mc_left.stl" scale="1.0912156403965485 1.0912156403965485 1.0912156403965485" />
+         </geometry>
+         <material name="white" />
+      </visual>
+   </link>
+   <joint type="fixed" name="capitate2fourthmc_fixed_left">
+      <parent link="capitate_left" />
+      <child link="fourthmc_left" />
+      <origin xyz="0.013144783604216823 -0.044214966533227755 0.003833440544713075" rpy="0.0 0.0 0.0" />
+   </joint>
+   <link name="proxph4_left">
+      <inertial>
+         <origin xyz="-1.734723475976807e-18 1.3877787807814457e-17 -2.6020852139652106e-18" rpy="0.0 -0.4500004640280284 0.0" />
+         <mass value="0.01" />
+         <inertia ixx="0.0001" iyy="0.0001" izz="0.0001" ixy="0" ixz="0" iyz="0" />
+      </inertial>
+      <visual name="4proxph_left">
+         <origin xyz="0.001454035356757294 -0.0235614785283727 0.0023162657504834923" rpy="0.6976319582938992 1.4758909364414672 -0.7976662974326221" />
+         <geometry>
+            <mesh filename="file:///home/haochen/catkin_ws/src/relaxed_ik_ros1/relaxed_ik_core/configs/urdfs/meshes/4proxph_left.stl" scale="1.0912156403965485 1.0912156403965485 1.0912156403965485" />
+         </geometry>
+         <material name="white" />
+      </visual>
+   </link>
+   <link name="mcp4_flexion_dummy_left">
+      <inertial>
+         <origin xyz="1.734723475976807e-18 0.0 8.673617379884035e-19" rpy="0.0 1.120795862766868 0.0" />
+         <mass value="0.001" />
+         <inertia ixx="1e-09" iyy="1e-09" izz="1e-09" ixy="0" ixz="0" iyz="0" />
+      </inertial>
+   </link>
+   <joint type="revolute" name="mcp4_flexion_left">
+      <parent link="fourthmc_left" />
+      <child link="mcp4_flexion_dummy_left" />
+      <origin xyz="0.001996924621925684 -0.02584980730535384 -0.0001887803057886027" rpy="0.0 -1.1207958627668684 0.0" />
+      <axis xyz="-7.907580905939781e-17 0.0 -1.0" />
+      <limit lower="0.0" upper="1.5708" effort="100" velocity="100" />
+   </joint>
+   <joint type="revolute" name="mcp4_abduction_left">
+      <parent link="mcp4_flexion_dummy_left" />
+      <child link="proxph4_left" />
+      <origin xyz="3.2959746043559337e-18 -1.3183898417423735e-17 1.5449880957918439e-19" rpy="-0.0 1.5707963267948961 0.0" />
+      <axis xyz="4.994681042330142e-17 0.0 -1.0000000000000002" />
+      <limit lower="-0.261799" upper="0.261799" effort="100" velocity="100" />
+   </joint>
+   <link name="midph4_left">
+      <inertial>
+         <origin xyz="0.0 2.7755575615628914e-17 1.734723475976807e-18" rpy="-5.8096713723763484e-33 1.1707966444174693 -6.285106853470097e-33" />
+         <mass value="0.003" />
+         <inertia ixx="0.0001" iyy="0.0001" izz="0.0001" ixy="0" ixz="0" iyz="0" />
+      </inertial>
+      <visual name="4midph_left">
+         <origin xyz="0.0012854336845298405 -0.014311424955266315 -0.0013640544306725247" rpy="-1.624420311140701 0.00529879897844765 -3.0977891945924623" />
+         <geometry>
+            <mesh filename="file:///home/haochen/catkin_ws/src/relaxed_ik_ros1/relaxed_ik_core/configs/urdfs/meshes/4midph_left.stl" scale="1.0912156403965485 1.0912156403965485 1.0912156403965485" />
+         </geometry>
+         <material name="white" />
+      </visual>
+   </link>
+   <joint type="revolute" name="pm4_flexion_left">
+      <parent link="proxph4_left" />
+      <child link="midph4_left" />
+      <origin xyz="0.002828155363936046 -0.04392688560416305 0.002996108182399035" rpy="-3.141592653589793 -1.5207955451442956 -3.141592653589793" />
+      <axis xyz="-1.228163387906391e-16 -2.5729218551481257e-33 -1.0000000000000002" />
+      <limit lower="0.0" upper="1.5708" effort="100" velocity="100" />
+   </joint>
+   <link name="distph4_left">
+      <inertial>
+         <origin xyz="-3.469446951953614e-18 2.7755575615628914e-17 7.589415207398531e-18" rpy="9.507900496666728e-34 0.9707969349430008 -3.875608070853002e-33" />
+         <mass value="0.002" />
+         <inertia ixx="0.0001" iyy="0.0001" izz="0.0001" ixy="0" ixz="0" iyz="0" />
+      </inertial>
+      <visual name="4distph_left">
+         <origin xyz="0.0013485345772644582 -0.009657786641601888 6.261121284748261e-05" rpy="-1.5832780312239771 0.030396363417948935 -2.9652765496152345" />
+         <geometry>
+            <mesh filename="file:///home/haochen/catkin_ws/src/relaxed_ik_ros1/relaxed_ik_core/configs/urdfs/meshes/4distph_left.stl" scale="1.0912156403965485 1.0912156403965485 1.0912156403965485" />
+         </geometry>
+         <material name="white" />
+      </visual>
+   </link>
+   <joint type="revolute" name="md4_flexion_left">
+      <parent link="midph4_left" />
+      <child link="distph4_left" />
+      <origin xyz="0.001550441772623424 -0.027050144509790056 -0.0020895210865746164" rpy="-4.462365316954919e-33 0.19999970947446855 -1.3781457552156878e-33" />
+      <axis xyz="-5.254894459090136e-16 -3.28052241842023e-33 -1.0000000000000007" />
+      <limit lower="0.0" upper="1.5708" effort="100" velocity="100" />
+   </joint>
+   <link name="fifthmc_left">
+      <inertial>
+         <origin xyz="0.0 0.0 0.0" rpy="0.0 0.0 0.0" />
+         <mass value="0.02" />
+         <inertia ixx="0.0001" iyy="0.0001" izz="0.0001" ixy="0" ixz="0" iyz="0" />
+      </inertial>
+      <visual name="5mc_left">
+         <origin xyz="-0.00021243305008746238 0.00045668960348956494 -0.0001403838303151512" rpy="1.6537260233892073 1.161764483067726 0.20407074680325366" />
+         <geometry>
+            <mesh filename="file:///home/haochen/catkin_ws/src/relaxed_ik_ros1/relaxed_ik_core/configs/urdfs/meshes/5mc_left.stl" scale="1.0912156403965485 1.0912156403965485 1.0912156403965485" />
+         </geometry>
+         <material name="white" />
+      </visual>
+   </link>
+   <joint type="fixed" name="capitate2fifthmc_fixed_left">
+      <parent link="capitate_left" />
+      <child link="fifthmc_left" />
+      <origin xyz="0.023893257662122826 -0.03784663205587349 -0.004602747571192643" rpy="0.0 0.0 0.0" />
+   </joint>
+   <link name="proxph5_left">
+      <inertial>
+         <origin xyz="-3.469446951953614e-18 0.0 -5.204170427930421e-18" rpy="0.0 -0.599999391851897 0.0" />
+         <mass value="0.005" />
+         <inertia ixx="0.0001" iyy="0.0001" izz="0.0001" ixy="0" ixz="0" iyz="0" />
+      </inertial>
+      <visual name="5proxph_left">
+         <origin xyz="0.0037130494653037876 -0.021083925719690318 0.0009617048071497659" rpy="-1.4569822139036388 1.3815149067226087 -2.8851965671744555" />
+         <geometry>
+            <mesh filename="file:///home/haochen/catkin_ws/src/relaxed_ik_ros1/relaxed_ik_core/configs/urdfs/meshes/5proxph_left.stl" scale="1.0912156403965485 1.0912156403965485 1.0912156403965485" />
+         </geometry>
+         <material name="white" />
+      </visual>
+   </link>
+   <link name="mcp5_flexion_dummy_left">
+      <inertial>
+         <origin xyz="-3.469446951953614e-18 1.3877787807814457e-17 -2.6020852139652106e-18" rpy="0.0 0.9707969349430003 0.0" />
+         <mass value="0.001" />
+         <inertia ixx="1e-09" iyy="1e-09" izz="1e-09" ixy="0" ixz="0" iyz="0" />
+      </inertial>
+   </link>
+   <joint type="revolute" name="mcp5_flexion_left">
+      <parent link="fifthmc_left" />
+      <child link="mcp5_flexion_dummy_left" />
+      <origin xyz="0.0017426713777132878 -0.023385842389338427 -0.0016324585980332371" rpy="0.0 -0.9707969349430003 0.0" />
+      <axis xyz="2.7011479700438378e-17 0.0 -1.0" />
+      <limit lower="0.0" upper="1.5708" effort="100" velocity="100" />
+   </joint>
+   <joint type="revolute" name="mcp5_abduction_left">
+      <parent link="mcp5_flexion_dummy_left" />
+      <child link="proxph5_left" />
+      <origin xyz="3.2959746043559337e-18 0.0 -1.6479873021779669e-18" rpy="-0.0 1.5707963267948966 0.0" />
+      <axis xyz="1.804436795852415e-16 0.0 -1.0000000000000002" />
+      <limit lower="-0.261799" upper="0.261799" effort="100" velocity="100" />
+   </joint>
+   <link name="midph5_left">
+      <inertial>
+         <origin xyz="-6.938893903907228e-18 1.3877787807814457e-17 -1.734723475976807e-18" rpy="0.0 0.9707969349430003 0.0" />
+         <mass value="0.002" />
+         <inertia ixx="0.0001" iyy="0.0001" izz="0.0001" ixy="0" ixz="0" iyz="0" />
+      </inertial>
+      <visual name="5midph_left">
+         <origin xyz="-0.000209763230521209 -0.012844246409209248 -0.002279325925178824" rpy="-1.7327462170365329 -0.1431630889135289 -3.08764894477981" />
+         <geometry>
+            <mesh filename="file:///home/haochen/catkin_ws/src/relaxed_ik_ros1/relaxed_ik_core/configs/urdfs/meshes/5midph_left.stl" scale="1.0912156403965485 1.0912156403965485 1.0912156403965485" />
+         </geometry>
+         <material name="white" />
+      </visual>
+   </link>
+   <joint type="revolute" name="pm5_flexion_left">
+      <parent link="proxph5_left" />
+      <child link="midph5_left" />
+      <origin xyz="0.006528255140883938 -0.03880690181942246 0.0006597519698786732" rpy="0.0 -1.5707963267948961 0.0" />
+      <axis xyz="1.019142349991081e-16 0.0 -1.0000000000000004" />
+      <limit lower="0.0" upper="1.5708" effort="100" velocity="100" />
+   </joint>
+   <link name="distph5_left">
+      <inertial>
+         <origin xyz="1.0408340855860843e-17 0.0 5.204170427930421e-18" rpy="-0.30068756862856233 0.6985554313998295 -0.11023436132302195" />
+         <mass value="0.001" />
+         <inertia ixx="0.0001" iyy="0.0001" izz="0.0001" ixy="0" ixz="0" iyz="0" />
+      </inertial>
+      <visual name="5distph_left">
+         <origin xyz="0.0011069679115155535 -0.008597030397592735 0.00048825809364410336" rpy="-1.5131584280044281 0.07399081576380362 -2.9725845702930727" />
+         <geometry>
+            <mesh filename="file:///home/haochen/catkin_ws/src/relaxed_ik_ros1/relaxed_ik_core/configs/urdfs/meshes/5distph_left.stl" scale="1.0912156403965485 1.0912156403965485 1.0912156403965485" />
+         </geometry>
+         <material name="white" />
+      </visual>
+   </link>
+   <joint type="revolute" name="md5_flexion_left">
+      <parent link="midph5_left" />
+      <child link="distph5_left" />
+      <origin xyz="-0.00025113395451318833 -0.02256306579647942 -0.003967694418063878" rpy="0.20638367854381948 0.2682608800927275 -0.08747994233519726" />
+      <axis xyz="-3.067053893791756e-16 3.6436868920186926e-17 -1.0000000000000002" />
+      <limit lower="0.0" upper="1.5708" effort="100" velocity="100" />
+   </joint>
+   <link name="THtip_left">
+      <inertial>
+         <origin xyz="-1.3877787807814457e-17 0.0 0.0" rpy="-8.981636647091639e-18 0.0 9.901469019638499e-18" />
+         <mass value="0.001" />
+         <inertia ixx="1e-09" iyy="1e-09" izz="1e-09" ixy="0" ixz="0" iyz="0" />
+      </inertial>
+   </link>
+   <joint type="fixed" name="THtip_joint_left">
+      <parent link="distal_thumb_left" />
+      <child link="THtip_left" />
+      <origin xyz="-0.010739724593419112 -0.02347499067048486 0.002273107196620625" rpy="-0.5009125402511723 -0.05012299056598346 0.012825373716091937" />
+   </joint>
+   <link name="IFtip_left">
+      <inertial>
+         <origin xyz="-3.469446951953614e-18 0.0 0.0" rpy="1.9842975991750576e-18 0.0 -4.128063011068848e-20" />
+         <mass value="0.001" />
+         <inertia ixx="1e-09" iyy="1e-09" izz="1e-09" ixy="0" ixz="0" iyz="0" />
+      </inertial>
+   </link>
+   <joint type="fixed" name="IFtip_joint_left">
+      <parent link="distph2_left" />
+      <child link="IFtip_left" />
+      <origin xyz="-0.0019728713900546246 -0.01966290765004393 0.0002106120738485518" rpy="1.5707963267948983 1.4707963268582902 1.4707963268582915" />
+   </joint>
+   <link name="MFtip_left">
+      <inertial>
+         <origin xyz="0.0 0.0 0.0" rpy="0.0 0.0 0.0" />
+         <mass value="0.001" />
+         <inertia ixx="1e-09" iyy="1e-09" izz="1e-09" ixy="0" ixz="0" iyz="0" />
+      </inertial>
+   </link>
+   <joint type="fixed" name="MFtip_joint_left">
+      <parent link="distph3_left" />
+      <child link="MFtip_left" />
+      <origin xyz="-0.0021824312807930974 -0.02073309716753441 -0.0010912156403965478" rpy="0.0 0.0 0.0" />
+   </joint>
+   <link name="RFtip_left">
+      <inertial>
+         <origin xyz="0.0 0.0 0.0" rpy="0.0 0.0 1.7105694144590052e-49" />
+         <mass value="0.001" />
+         <inertia ixx="1e-09" iyy="1e-09" izz="1e-09" ixy="0" ixz="0" iyz="0" />
+      </inertial>
+   </link>
+   <joint type="fixed" name="RFtip_joint_left">
+      <parent link="distph4_left" />
+      <child link="RFtip_left" />
+      <origin xyz="0.0015167656567649432 -0.01964188152713786 -0.0002844733557830925" rpy="9.507900496666728e-34 0.9707969349430008 -3.875608070853002e-33" />
+   </joint>
+   <link name="LFtip_left">
+      <inertial>
+         <origin xyz="0.0 2.7755575615628914e-17 -3.469446951953614e-18" rpy="-2.3461332654756542e-17 0.0 -2.9436483604948474e-18" />
+         <mass value="0.001" />
+         <inertia ixx="1e-09" iyy="1e-09" izz="1e-09" ixy="0" ixz="0" iyz="0" />
+      </inertial>
+   </link>
+   <joint type="fixed" name="LFtip_joint_left">
+      <parent link="distph5_left" />
+      <child link="LFtip_left" />
+      <origin xyz="0.00028800192051641827 -0.01883393238545958 0.00111120042012431" rpy="-0.30068756862856233 0.6985554313998295 -0.11023436132302195" />
+   </joint>
+</robot>

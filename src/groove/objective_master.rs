@@ -23,11 +23,13 @@ impl ObjectiveMaster {
     }
 
 
-    pub fn relaxed_ik(chain_indices: &[Vec<usize>], ee_only: bool, valid_chains: &[usize]) -> Self {
+    pub fn relaxed_ik(chain_indices: &[Vec<usize>], ee_only: bool, target_chains: &[usize]) -> Self {
         let mut objectives: Vec<Box<dyn ObjectiveTrait + Send>> = Vec::new();
         let mut weight_priors: Vec<f64> = Vec::new();
         let num_chains = chain_indices.len();
         let num_dofs = chain_indices.iter().flat_map(|v| v.iter()).cloned().max().unwrap() + 1;
+        // Hard code for Myohand wrist indices
+        let wrist_ind = [0, 1, 2, 3, 4, 5, 26, 27, 28, 29, 30, 31];
 
         if ee_only {
             for i in 0..num_chains {
@@ -43,7 +45,7 @@ impl ObjectiveMaster {
                 // objectives.push(Box::new(EnvCollision::new(i)));
                 // weight_priors.push(1.0);
 
-                if valid_chains.contains(&i) {
+                if target_chains.contains(&i) {
                     weight_priors.push(50.0);
                     weight_priors.push(50.0);
                     weight_priors.push(50.0);
@@ -53,14 +55,46 @@ impl ObjectiveMaster {
                     weight_priors.push(1.0);
                 }
             }
+
+            objectives.push(Box::new(MinimizeVelocity));
+            weight_priors.push(0.7);
+            objectives.push(Box::new(MinimizeAcceleration));
+            weight_priors.push(0.5);
+            objectives.push(Box::new(MinimizeJerk));
+            weight_priors.push(0.3);
+            // objectives.push(Box::new(MaximizeManipulability));
+            // weight_priors.push(1.0);
         } else {
             for i in 0..num_dofs {
                 objectives.push(Box::new(MatchJointPosiDoF::new(i, 0)));
-                weight_priors.push(50.0);
                 objectives.push(Box::new(MatchJointPosiDoF::new(i, 1)));
-                weight_priors.push(50.0);
                 objectives.push(Box::new(MatchJointPosiDoF::new(i, 2)));
+
+                if wrist_ind.contains(&i) {
+                    weight_priors.push(50.0);
+                    weight_priors.push(50.0);
+                    weight_priors.push(50.0);
+                } else {
+                    weight_priors.push(10.0);
+                    weight_priors.push(10.0);
+                    weight_priors.push(10.0);
+                }
+            }
+            for i in 0..num_chains {
+                objectives.push(Box::new(MatchEEPosiDoF::new(i, 0)));
                 weight_priors.push(50.0);
+                objectives.push(Box::new(MatchEEPosiDoF::new(i, 1)));
+                weight_priors.push(50.0);
+                objectives.push(Box::new(MatchEEPosiDoF::new(i, 2)));
+                weight_priors.push(50.0);
+                // objectives.push(Box::new(MatchEERotaDoF::new(i, 0)));
+                // weight_priors.push(10.0);
+                // objectives.push(Box::new(MatchEERotaDoF::new(i, 1)));
+                // weight_priors.push(10.0);
+                // objectives.push(Box::new(MatchEERotaDoF::new(i, 2)));
+                // weight_priors.push(10.0);
+                // objectives.push(Box::new(EnvCollision::new(i)));
+                // weight_priors.push(1.0);
             }
         }
 
@@ -68,58 +102,6 @@ impl ObjectiveMaster {
             objectives.push(Box::new(EachJointLimits::new(j)));
             weight_priors.push(0.1);
         }
-
-        objectives.push(Box::new(MinimizeVelocity));
-        weight_priors.push(0.7);
-        objectives.push(Box::new(MinimizeAcceleration));
-        weight_priors.push(0.5);
-        objectives.push(Box::new(MinimizeJerk));
-        weight_priors.push(0.3);
-        // objectives.push(Box::new(MaximizeManipulability));
-        // weight_priors.push(1.0);
-
-        // Hard code the contact pairs of the shadow hand based on 
-        // https://github.com/NVIDIA-Omniverse/IsaacGymEnvs/blob/main/assets/mjcf/open_ai_assets/hand/shared.xml
-        // plus some pairs that are not in the above file
-        // let contact_pairs: std::collections::HashMap<&str, (usize, usize, usize, usize)> = [
-        //     ("rh_ffdistal-rh_thdistal", ((0, 6, 4, 7))),
-        //     ("rh_ffmiddle-rh_thdistal", ((0, 5, 4, 7))),
-        //     ("rh_ffproximal-rh_thdistal", ((0, 4, 4, 7))),
-        //     ("rh_mfproximal-rh_thdistal", ((1, 4, 4, 7))),
-        //     ("rh_mfdistal-rh_thdistal", ((1, 6, 4, 7))),
-        //     ("rh_rfdistal-rh_thdistal", ((2, 6, 4, 7))),
-        //     ("rh_lfdistal-rh_thdistal", ((3, 7, 4, 7))),
-        //     ("rh_palm-rh_thdistal", ((2, 2, 4, 7))),
-        //     ("rh_mfdistal-rh_ffdistal", ((1, 6, 0, 6))),
-        //     ("rh_rfdistal-rh_mfdistal", ((2, 6, 1, 6))),
-        //     ("rh_lfdistal-rh_rfdistal", ((3, 7, 2, 6))),
-        //     ("rh_mfproximal-rh_ffproximal", ((1, 4, 0, 4))),
-        //     ("rh_rfproximal-rh_mfproximal", ((2, 4, 1, 4))),
-        //     ("rh_lfproximal-rh_rfproximal", ((3, 5, 2, 4))),
-        //     ("rh_lfdistal-rh_rfdistal", ((3, 7, 2, 6))),
-        //     ("rh_lfdistal-rh_mfdistal", ((3, 7, 1, 6))),
-        //     ("rh_lfdistal-rh_rfmiddle", ((3, 7, 2, 5))),
-        //     ("rh_lfmiddle-rh_rfdistal", ((3, 6, 2, 6))),
-        //     ("rh_lfmiddle-rh_rfmiddle", ((3, 6, 2, 5))),
-        //     ("rh_lfmiddle-rh_rfmiddle", ((3, 6, 2, 5)))
-        // ].iter().cloned().collect();
-
-        // for (pair, indices) in &contact_pairs {
-        //     println!("Pair: {}, Indices: {:?}", pair, indices);
-        //     objectives.push(Box::new(SelfCollision::new(indices.0, indices.2, indices.1-1, indices.3-1)));
-        //     weight_priors.push(self_collision_weight);
-        // }
-
-        // for i in 0..num_chains {
-        //     for j in 0..chain_indices[i].len()-2 {  
-        //         for k in j+2..chain_indices[i].len() {
-        //             objectives.push(Box::new(SelfCollision::new(i, i, j, k)));
-        //             weight_priors.push(self_collision_weight);
-        //             pairs.push((chain_indices[i][j], chain_indices[i][k]));
-        //         }
-        //     }
-        // }
-        // println!("Num self-collision pairs: {}", pairs.len());
 
         // let self_collision_weight = 0.01;
         // let mut pairs = Vec::new();
