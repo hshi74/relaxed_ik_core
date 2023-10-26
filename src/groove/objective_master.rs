@@ -50,9 +50,9 @@ impl ObjectiveMaster {
                     weight_priors.push(50.0);
                     weight_priors.push(50.0);
                 } else {
-                    weight_priors.push(1.0);
-                    weight_priors.push(1.0);
-                    weight_priors.push(1.0);
+                    weight_priors.push(50.0);
+                    weight_priors.push(50.0);
+                    weight_priors.push(50.0);
                 }
             }
 
@@ -71,31 +71,31 @@ impl ObjectiveMaster {
                 objectives.push(Box::new(MatchJointPosiDoF::new(i, 2)));
 
                 if wrist_ind.contains(&i) {
-                    weight_priors.push(50.0);
-                    weight_priors.push(50.0);
-                    weight_priors.push(50.0);
+                    weight_priors.push(10.0);
+                    weight_priors.push(10.0);
+                    weight_priors.push(10.0);
                 } else {
                     weight_priors.push(10.0);
                     weight_priors.push(10.0);
                     weight_priors.push(10.0);
                 }
             }
-            for i in 0..num_chains {
-                objectives.push(Box::new(MatchEEPosiDoF::new(i, 0)));
-                weight_priors.push(50.0);
-                objectives.push(Box::new(MatchEEPosiDoF::new(i, 1)));
-                weight_priors.push(50.0);
-                objectives.push(Box::new(MatchEEPosiDoF::new(i, 2)));
-                weight_priors.push(50.0);
-                // objectives.push(Box::new(MatchEERotaDoF::new(i, 0)));
-                // weight_priors.push(10.0);
-                // objectives.push(Box::new(MatchEERotaDoF::new(i, 1)));
-                // weight_priors.push(10.0);
-                // objectives.push(Box::new(MatchEERotaDoF::new(i, 2)));
-                // weight_priors.push(10.0);
-                // objectives.push(Box::new(EnvCollision::new(i)));
-                // weight_priors.push(1.0);
-            }
+            // for i in 0..num_chains {
+            //     objectives.push(Box::new(MatchEEPosiDoF::new(i, 0)));
+            //     weight_priors.push(50.0);
+            //     objectives.push(Box::new(MatchEEPosiDoF::new(i, 1)));
+            //     weight_priors.push(50.0);
+            //     objectives.push(Box::new(MatchEEPosiDoF::new(i, 2)));
+            //     weight_priors.push(50.0);
+            //     // objectives.push(Box::new(MatchEERotaDoF::new(i, 0)));
+            //     // weight_priors.push(10.0);
+            //     // objectives.push(Box::new(MatchEERotaDoF::new(i, 1)));
+            //     // weight_priors.push(10.0);
+            //     // objectives.push(Box::new(MatchEERotaDoF::new(i, 2)));
+            //     // weight_priors.push(10.0);
+            //     // objectives.push(Box::new(EnvCollision::new(i)));
+            //     // weight_priors.push(1.0);
+            // }
         }
 
         for j in 0..num_dofs {
