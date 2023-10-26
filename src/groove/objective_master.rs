@@ -73,11 +73,11 @@ impl ObjectiveMaster {
             }
             for i in 0..num_chains {
                 objectives.push(Box::new(MatchEEPosiDoF::new(i, 0)));
-                weight_priors.push(20.0);
+                weight_priors.push(50.0);
                 objectives.push(Box::new(MatchEEPosiDoF::new(i, 1)));
-                weight_priors.push(20.0);
+                weight_priors.push(50.0);
                 objectives.push(Box::new(MatchEEPosiDoF::new(i, 2)));
-                weight_priors.push(20.0);
+                weight_priors.push(50.0);
                 // objectives.push(Box::new(MatchEERotaDoF::new(i, 0)));
                 // weight_priors.push(10.0);
                 // objectives.push(Box::new(MatchEERotaDoF::new(i, 1)));
