@@ -124,6 +124,7 @@ pub struct Robot {
     pub num_chains: usize,
     pub num_dofs: usize,
     pub chain_indices: Vec<Vec<usize>>,
+    pub joint_types_robot: Vec<String>,
     pub lower_joint_limits: Vec<f64>,
     pub upper_joint_limits: Vec<f64>,
     pub link_meshes: Vec<Vec<shape::SharedShape>>
@@ -145,6 +146,7 @@ impl Robot {
 
         let mut lower_joint_limits = Vec::new();
         let mut upper_joint_limits = Vec::new();
+        let mut joint_types_robot = Vec::new();
 
         for i in 0..num_chains {
             let base_link = chain.find_link(base_links[i].as_str()).unwrap();
@@ -236,6 +238,7 @@ impl Robot {
                             axis_types.push("-z".to_string());
                         }
                         joint_types.push("revolute".to_string());
+                        joint_types_robot.push("revolute".to_string());
                         joint_names.push(joint.name.clone());
                         lower_joint_limits.push(joint.limits.unwrap().min);
                         upper_joint_limits.push(joint.limits.unwrap().max);
@@ -265,6 +268,7 @@ impl Robot {
                             axis_types.push("-z".to_string());
                         }
                         joint_types.push("prismatic".to_string());
+                        joint_types_robot.push("prismatic".to_string());
                         joint_names.push(joint.name.clone());
                         lower_joint_limits.push(joint.limits.unwrap().min);
                         upper_joint_limits.push(joint.limits.unwrap().max);
@@ -294,20 +298,23 @@ impl Robot {
         // Update the number of dofs if joint ordering is provided
         if let Some(ordering) = joint_ordering {
             num_dofs = ordering.len();
+            let mut joint_types_robot_new = Vec::new();
             let mut lower_joint_limits_new = Vec::new();
             let mut upper_joint_limits_new = Vec::new();
             ordering.iter().for_each(|name| {
                 if let Some(joint_index) = joint_names.iter().position(|s| *s == *name) {
+                    joint_types_robot_new.push(joint_types_robot[joint_index].clone());
                     lower_joint_limits_new.push(lower_joint_limits[joint_index]);
                     upper_joint_limits_new.push(upper_joint_limits[joint_index]);
                 }
             });
+            joint_types_robot = joint_types_robot_new;
             lower_joint_limits = lower_joint_limits_new;
             upper_joint_limits = upper_joint_limits_new;   
         }
 
         // println!("axis types: {:?}", arms[0].axis_types);
-        Robot{arms, num_chains, chain_indices, num_dofs, lower_joint_limits, upper_joint_limits, link_meshes}
+        Robot{arms, num_chains, chain_indices, num_dofs, joint_types_robot, lower_joint_limits, upper_joint_limits, link_meshes}
 
     }
 

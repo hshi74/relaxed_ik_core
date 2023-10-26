@@ -28,8 +28,6 @@ impl ObjectiveMaster {
         let mut weight_priors: Vec<f64> = Vec::new();
         let num_chains = chain_indices.len();
         let num_dofs = chain_indices.iter().flat_map(|v| v.iter()).cloned().max().unwrap() + 1;
-        // Hard code for Myohand wrist indices
-        let wrist_ind = [0, 1, 2, 3, 4, 5, 26, 27, 28, 29, 30, 31];
 
         if ee_only {
             for i in 0..num_chains {
@@ -46,13 +44,13 @@ impl ObjectiveMaster {
                 // weight_priors.push(1.0);
 
                 if target_chains.contains(&i) {
-                    weight_priors.push(50.0);
-                    weight_priors.push(50.0);
-                    weight_priors.push(50.0);
+                    weight_priors.push(5.0);
+                    weight_priors.push(5.0);
+                    weight_priors.push(5.0);
                 } else {
-                    weight_priors.push(50.0);
-                    weight_priors.push(50.0);
-                    weight_priors.push(50.0);
+                    weight_priors.push(5.0);
+                    weight_priors.push(5.0);
+                    weight_priors.push(5.0);
                 }
             }
 
@@ -67,41 +65,43 @@ impl ObjectiveMaster {
         } else {
             for i in 0..num_dofs {
                 objectives.push(Box::new(MatchJointPosiDoF::new(i, 0)));
+                weight_priors.push(10.0);
                 objectives.push(Box::new(MatchJointPosiDoF::new(i, 1)));
+                weight_priors.push(10.0);
                 objectives.push(Box::new(MatchJointPosiDoF::new(i, 2)));
-
-                if wrist_ind.contains(&i) {
-                    weight_priors.push(10.0);
-                    weight_priors.push(10.0);
-                    weight_priors.push(10.0);
-                } else {
-                    weight_priors.push(10.0);
-                    weight_priors.push(10.0);
-                    weight_priors.push(10.0);
-                }
+                weight_priors.push(10.0);
             }
-            // for i in 0..num_chains {
-            //     objectives.push(Box::new(MatchEEPosiDoF::new(i, 0)));
-            //     weight_priors.push(50.0);
-            //     objectives.push(Box::new(MatchEEPosiDoF::new(i, 1)));
-            //     weight_priors.push(50.0);
-            //     objectives.push(Box::new(MatchEEPosiDoF::new(i, 2)));
-            //     weight_priors.push(50.0);
-            //     // objectives.push(Box::new(MatchEERotaDoF::new(i, 0)));
-            //     // weight_priors.push(10.0);
-            //     // objectives.push(Box::new(MatchEERotaDoF::new(i, 1)));
-            //     // weight_priors.push(10.0);
-            //     // objectives.push(Box::new(MatchEERotaDoF::new(i, 2)));
-            //     // weight_priors.push(10.0);
-            //     // objectives.push(Box::new(EnvCollision::new(i)));
-            //     // weight_priors.push(1.0);
-            // }
+            for i in 0..num_chains {
+                objectives.push(Box::new(MatchEEPosiDoF::new(i, 0)));
+                weight_priors.push(20.0);
+                objectives.push(Box::new(MatchEEPosiDoF::new(i, 1)));
+                weight_priors.push(20.0);
+                objectives.push(Box::new(MatchEEPosiDoF::new(i, 2)));
+                weight_priors.push(20.0);
+                // objectives.push(Box::new(MatchEERotaDoF::new(i, 0)));
+                // weight_priors.push(10.0);
+                // objectives.push(Box::new(MatchEERotaDoF::new(i, 1)));
+                // weight_priors.push(10.0);
+                // objectives.push(Box::new(MatchEERotaDoF::new(i, 2)));
+                // weight_priors.push(10.0);
+                // objectives.push(Box::new(EnvCollision::new(i)));
+                // weight_priors.push(1.0);
+            }
+
+            objectives.push(Box::new(MinimizeVelocity));
+            weight_priors.push(0.7);
+            objectives.push(Box::new(MinimizeAcceleration));
+            weight_priors.push(0.5);
+            objectives.push(Box::new(MinimizeJerk));
+            weight_priors.push(0.3);
+            // objectives.push(Box::new(MaximizeManipulability));
+            // weight_priors.push(1.0);
         }
 
-        for j in 0..num_dofs {
-            objectives.push(Box::new(EachJointLimits::new(j)));
-            weight_priors.push(0.1);
-        }
+        // for j in 0..num_dofs {
+        //     objectives.push(Box::new(EachJointLimits::new(j)));
+        //     weight_priors.push(0.1);
+        // }
 
         // let self_collision_weight = 0.01;
         // let mut pairs = Vec::new();

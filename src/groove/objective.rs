@@ -102,12 +102,10 @@ impl ObjectiveTrait for MatchEEPosiDoF {
 
         let bound =  v.tolerances[self.arm_idx][self.axis];
 
-        if (bound <= 1e-3) {
+        if (bound <= 1e-2) {
             groove_loss(dist, 0., 2, 0.1, 10.0, 2)
         } else {
-            // swamp_groove_loss(dist, 0.0, -bound, bound, bound*2.0, 1.0, 0.01, 100.0, 20) 
-            swamp_loss(dist, -bound, bound, 1.0, 0.01, 20)
-        }
+            swamp_groove_loss(dist, 0.0, -bound, bound, bound*2.0, 1.0, 0.01, 100.0, 20)        }
     }
     fn call_lite(&self, x: &[f64], v: &vars::RelaxedIKVars, ee_poses: &Vec<(nalgebra::Vector3<f64>, nalgebra::UnitQuaternion<f64>)>) -> f64 {
         let x_val = ( ee_poses[self.arm_idx].0 - v.goal_positions[self.arm_idx] ).norm();
@@ -381,7 +379,11 @@ impl ObjectiveTrait for MinimizeVelocity {
     fn call(&self, x: &[f64], v: &vars::RelaxedIKVars, frames: &Vec<(Vec<nalgebra::Vector3<f64>>, Vec<nalgebra::UnitQuaternion<f64>>)>) -> f64 {
         let mut x_val = 0.0;
         for i in 0..x.len() {
-           x_val += (x[i] - v.xopt[i]).powi(2);
+            if v.robot.joint_types_robot[i] == "prismatic" {
+                x_val += (10.0 * (x[i] - v.xopt[i])).powi(2);
+            } else {
+                x_val += (x[i] - v.xopt[i]).powi(2);
+            }
         }
         x_val = x_val.sqrt();
         groove_loss(x_val, 0.0, 2, 0.1, 10.0, 2)
@@ -404,7 +406,11 @@ impl ObjectiveTrait for MinimizeAcceleration {
         for i in 0..x.len() {
             let v1 = x[i] - v.xopt[i];
             let v2 = v.xopt[i] - v.prev_state[i];
-            x_val += (v1 - v2).powi(2);
+            if v.robot.joint_types_robot[i] == "prismatic" {
+                x_val += (10.0 * (v1 - v2)).powi(2);
+            } else {
+                x_val += (v1 - v2).powi(2);
+            }
         }
         x_val = x_val.sqrt();
         groove_loss(x_val, 0.0, 2, 0.1, 10.0, 2)
@@ -432,7 +438,11 @@ impl ObjectiveTrait for MinimizeJerk {
             let v3 = v.prev_state[i] - v.prev_state2[i];
             let a1 = v1 - v2;
             let a2 = v2 - v3;
-            x_val += (a1 - a2).powi(2);
+            if v.robot.joint_types_robot[i] == "prismatic" {
+                x_val += (10.0 * (a1 - a2)).powi(2);
+            } else {
+                x_val += (a1 - a2).powi(2);
+            }
         }
         x_val = x_val.sqrt();
         groove_loss(x_val, 0.0, 2, 0.1 , 10.0, 2)
