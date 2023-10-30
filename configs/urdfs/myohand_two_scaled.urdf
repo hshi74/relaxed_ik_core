@@ -1,81 +1,94 @@
-<?xml version="1.0" ?>
 <robot name="myohand_two_scaled">
-   <link name="world" />
-
-   <joint type="prismatic" name="translate_x_joint">
-      <parent link="world" />
-      <child link="joint_tx_link" />
-      <origin xyz="0.0 0.0 0.0" rpy="0 0 0" />
-      <axis xyz="1 0 0" />
-      <limit effort="20.0" lower="-10.0" upper="10.0" velocity="5.0" />
-   </joint>
-
-   <joint type="prismatic" name="translate_y_joint">
-      <parent link="joint_tx_link" />
-      <child link="joint_ty_link" />
-      <origin xyz="0.0 0.0 0.0" rpy="0 0 0" />
-      <axis xyz="0 1 0" />
-      <limit effort="20.0" lower="-10.0" upper="10.0" velocity="5.0" />
-   </joint>
-
-   <joint type="prismatic" name="translate_z_joint">
-      <parent link="joint_ty_link" />
-      <child link="joint_tz_link" />
-      <origin xyz="0.0 0.0 0.0" rpy="0 0 0" />
-      <axis xyz="0 0 1" />
-      <limit effort="20.0" lower="-10.0" upper="10.0" velocity="5.0" />
-   </joint>
-
-   
+   <link name="world">
    <joint type="revolute" name="rotate_x_joint">
-      <parent link="joint_tz_link" />
+      <parent link="world" />
       <child link="joint_rx_link" />
       <origin xyz="0.0 0.0 0.0" rpy="0 0 0" />
       <axis xyz="1 0 0" />
       <limit effort="100" lower="-3.141593" upper="3.141593" velocity="100" />
-   </joint>
-
-   <joint type="revolute" name="rotate_y_joint">
+   </joint><joint type="revolute" name="rotate_y_joint">
       <parent link="joint_rx_link" />
       <child link="joint_ry_link" />
       <origin xyz="0.0 0.0 0.0" rpy="0 0 0" />
       <axis xyz="0 1 0" />
       <limit effort="100" lower="-3.141593" upper="3.141593" velocity="100" />
-   </joint>
-
-   <joint type="revolute" name="rotate_z_joint">
+   </joint><joint type="revolute" name="rotate_z_joint">
       <parent link="joint_ry_link" />
       <child link="joint_rz_link" />
       <origin xyz="0.0 0.0 0.0" rpy="0 0 0" />
       <axis xyz="0 0 1" />
       <limit effort="100" lower="-3.141593" upper="3.141593" velocity="100" />
-   </joint>
-
-   <link name="joint_tx_link" />
-   <link name="joint_ty_link" />
-   <link name="joint_tz_link" />
-   <link name="joint_rx_link" />
-   <link name="joint_ry_link" />
-   <link name="joint_rz_link" />
-
-   <joint type="fixed" name="wrist_fixed">
+   </joint><link name="joint_rx_link" /><link name="joint_ry_link" /><link name="joint_rz_link" /><joint type="fixed" name="wrist_fixed">
       <parent link="joint_rz_link" />
       <child link="lunate" />
       <origin xyz="0.0 0.0 0.0" rpy="0 0 0" />
-   </joint>
-   <link name="lunate">
+   </joint><link name="lunate">
       <inertial>
-         <origin xyz="0 0 0" rpy="0 0 0 " />
-         <mass value="0.0012000263535597198" />
+         <origin xyz="-0.0008862231115311852 -0.00916974365186508 -0.0018687547315558051" rpy="1.649621115179617 0.6615749727475597 1.3248498815889576" />
+         <mass value="0.16378044689296803" />
          <inertia ixx="0.0001" iyy="0.0001" izz="0.0001" ixy="0" ixz="0" iyz="0" />
       </inertial>
       <visual name="lunate">
-         <origin xyz="0.0 0.0 0.0" rpy="0 0 0" />
+         <origin xyz="3.898813297067293e-06 -2.0315956048179656e-06 1.950744587600639e-07" rpy="-0.36143622369691997 -0.16023685527594567 0.6876895037329067" />
          <geometry>
             <mesh filename="package://myohand_description/meshes/lunate.stl" scale="1.0912156403965485 1.0912156403965485 1.0912156403965485" />
          </geometry>
          <material name="white" />
       </visual>
+      <collision group="3" name="ExtensorEllipse_ellipsoid_wrap">
+         <origin xyz="-0.001592836558130438 -0.013096442751347257 -0.00974053999518452" rpy="-0.1897626959464732 0.3286435666437535 0.16503067139211167" />
+         <geometry>
+            <sphere radius="0.02590644139709042" />
+         </geometry>
+      </collision>
+      <collision group="3" name="FPL_ellipsoid_wrap">
+         <origin xyz="0.02182431280793097 -0.027280391009913713 -0.00360101161330861" rpy="0.0 0.0 0.0" />
+         <geometry>
+            <sphere radius="0.016368234605948228" />
+         </geometry>
+      </collision>
+      <collision group="3" name="ECRL_torus_wrap">
+         <origin xyz="0.024224987216803377 -0.010475670147806865 0.022697285320248207" rpy="1.5286767737299403 -0.7231368902236682 0.2623983976153135" />
+         <geometry>
+            <sphere radius="0.008729725123172388" />
+         </geometry>
+      </collision>
+      <collision group="3" name="ECRB_torus_wrap">
+         <origin xyz="0.01374931706899651 -0.01036654858376721 0.0202966109113758" rpy="1.313599982378724 0.08242599662864403 -0.14345962847230875" />
+         <geometry>
+            <sphere radius="0.002182431280793097" />
+         </geometry>
+      </collision>
+      <collision group="3" name="FCR_torus_wrap">
+         <origin xyz="0.0034918900492689553 -0.004910470381784468 -0.02073309716753442" rpy="-1.5560575161830283 -0.10226106978890148 0.15175181458547393" />
+         <geometry>
+            <sphere radius="0.0016368234605948228" />
+         </geometry>
+      </collision>
+      <collision group="3" name="EDCL_torus_wrap">
+         <origin xyz="-0.013967560197075821 -0.014513168017274094 0.016149991477868917" rpy="2.346000849733369 0.055049088897161536 0.3253669778179351" />
+         <geometry>
+            <sphere radius="0.004364862561586194" />
+         </geometry>
+      </collision>
+      <collision group="3" name="EDCR_torus_wrap">
+         <origin xyz="-0.010693913275886174 -0.014949654273432715 0.018114179630582705" rpy="2.0475993592916915 -0.5148744166815524 -0.13938644679386247" />
+         <geometry>
+            <sphere radius="0.0032736469211896457" />
+         </geometry>
+      </collision>
+      <collision group="3" name="EDCM_torus_wrap">
+         <origin xyz="-0.0007638509482775839 -0.012767222992639618 0.020842218731574075" rpy="2.0255924303292074 -0.41540337722649645 0.02159287449745162" />
+         <geometry>
+            <sphere radius="0.00381925474138792" />
+         </geometry>
+      </collision>
+      <collision group="3" name="EDCI_torus_wrap">
+         <origin xyz="0.009820940763568936 -0.016259113041908572 0.023024650012367174" rpy="1.6971908669373308 -0.01895557022697636 0.088024361046524" />
+         <geometry>
+            <sphere radius="0.00381925474138792" />
+         </geometry>
+      </collision>
    </link>
    <link name="scaphoid">
       <inertial>
@@ -84,7 +97,7 @@
          <inertia ixx="0.0001" iyy="0.0001" izz="0.0001" ixy="0" ixz="0" iyz="0" />
       </inertial>
       <visual name="scaphoid">
-         <origin xyz="-2.6012832737077287e-05 -9.841030817061655e-06 4.18360878785008e-05" rpy="-0.5692290431693718 -0.33878345041747715 0.21369142489696064" />
+         <origin xyz="-2.6012832737077283e-05 -9.841030817061655e-06 4.183608787850079e-05" rpy="-0.5692290431693718 -0.33878345041747715 0.21369142489696064" />
          <geometry>
             <mesh filename="package://myohand_description/meshes/scaphoid.stl" scale="1.0912156403965485 1.0912156403965485 1.0912156403965485" />
          </geometry>
@@ -113,7 +126,7 @@
    <joint type="fixed" name="lunate2pisiform_fixed">
       <parent link="lunate" />
       <child link="pisiform" />
-      <origin xyz="-0.014609194993628992 -0.010787757820960281 -0.011559247278720639" rpy="0.0 0.0 0.0" />
+      <origin xyz="-0.014609194993628992 -0.01078775782096028 -0.011559247278720639" rpy="0.0 0.0 0.0" />
    </joint>
    <link name="triquetrum">
       <inertial>
@@ -122,7 +135,7 @@
          <inertia ixx="0.0001" iyy="0.0001" izz="0.0001" ixy="0" ixz="0" iyz="0" />
       </inertial>
       <visual name="triquetrum">
-         <origin xyz="6.471771705712068e-07 -1.2249553131735085e-06 -3.7030720965944225e-06" rpy="1.9269139677822995 -0.29745876180457564 -0.5516387254770375" />
+         <origin xyz="6.471771705712067e-07 -1.2249553131735085e-06 -3.7030720965944225e-06" rpy="1.9269139677822995 -0.29745876180457564 -0.5516387254770375" />
          <geometry>
             <mesh filename="package://myohand_description/meshes/triquetrum.stl" scale="1.0912156403965485 1.0912156403965485 1.0912156403965485" />
          </geometry>
@@ -132,7 +145,7 @@
    <joint type="fixed" name="lunate2triquetrum_fixed">
       <parent link="lunate" />
       <child link="triquetrum" />
-      <origin xyz="-0.011767669466036381 -0.008183026087333716 -0.001406576960471151" rpy="0.0 0.0 0.0" />
+      <origin xyz="-0.01176766946603638 -0.008183026087333716 -0.001406576960471151" rpy="0.0 0.0 0.0" />
    </joint>
    <link name="capitate">
       <inertial>
@@ -141,7 +154,7 @@
          <inertia ixx="0.0001" iyy="0.0001" izz="0.0001" ixy="0" ixz="0" iyz="0" />
       </inertial>
       <visual name="capitate">
-         <origin xyz="2.727769502645824e-06 -4.713763620013699e-06 1.4626845560322125e-06" rpy="1.2103081004613072 -0.29207479559887606 -0.020398215496375882" />
+         <origin xyz="2.7277695026458237e-06 -4.713763620013699e-06 1.4626845560322125e-06" rpy="1.2103081004613072 -0.29207479559887606 -0.020398215496375882" />
          <geometry>
             <mesh filename="package://myohand_description/meshes/capitate.stl" scale="1.0912156403965485 1.0912156403965485 1.0912156403965485" />
          </geometry>
@@ -166,6 +179,12 @@
          </geometry>
          <material name="white" />
       </visual>
+      <collision group="3" name="Trpzm_wrap">
+         <origin xyz="0.002182431280793097 -0.0032736469211896457 0.0" rpy="1.5086432106110839 0.03392024884768574 0.4989458825917251" />
+         <geometry>
+            <sphere radius="0.012003372044362033" />
+         </geometry>
+      </collision>
    </link>
    <joint type="fixed" name="capitate2trapezium_fixed">
       <parent link="capitate" />
@@ -179,12 +198,30 @@
          <inertia ixx="0.0001" iyy="0.0001" izz="0.0001" ixy="0" ixz="0" iyz="0" />
       </inertial>
       <visual name="1mc">
-         <origin xyz="0.015221742517602882 -0.007904877736212118 -0.009576319475505619" rpy="-2.237451597882739 -0.5181491466513541 -1.6277365169800728" />
+         <origin xyz="0.015221742517602884 -0.007904877736212117 -0.009576319475505617" rpy="-2.237451597882739 -0.5181491466513541 -1.6277365169800728" />
          <geometry>
             <mesh filename="package://myohand_description/meshes/1mc.stl" scale="1.0912156403965485 1.0912156403965485 1.0912156403965485" />
          </geometry>
          <material name="white" />
       </visual>
+      <collision group="1" name="1mcskin">
+         <origin xyz="0.012606875540735146 -0.00681588284482733 -0.008616988076229301" rpy="0.24907294457266435 -0.9716980275970782 -0.7229000159718781" />
+         <geometry>
+            <cylinder radius="0.01036654858376721" length="0.044872453647446034" />
+         </geometry>
+      </collision>
+      <collision name="1mcskin_sphere0">
+         <origin xyz="0.02973157267208287 -0.014548207254774128 -0.020878316775212156" rpy="0.24907294457266435 -0.9716980275970782 -0.7229000159718781" />
+         <geometry>
+            <sphere radius="0.01036654858376721" />
+         </geometry>
+      </collision>
+      <collision name="1mcskin_sphere1">
+         <origin xyz="-0.004517821590612576 0.0009164415651194649 0.0036443406227535478" rpy="0.24907294457266435 -0.9716980275970782 -0.7229000159718781" />
+         <geometry>
+            <sphere radius="0.01036654858376721" />
+         </geometry>
+      </collision>
    </link>
    <link name="cmc_abduction_dummy">
       <inertial>
@@ -196,7 +233,7 @@
    <joint type="revolute" name="cmc_abduction">
       <parent link="trapezium" />
       <child link="cmc_abduction_dummy" />
-      <origin xyz="0.00785675261085515 -0.005892564458141363 -0.0027280391009913713" rpy="0.7286789533902661 -0.042411704128519245 -0.01617642349516324" />
+      <origin xyz="0.00785675261085515 -0.005892564458141362 -0.0027280391009913713" rpy="0.7286789533902661 -0.042411704128519245 -0.01617642349516324" />
       <axis xyz="0 0 1" />
       <limit lower="-0.5" upper="0.78" effort="100" velocity="100" />
    </joint>
@@ -214,17 +251,35 @@
          <inertia ixx="0.0001" iyy="0.0001" izz="0.0001" ixy="0" ixz="0" iyz="0" />
       </inertial>
       <visual name="thumbprox">
-         <origin xyz="0.008919062701548273 -0.01744202712274187 -0.0034244405719334064" rpy="1.751348942319772 -0.12389205032924067 0.43579123948592824" />
+         <origin xyz="0.008919062701548275 -0.017442027122741868 -0.003424440571933407" rpy="1.751348942319772 -0.12389205032924067 0.43579123948592824" />
          <geometry>
             <mesh filename="package://myohand_description/meshes/thumbprox.stl" scale="1.0912156403965485 1.0912156403965485 1.0912156403965485" />
          </geometry>
          <material name="white" />
       </visual>
+      <collision group="1">
+         <origin xyz="0.007269217962575053 -0.015022711703377517 -0.0031436584154711737" rpy="-1.3748537362192326 -0.315004023195649 0.38925148352436917" />
+         <geometry>
+            <cylinder radius="0.009275332943370664" length="0.03396503996425633" />
+         </geometry>
+      </collision>
+      <collision>
+         <origin xyz="0.014538435925150105 -0.030045423406755034 -0.006287316830942346" rpy="-1.3748537362192326 -0.315004023195649 0.38925148352436917" />
+         <geometry>
+            <sphere radius="0.009275332943370664" />
+         </geometry>
+      </collision>
+      <collision>
+         <origin xyz="1.743018399217555e-18 -2.2549098782414104e-18 -1.6208427832014443e-18" rpy="-1.3748537362192326 -0.315004023195649 0.38925148352436917" />
+         <geometry>
+            <sphere radius="0.009275332943370664" />
+         </geometry>
+      </collision>
    </link>
    <joint type="revolute" name="mp_flexion">
       <parent link="firstmc" />
       <child link="proximal_thumb" />
-      <origin xyz="0.029731572672082863 -0.01454820725477413 -0.020878316775212156" rpy="1.2527425101647096 -0.5549106329448805 -0.37755264808441874" />
+      <origin xyz="0.029731572672082863 -0.01454820725477413 -0.02087831677521216" rpy="1.2527425101647096 -0.5549106329448805 -0.37755264808441874" />
       <axis xyz="0 0 1" />
       <limit lower="-0.785398" upper="0.698132" effort="100" velocity="100" />
    </joint>
@@ -235,17 +290,35 @@
          <inertia ixx="0.0001" iyy="0.0001" izz="0.0001" ixy="0" ixz="0" iyz="0" />
       </inertial>
       <visual name="thumbdist">
-         <origin xyz="0.004542850788736533 -0.010651253216962928 0.0010582698770227133" rpy="1.522079931177215 -0.031788312575904865 0.4785542231651294" />
+         <origin xyz="0.004542850788736532 -0.010651253216962926 0.0010582698770227124" rpy="1.522079931177215 -0.031788312575904865 0.4785542231651294" />
          <geometry>
             <mesh filename="package://myohand_description/meshes/thumbdist.stl" scale="1.0912156403965485 1.0912156403965485 1.0912156403965485" />
          </geometry>
          <material name="white" />
       </visual>
+      <collision group="1">
+         <origin xyz="0.005383221054208083 -0.010518397228123755 0.001091157385634482" rpy="-1.6652593206589912 -0.22451940489305544 0.49412654436612613" />
+         <geometry>
+            <cylinder radius="0.007092901662577565" length="0.023732372288272855" />
+         </geometry>
+      </collision>
+      <collision>
+         <origin xyz="0.010766442108416163 -0.021036794456247506 0.0021823147712689596" rpy="-1.6652593206589912 -0.22451940489305544 0.49412654436612613" />
+         <geometry>
+            <sphere radius="0.007092901662577565" />
+         </geometry>
+      </collision>
+      <collision>
+         <origin xyz="3.025855233004978e-18 -1.0837968878420194e-19 3.66769101810691e-18" rpy="-1.6652593206589912 -0.22451940489305544 0.49412654436612613" />
+         <geometry>
+            <sphere radius="0.007092901662577565" />
+         </geometry>
+      </collision>
    </link>
    <joint type="revolute" name="ip_flexion">
       <parent link="proximal_thumb" />
       <child link="distal_thumb" />
-      <origin xyz="0.014538435925150108 -0.030045423406755038 -0.006287316830942347" rpy="0.2947943417533358 0.032709979997034955 -0.01102290149135593" />
+      <origin xyz="0.014538435925150106 -0.030045423406755034 -0.006287316830942347" rpy="0.2947943417533358 0.032709979997034955 -0.01102290149135593" />
       <axis xyz="0 0 1" />
       <limit lower="-1.309" upper="0.436332" effort="100" velocity="100" />
    </joint>
@@ -256,7 +329,7 @@
          <inertia ixx="0.0001" iyy="0.0001" izz="0.0001" ixy="0" ixz="0" iyz="0" />
       </inertial>
       <visual name="trapezoid">
-         <origin xyz="1.4991943433975933e-06 -1.611784249149701e-06 2.063852284874042e-07" rpy="0.27598761251820697 0.5558008487263413 0.19209924739735612" />
+         <origin xyz="1.4991943433975933e-06 -1.611784249149701e-06 2.0638522848740418e-07" rpy="0.27598761251820697 0.5558008487263413 0.19209924739735612" />
          <geometry>
             <mesh filename="package://myohand_description/meshes/trapezoid.stl" scale="1.0912156403965485 1.0912156403965485 1.0912156403965485" />
          </geometry>
@@ -275,17 +348,23 @@
          <inertia ixx="0.0001" iyy="0.0001" izz="0.0001" ixy="0" ixz="0" iyz="0" />
       </inertial>
       <visual name="hamate">
-         <origin xyz="-1.253031262831586e-05 -1.4991055504267509e-06 1.659457460345214e-06" rpy="1.941141541594031 -0.4553846643318562 -0.6664160632978575" />
+         <origin xyz="-1.2530312628315858e-05 -1.4991055504267509e-06 1.659457460345214e-06" rpy="1.941141541594031 -0.4553846643318562 -0.6664160632978575" />
          <geometry>
             <mesh filename="package://myohand_description/meshes/hamate.stl" scale="1.0912156403965485 1.0912156403965485 1.0912156403965485" />
          </geometry>
          <material name="white" />
       </visual>
+      <collision group="3" name="APL_torus_wrap">
+         <origin xyz="0.008947968251251699 0.0025097959729120617 -0.011021277968005139" rpy="-1.6087264077298424 -0.03976061825679067 -0.24651015153668698" />
+         <geometry>
+            <sphere radius="0.004364862561586194" />
+         </geometry>
+      </collision>
    </link>
    <joint type="fixed" name="capitate2hamate_fixed">
       <parent link="capitate" />
       <child link="hamate" />
-      <origin xyz="-0.01196954435950974 -0.0027225830227893886 -0.0008184117302974114" rpy="0.0 0.0 0.0" />
+      <origin xyz="-0.01196954435950974 -0.002722583022789388 -0.0008184117302974114" rpy="0.0 0.0 0.0" />
    </joint>
    <link name="secondmc">
       <inertial>
@@ -294,17 +373,35 @@
          <inertia ixx="0.0001" iyy="0.0001" izz="0.0001" ixy="0" ixz="0" iyz="0" />
       </inertial>
       <visual name="2mc">
-         <origin xyz="-0.00011438630272261074 0.00013791558509674163 -0.00015259020960722118" rpy="-1.2288611407496322 -1.0576482637579705 2.9957695490133696" />
+         <origin xyz="-0.00011438630272261074 0.00013791558509674163 -0.00015259020960722115" rpy="-1.2288611407496322 -1.0576482637579705 2.9957695490133696" />
          <geometry>
             <mesh filename="package://myohand_description/meshes/2mc.stl" scale="1.0912156403965485 1.0912156403965485 1.0912156403965485" />
          </geometry>
          <material name="white" />
       </visual>
+      <collision group="1" name="2mcskin">
+         <origin xyz="0.0 0.0 0.0" rpy="1.420593419681625 0.12133524553074881 0.13337948934397037" />
+         <geometry>
+            <cylinder radius="0.010912156403965485" length="0.06110807586220672" />
+         </geometry>
+      </collision>
+      <collision name="2mcskin_sphere0">
+         <origin xyz="-0.0045659383679516 0.0298681080064773 -0.004538454013072955" rpy="1.420593419681625 0.12133524553074881 0.13337948934397037" />
+         <geometry>
+            <sphere radius="0.010912156403965485" />
+         </geometry>
+      </collision>
+      <collision name="2mcskin_sphere1">
+         <origin xyz="0.0045659383679516 -0.0298681080064773 0.004538454013072955" rpy="1.420593419681625 0.12133524553074881 0.13337948934397037" />
+         <geometry>
+            <sphere radius="0.010912156403965485" />
+         </geometry>
+      </collision>
    </link>
    <joint type="fixed" name="capitate2secondmc_fixed">
       <parent link="capitate" />
       <child link="secondmc" />
-      <origin xyz="0.016024501679223313 -0.04105153239171816 0.005490997102475433" rpy="0.0 0.0 0.0" />
+      <origin xyz="0.016024501679223317 -0.04105153239171815 0.005490997102475432" rpy="0.0 0.0 0.0" />
    </joint>
    <link name="proxph2">
       <inertial>
@@ -313,12 +410,30 @@
          <inertia ixx="0.0001" iyy="0.0001" izz="0.0001" ixy="0" ixz="0" iyz="0" />
       </inertial>
       <visual name="2proxph">
-         <origin xyz="0.004880666929862633 -0.024799814125271602 0.0027061576790072322" rpy="1.3231070703266785 -1.2754347723112274 0.4086444603936795" />
+         <origin xyz="0.004880666929862633 -0.024799814125271605 0.0027061576790072322" rpy="1.3231070703266785 -1.2754347723112274 0.4086444603936795" />
          <geometry>
             <mesh filename="package://myohand_description/meshes/2proxph.stl" scale="1.0912156403965485 1.0912156403965485 1.0912156403965485" />
          </geometry>
          <material name="white" />
       </visual>
+      <collision group="1">
+         <origin xyz="0.004521228619326952 -0.023159745397615207 0.0017211156443926478" rpy="1.5424563366816249 0.40946087510420637 0.14281587565457543" />
+         <geometry>
+            <cylinder radius="0.009820940763568936" length="0.04364862561586194" />
+         </geometry>
+      </collision>
+      <collision>
+         <origin xyz="0.001172507395624246 -0.0016013393809943001 0.0011538187848327858" rpy="1.5424563366816249 0.40946087510420637 0.14281587565457543" />
+         <geometry>
+            <sphere radius="0.009820940763568936" />
+         </geometry>
+      </collision>
+      <collision>
+         <origin xyz="0.007869949843029658 -0.044718151414236115 0.00228841250395251" rpy="1.5424563366816249 0.40946087510420637 0.14281587565457543" />
+         <geometry>
+            <sphere radius="0.009820940763568936" />
+         </geometry>
+      </collision>
    </link>
    <link name="mcp2_flexion_dummy">
       <inertial>
@@ -348,17 +463,35 @@
          <inertia ixx="0.0001" iyy="0.0001" izz="0.0001" ixy="0" ixz="0" iyz="0" />
       </inertial>
       <visual name="2midph">
-         <origin xyz="0.0010432335457114643 -0.014944528630233588 0.0002719845766183966" rpy="-1.5630400763369505 -0.0019507371444631438 -3.1305336815452" />
+         <origin xyz="0.001043233545711464 -0.014944528630233586 0.000271984576618397" rpy="-1.5630400763369505 -0.0019507371444631438 -3.1305336815452" />
          <geometry>
             <mesh filename="package://myohand_description/meshes/2midph.stl" scale="1.0912156403965485 1.0912156403965485 1.0912156403965485" />
          </geometry>
          <material name="white" />
       </visual>
+      <collision group="1">
+         <origin xyz="0.0013261103931204849 -0.013104054330007718 7.60797942607873e-05" rpy="1.4223394491998498 -1.4104000318721397 0.1722844367647487" />
+         <geometry>
+            <cylinder radius="0.008729725123172388" length="0.026189175369517165" />
+         </geometry>
+      </collision>
+      <collision>
+         <origin xyz="0.000989634649750267 -1.7445762471074254e-05 -0.00023325321081780378" rpy="1.4223394491998498 -1.4104000318721397 0.1722844367647487" />
+         <geometry>
+            <sphere radius="0.008729725123172388" />
+         </geometry>
+      </collision>
+      <collision>
+         <origin xyz="0.0016625861364907026 -0.026190662897544358 0.00038541279933937845" rpy="1.4223394491998498 -1.4104000318721397 0.1722844367647487" />
+         <geometry>
+            <sphere radius="0.008729725123172388" />
+         </geometry>
+      </collision>
    </link>
    <joint type="revolute" name="pm2_flexion">
       <parent link="proxph2" />
       <child link="midph2" />
-      <origin xyz="0.008515612588301575 -0.04553843896040008 0.0036331389517985863" rpy="-3.1093030719372434 1.3265450030648043 -2.985625911527994" />
+      <origin xyz="0.008515612588301573 -0.045538438960400086 0.003633138951798585" rpy="-3.1093030719372434 1.3265450030648043 -2.985625911527994" />
       <axis xyz="0 0 1" />
       <limit lower="0.0" upper="1.5708" effort="100" velocity="100" />
    </joint>
@@ -369,17 +502,35 @@
          <inertia ixx="0.0001" iyy="0.0001" izz="0.0001" ixy="0" ixz="0" iyz="0" />
       </inertial>
       <visual name="2distph">
-         <origin xyz="0.0006079583664602333 -0.00932993497329737 0.00023430640444269327" rpy="-1.5239710771919284 -0.03676633885392766 -3.140805196244449" />
+         <origin xyz="0.0006079583664602331 -0.00932993497329737 0.0002343064044426933" rpy="-1.5239710771919284 -0.03676633885392766 -3.140805196244449" />
          <geometry>
             <mesh filename="package://myohand_description/meshes/2distph.stl" scale="1.0912156403965485 1.0912156403965485 1.0912156403965485" />
          </geometry>
          <material name="white" />
       </visual>
+      <collision group="1">
+         <origin xyz="0.0008780401545797597 -0.008751114015624822 0.00021424582253468973" rpy="1.4560908741013887 -1.2115640887058543 0.13728214726420307" />
+         <geometry>
+            <cylinder radius="0.00763850948277584" length="0.017459450246344776" />
+         </geometry>
+      </collision>
+      <collision>
+         <origin xyz="0.0006177897149405624 -3.234182784046441e-05 -0.00013701187821029713" rpy="1.4560908741013887 -1.2115640887058543 0.13728214726420307" />
+         <geometry>
+            <sphere radius="0.00763850948277584" />
+         </geometry>
+      </collision>
+      <collision>
+         <origin xyz="0.0011382905942189572 -0.017469886203409182 0.0005655035232796761" rpy="1.4560908741013887 -1.2115640887058543 0.13728214726420307" />
+         <geometry>
+            <sphere radius="0.00763850948277584" />
+         </geometry>
+      </collision>
    </link>
    <joint type="revolute" name="md2_flexion">
       <parent link="midph2" />
       <child link="distph2" />
-      <origin xyz="0.001323394321107002 -0.027395033344922114 0.0005722576625926559" rpy="0.0221383296958119 -0.1977786936551691 2.5098334244206405e-05" />
+      <origin xyz="0.0013233943211070024 -0.027395033344922118 0.0005722576625926557" rpy="0.0221383296958119 -0.1977786936551691 2.5098334244206405e-05" />
       <axis xyz="0 0 1" />
       <limit lower="0.0" upper="1.5708" effort="100" velocity="100" />
    </joint>
@@ -396,11 +547,29 @@
          </geometry>
          <material name="white" />
       </visual>
+      <collision group="1" name="3mcskin">
+         <origin xyz="0.0 0.0 0.0" rpy="1.4200074259802784 0.0015022302266765042 0.009886525065574636" />
+         <geometry>
+            <cylinder radius="0.010912156403965485" length="0.06110807586220672" />
+         </geometry>
+      </collision>
+      <collision name="3mcskin_sphere0">
+         <origin xyz="-0.00030553528699684085 0.03020579311023684 -0.004589765208076666" rpy="1.4200074259802784 0.0015022302266765042 0.009886525065574636" />
+         <geometry>
+            <sphere radius="0.010912156403965485" />
+         </geometry>
+      </collision>
+      <collision name="3mcskin_sphere1">
+         <origin xyz="0.00030553528699684085 -0.03020579311023684 0.004589765208076666" rpy="1.4200074259802784 0.0015022302266765042 0.009886525065574636" />
+         <geometry>
+            <sphere radius="0.010912156403965485" />
+         </geometry>
+      </collision>
    </link>
    <joint type="fixed" name="capitate2thirdmc_fixed">
       <parent link="capitate" />
       <child link="thirdmc" />
-      <origin xyz="0.0005205098604691537 -0.04281821051352017 0.00804989777920534" rpy="0.0 0.0 0.0" />
+      <origin xyz="0.0005205098604691537 -0.04281821051352017 0.008049897779205338" rpy="0.0 0.0 0.0" />
    </joint>
    <link name="proxph3">
       <inertial>
@@ -409,12 +578,30 @@
          <inertia ixx="0.0001" iyy="0.0001" izz="0.0001" ixy="0" ixz="0" iyz="0" />
       </inertial>
       <visual name="3proxph">
-         <origin xyz="0.002125789382810421 -0.025412660578323087 0.004590544777638503" rpy="1.1265372608123134 -1.2987544122063608 0.4693796480506728" />
+         <origin xyz="0.0021257893828104204 -0.025412660578323084 0.004590544777638502" rpy="1.1265372608123134 -1.2987544122063608 0.4693796480506728" />
          <geometry>
             <mesh filename="package://myohand_description/meshes/3proxph.stl" scale="1.0912156403965485 1.0912156403965485 1.0912156403965485" />
          </geometry>
          <material name="white" />
       </visual>
+      <collision group="1">
+         <origin xyz="0.0019366266452899195 -0.024006744088724066 0.004061065622732037" rpy="1.4998854847266 0.5522284148124856 0.021022114713247553" />
+         <geometry>
+            <cylinder radius="0.009820940763568936" length="0.04801348817744813" />
+         </geometry>
+      </collision>
+      <collision>
+         <origin xyz="0.0005411824527041842 -8.437906376827855e-05 0.0026129810742202275" rpy="1.4998854847266 0.5522284148124856 0.021022114713247553" />
+         <geometry>
+            <sphere radius="0.009820940763568936" />
+         </geometry>
+      </collision>
+      <collision>
+         <origin xyz="0.0033320708378756546 -0.047929109113679855 0.005509150171243847" rpy="1.4998854847266 0.5522284148124856 0.021022114713247553" />
+         <geometry>
+            <sphere radius="0.009820940763568936" />
+         </geometry>
+      </collision>
    </link>
    <link name="mcp3_flexion_dummy">
       <inertial>
@@ -426,7 +613,7 @@
    <joint type="revolute" name="mcp3_flexion">
       <parent link="thirdmc" />
       <child link="mcp3_flexion_dummy" />
-      <origin xyz="0.00026189175369517164 -0.028688059186025263 0.0019401814086250635" rpy="0.0 1.370796734865936 0.0" />
+      <origin xyz="0.00026189175369517164 -0.02868805918602526 0.0019401814086250633" rpy="0.0 1.370796734865936 0.0" />
       <axis xyz="0 0 1" />
       <limit lower="0.0" upper="1.5708" effort="100" velocity="100" />
    </joint>
@@ -450,11 +637,29 @@
          </geometry>
          <material name="white" />
       </visual>
+      <collision group="1">
+         <origin xyz="0.0013094587684758581 -0.01527701896555168 0.0" rpy="1.5486879881801063 0.3511682583228186 0.05240669517806007" />
+         <geometry>
+            <cylinder radius="0.008729725123172388" length="0.03055403793110336" />
+         </geometry>
+      </collision>
+      <collision>
+         <origin xyz="0.00039338750423891986 -3.078787971206237e-05 -0.0003171113208997267" rpy="1.5486879881801063 0.3511682583228186 0.05240669517806007" />
+         <geometry>
+            <sphere radius="0.008729725123172388" />
+         </geometry>
+      </collision>
+      <collision>
+         <origin xyz="0.0022255300327127963 -0.030523250051391296 0.0003171113208997267" rpy="1.5486879881801063 0.3511682583228186 0.05240669517806007" />
+         <geometry>
+            <sphere radius="0.008729725123172388" />
+         </geometry>
+      </collision>
    </link>
    <joint type="revolute" name="pm3_flexion">
       <parent link="proxph3" />
       <child link="midph3" />
-      <origin xyz="0.0031152214262214124 -0.04824373467757181 0.0063050565727784105" rpy="0.0 0.1999995919289601 0.0" />
+      <origin xyz="0.0031152214262214124 -0.04824373467757181 0.00630505657277841" rpy="0.0 0.1999995919289601 0.0" />
       <axis xyz="1.0 0.0 0.0" />
       <limit lower="0.0" upper="1.5708" effort="100" velocity="100" />
    </joint>
@@ -471,6 +676,24 @@
          </geometry>
          <material name="white" />
       </visual>
+      <collision group="1">
+         <origin xyz="0.001418580332515513 -0.009820940763568936 -0.002182431280793097" rpy="1.5999635237216734 -0.001459368385735349 0.049978715644726" />
+         <geometry>
+            <cylinder radius="0.00763850948277584" length="0.017459450246344776" />
+         </geometry>
+      </collision>
+      <collision>
+         <origin xyz="0.0009822759228979869 -0.0011058431999240253 -0.0019278460407535114" rpy="1.5999635237216734 -0.001459368385735349 0.049978715644726" />
+         <geometry>
+            <sphere radius="0.00763850948277584" />
+         </geometry>
+      </collision>
+      <collision>
+         <origin xyz="0.001854884742133039 -0.018536038327213848 -0.0024370165208326827" rpy="1.5999635237216734 -0.001459368385735349 0.049978715644726" />
+         <geometry>
+            <sphere radius="0.00763850948277584" />
+         </geometry>
+      </collision>
    </link>
    <joint type="revolute" name="md3_flexion">
       <parent link="midph3" />
@@ -486,12 +709,30 @@
          <inertia ixx="0.0001" iyy="0.0001" izz="0.0001" ixy="0" ixz="0" iyz="0" />
       </inertial>
       <visual name="4mc">
-         <origin xyz="4.77966983845608e-05 0.0005804645102251883 -0.00018198006768264596" rpy="1.5268660941250807 -0.37727025049358964 -0.07031755099911208" />
+         <origin xyz="4.7796698384560795e-05 0.0005804645102251883 -0.00018198006768264596" rpy="1.5268660941250807 -0.37727025049358964 -0.07031755099911208" />
          <geometry>
             <mesh filename="package://myohand_description/meshes/4mc.stl" scale="1.0912156403965485 1.0912156403965485 1.0912156403965485" />
          </geometry>
          <material name="white" />
       </visual>
+      <collision group="1" name="4mcskin">
+         <origin xyz="0.0010912156403965485 0.002182431280793097 -0.0" rpy="1.5500664936771607 -0.0016618130649093121 -0.0799827748254357" />
+         <geometry>
+            <cylinder radius="0.01036654858376721" length="0.05674321330062052" />
+         </geometry>
+      </collision>
+      <collision name="4mcskin_sphere0">
+         <origin xyz="0.003358523903269836 0.030457181864401293 -0.0005880957369199376" rpy="1.5500664936771607 -0.0016618130649093121 -0.0799827748254357" />
+         <geometry>
+            <sphere radius="0.01036654858376721" />
+         </geometry>
+      </collision>
+      <collision name="4mcskin_sphere1">
+         <origin xyz="-0.001176092622476739 -0.026092319302815102 0.0005880957369199376" rpy="1.5500664936771607 -0.0016618130649093121 -0.0799827748254357" />
+         <geometry>
+            <sphere radius="0.01036654858376721" />
+         </geometry>
+      </collision>
    </link>
    <joint type="fixed" name="capitate2fourthmc_fixed">
       <parent link="capitate" />
@@ -511,6 +752,24 @@
          </geometry>
          <material name="white" />
       </visual>
+      <collision group="1">
+         <origin xyz="-0.0006028684213491643 -0.02182431280793097 0.0012607070427531875" rpy="1.5314196551036194 0.448392495812437 -0.08879788966556934" />
+         <geometry>
+            <cylinder radius="0.009275332943370664" length="0.03928376305427574" />
+         </geometry>
+      </collision>
+      <collision>
+         <origin xyz="0.0008037588259204131 -0.002245257994582997 0.0005639127192441705" rpy="1.5314196551036194 0.448392495812437 -0.08879788966556934" />
+         <geometry>
+            <sphere radius="0.009275332943370664" />
+         </geometry>
+      </collision>
+      <collision>
+         <origin xyz="-0.0020094956686187416 -0.04140336762127895 0.0019575013662622045" rpy="1.5314196551036194 0.448392495812437 -0.08879788966556934" />
+         <geometry>
+            <sphere radius="0.009275332943370664" />
+         </geometry>
+      </collision>
    </link>
    <link name="mcp4_flexion_dummy">
       <inertial>
@@ -540,17 +799,35 @@
          <inertia ixx="0.0001" iyy="0.0001" izz="0.0001" ixy="0" ixz="0" iyz="0" />
       </inertial>
       <visual name="4midph">
-         <origin xyz="-0.0012854336845298268 -0.014311424955266322 -0.0013640544306725245" rpy="-1.624420311140701 -0.005298798978447428 3.0977891945924623" />
+         <origin xyz="-0.001285433684529827 -0.01431142495526632 -0.0013640544306725245" rpy="-1.624420311140701 -0.005298798978447428 3.0977891945924623" />
          <geometry>
             <mesh filename="package://myohand_description/meshes/4midph.stl" scale="1.0912156403965485 1.0912156403965485 1.0912156403965485" />
          </geometry>
          <material name="white" />
       </visual>
+      <collision group="1">
+         <origin xyz="0.0010050762973854302 -0.013094587684758583 -0.0004249390665495983" rpy="1.7664592644300239 -1.1625762845992644 -0.20268487687102843" />
+         <geometry>
+            <cylinder radius="0.008184117302974114" length="0.02182431280793097" />
+         </geometry>
+      </collision>
+      <collision>
+         <origin xyz="0.001252458270644241 -0.0022177922517256365 0.0004172489480084429" rpy="1.7664592644300239 -1.1625762845992644 -0.20268487687102843" />
+         <geometry>
+            <sphere radius="0.008184117302974114" />
+         </geometry>
+      </collision>
+      <collision>
+         <origin xyz="0.0007576943241266194 -0.023971383117791525 -0.0012671270811076395" rpy="1.7664592644300239 -1.1625762845992644 -0.20268487687102843" />
+         <geometry>
+            <sphere radius="0.008184117302974114" />
+         </geometry>
+      </collision>
    </link>
    <joint type="revolute" name="pm4_flexion">
       <parent link="proxph4" />
       <child link="midph4" />
-      <origin xyz="-0.0028281553639360434 -0.04392688560416306 0.0029961081823990368" rpy="3.141592653589793 1.5207955451442956 3.141592653589793" />
+      <origin xyz="-0.002828155363936044 -0.04392688560416306 0.0029961081823990368" rpy="3.141592653589793 1.5207955451442956 3.141592653589793" />
       <axis xyz="0 0 1" />
       <limit lower="0.0" upper="1.5708" effort="100" velocity="100" />
    </joint>
@@ -561,17 +838,35 @@
          <inertia ixx="0.0001" iyy="0.0001" izz="0.0001" ixy="0" ixz="0" iyz="0" />
       </inertial>
       <visual name="4distph">
-         <origin xyz="-0.001348534577264451 -0.009657786641601841 6.261121284750583e-05" rpy="-1.5832780312239776 -0.030396363417948713 2.965276549615234" />
+         <origin xyz="-0.0013485345772644513 -0.009657786641601841 6.261121284750576e-05" rpy="-1.5832780312239776 -0.030396363417948713 2.965276549615234" />
          <geometry>
             <mesh filename="package://myohand_description/meshes/4distph.stl" scale="1.0912156403965485 1.0912156403965485 1.0912156403965485" />
          </geometry>
          <material name="white" />
       </visual>
+      <collision group="1">
+         <origin xyz="0.0018012390125480469 -0.010912156403965487 -0.0012322923009818476" rpy="1.7440949508948553 -0.9606544538092735 -0.17505266666680763" />
+         <geometry>
+            <cylinder radius="0.007420266354696529" length="0.017459450246344776" />
+         </geometry>
+      </collision>
+      <collision>
+         <origin xyz="0.002084004570616888 -0.0022297472767810766 -0.00036978658302859734" rpy="1.7440949508948553 -0.9606544538092735 -0.17505266666680763" />
+         <geometry>
+            <sphere radius="0.007420266354696529" />
+         </geometry>
+      </collision>
+      <collision>
+         <origin xyz="0.0015184734544792056 -0.019594565531149896 -0.002094798018935098" rpy="1.7440949508948553 -0.9606544538092735 -0.17505266666680763" />
+         <geometry>
+            <sphere radius="0.007420266354696529" />
+         </geometry>
+      </collision>
    </link>
    <joint type="revolute" name="md4_flexion">
       <parent link="midph4" />
       <child link="distph4" />
-      <origin xyz="-0.0015504417726234165 -0.02705014450979004 -0.002089521086574618" rpy="0.0 -0.199999709474469 0.0" />
+      <origin xyz="-0.0015504417726234165 -0.027050144509790038 -0.0020895210865746177" rpy="0.0 -0.199999709474469 0.0" />
       <axis xyz="0 0 1" />
       <limit lower="0.0" upper="1.5708" effort="100" velocity="100" />
    </joint>
@@ -582,17 +877,35 @@
          <inertia ixx="0.0001" iyy="0.0001" izz="0.0001" ixy="0" ixz="0" iyz="0" />
       </inertial>
       <visual name="5mc">
-         <origin xyz="0.0002124330500874568 0.00045668960348956657 -0.00014038383031514807" rpy="1.6537260233892077 -1.161764483067726 -0.20407074680325432" />
+         <origin xyz="0.00021243305008745677 0.0004566896034895665 -0.00014038383031514807" rpy="1.6537260233892077 -1.161764483067726 -0.20407074680325432" />
          <geometry>
             <mesh filename="package://myohand_description/meshes/5mc.stl" scale="1.0912156403965485 1.0912156403965485 1.0912156403965485" />
          </geometry>
          <material name="white" />
       </visual>
+      <collision group="1" name="5mcskin">
+         <origin xyz="0.0010912156403965485 0.002182431280793097 -0.0010912156403965485" rpy="1.599753714619821 0.0037852640777780167 -0.1299451904246034" />
+         <geometry>
+            <cylinder radius="0.01036654858376721" length="0.05237835073903433" />
+         </geometry>
+      </collision>
+      <collision name="5mcskin_sphere0">
+         <origin xyz="0.004486226935340731 0.028139546848501146 -0.0003329569462992097" rpy="1.599753714619821 0.0037852640777780167 -0.1299451904246034" />
+         <geometry>
+            <sphere radius="0.01036654858376721" />
+         </geometry>
+      </collision>
+      <collision name="5mcskin_sphere1">
+         <origin xyz="-0.0023037956545476335 -0.023774684286914954 -0.0018494743344938875" rpy="1.599753714619821 0.0037852640777780167 -0.1299451904246034" />
+         <geometry>
+            <sphere radius="0.01036654858376721" />
+         </geometry>
+      </collision>
    </link>
    <joint type="fixed" name="capitate2fifthmc_fixed">
       <parent link="capitate" />
       <child link="fifthmc" />
-      <origin xyz="-0.023893257662122826 -0.03784663205587349 -0.004602747571192643" rpy="0.0 0.0 0.0" />
+      <origin xyz="-0.023893257662122826 -0.03784663205587349 -0.004602747571192642" rpy="0.0 0.0 0.0" />
    </joint>
    <link name="proxph5">
       <inertial>
@@ -601,12 +914,30 @@
          <inertia ixx="0.0001" iyy="0.0001" izz="0.0001" ixy="0" ixz="0" iyz="0" />
       </inertial>
       <visual name="5proxph">
-         <origin xyz="-0.003713049465303791 -0.02108392571969029 0.0009617048071497774" rpy="-1.4569822139036401 -1.381514906722609 2.885196567174457" />
+         <origin xyz="-0.0037130494653037907 -0.02108392571969029 0.0009617048071497774" rpy="-1.4569822139036401 -1.381514906722609 2.885196567174457" />
          <geometry>
             <mesh filename="package://myohand_description/meshes/5proxph.stl" scale="1.0912156403965485 1.0912156403965485 1.0912156403965485" />
          </geometry>
          <material name="white" />
       </visual>
+      <collision group="1">
+         <origin xyz="-0.003934150819803918 -0.01964188152713787 4.7199438924724705e-05" rpy="1.611157597004055 0.6074813000563757 -0.1211586382707247" />
+         <geometry>
+            <cylinder radius="0.008729725123172388" length="0.03491890049268955" />
+         </geometry>
+      </collision>
+      <collision>
+         <origin xyz="-0.0014264994418236425 -0.0023731386445353143 0.0006256514470169126" rpy="1.611157597004055 0.6074813000563757 -0.1211586382707247" />
+         <geometry>
+            <sphere radius="0.008729725123172388" />
+         </geometry>
+      </collision>
+      <collision>
+         <origin xyz="-0.0064418021977841935 -0.03691062440974043 -0.0005312525691674637" rpy="1.611157597004055 0.6074813000563757 -0.1211586382707247" />
+         <geometry>
+            <sphere radius="0.008729725123172388" />
+         </geometry>
+      </collision>
    </link>
    <link name="mcp5_flexion_dummy">
       <inertial>
@@ -618,7 +949,7 @@
    <joint type="revolute" name="mcp5_flexion">
       <parent link="fifthmc" />
       <child link="mcp5_flexion_dummy" />
-      <origin xyz="-0.001742671377713288 -0.02338584238933843 -0.0016324585980332365" rpy="0.0 0.9707969349430003 0.0" />
+      <origin xyz="-0.0017426713777132878 -0.02338584238933843 -0.0016324585980332365" rpy="0.0 0.9707969349430003 0.0" />
       <axis xyz="0 0 1" />
       <limit lower="0.0" upper="1.5708" effort="100" velocity="100" />
    </joint>
@@ -636,17 +967,35 @@
          <inertia ixx="0.0001" iyy="0.0001" izz="0.0001" ixy="0" ixz="0" iyz="0" />
       </inertial>
       <visual name="5midph">
-         <origin xyz="0.00020976323052124832 -0.01284424640920926 -0.002279325925178836" rpy="-1.7327462170365329 0.14316308891352914 3.08764894477981" />
+         <origin xyz="0.00020976323052124824 -0.01284424640920926 -0.0022793259251788363" rpy="-1.7327462170365329 0.14316308891352914 3.08764894477981" />
          <geometry>
             <mesh filename="package://myohand_description/meshes/5midph.stl" scale="1.0912156403965485 1.0912156403965485 1.0912156403965485" />
          </geometry>
          <material name="white" />
       </visual>
+      <collision group="1">
+         <origin xyz="0.0016354026151941348 -0.012003372044362037 -0.002440984882501333" rpy="1.8483273219090344 -0.9476285009282254 -0.20534160146356362" />
+         <geometry>
+            <cylinder radius="0.00763850948277584" length="0.01964188152713787" />
+         </geometry>
+      </collision>
+      <collision>
+         <origin xyz="0.001422197055089704 -0.0023111378958638215 -0.0008706288460065158" rpy="1.8483273219090344 -0.9476285009282254 -0.20534160146356362" />
+         <geometry>
+            <sphere radius="0.00763850948277584" />
+         </geometry>
+      </collision>
+      <collision>
+         <origin xyz="0.0018486081752985654 -0.021695606192860248 -0.0040113409189961495" rpy="1.8483273219090344 -0.9476285009282254 -0.20534160146356362" />
+         <geometry>
+            <sphere radius="0.00763850948277584" />
+         </geometry>
+      </collision>
    </link>
    <joint type="revolute" name="pm5_flexion">
       <parent link="proxph5" />
       <child link="midph5" />
-      <origin xyz="-0.006528255140883939 -0.03880690181942246 0.000659751969878673" rpy="-0.0 1.5707963267948966 0.0" />
+      <origin xyz="-0.006528255140883939 -0.03880690181942245 0.0006597519698786732" rpy="-0.0 1.5707963267948966 0.0" />
       <axis xyz="0 0 1" />
       <limit lower="0.0" upper="1.5708" effort="100" velocity="100" />
    </joint>
@@ -657,17 +1006,35 @@
          <inertia ixx="0.0001" iyy="0.0001" izz="0.0001" ixy="0" ixz="0" iyz="0" />
       </inertial>
       <visual name="5distph">
-         <origin xyz="-0.0011069679115155672 -0.008597030397592666 0.00048825809364409523" rpy="-1.5131584280044281 -0.07399081576380362 2.9725845702930727" />
+         <origin xyz="-0.0011069679115155672 -0.008597030397592664 0.0004882580936440952" rpy="-1.5131584280044281 -0.07399081576380362 2.9725845702930727" />
          <geometry>
             <mesh filename="package://myohand_description/meshes/5distph.stl" scale="1.0912156403965485 1.0912156403965485 1.0912156403965485" />
          </geometry>
          <material name="white" />
       </visual>
+      <collision group="1">
+         <origin xyz="0.0004100872628778876 -0.010042531786579944 0.0004908131948356423" rpy="1.4335531047390542 -0.7164260258630063 -0.019271097827600614" />
+         <geometry>
+            <cylinder radius="0.006547293842379291" length="0.01527701896555168" />
+         </geometry>
+      </collision>
+      <collision>
+         <origin xyz="0.001242043890699903 -0.002490477247108829 -0.0002973159321056107" rpy="1.4335531047390542 -0.7164260258630063 -0.019271097827600614" />
+         <geometry>
+            <sphere radius="0.006547293842379291" />
+         </geometry>
+      </collision>
+      <collision>
+         <origin xyz="-0.0004218693649441273 -0.01759458632605106 0.001278942321776895" rpy="1.4335531047390542 -0.7164260258630063 -0.019271097827600614" />
+         <geometry>
+            <sphere radius="0.006547293842379291" />
+         </geometry>
+      </collision>
    </link>
    <joint type="revolute" name="md5_flexion">
       <parent link="midph5" />
       <child link="distph5" />
-      <origin xyz="0.0002511339545131928 -0.022563065796479438 -0.003967694418063864" rpy="0.20638367854381953 -0.26826088009272797 0.08747994233519721" />
+      <origin xyz="0.0002511339545131927 -0.022563065796479438 -0.003967694418063864" rpy="0.20638367854381953 -0.26826088009272797 0.08747994233519721" />
       <axis xyz="0 0 1" />
       <limit lower="0.0" upper="1.5708" effort="100" velocity="100" />
    </joint>
@@ -681,7 +1048,7 @@
    <joint type="fixed" name="THtip_joint">
       <parent link="distal_thumb" />
       <child link="THtip" />
-      <origin xyz="0.010739724593419129 -0.023474990670484867 0.002273107196620667" rpy="-0.500912540251172 0.05012299056598368 -0.012825373716091965" />
+      <origin xyz="0.010739724593419127 -0.02347499067048487 0.0022731071966206693" rpy="-0.500912540251172 0.05012299056598368 -0.012825373716091965" />
    </joint>
    <link name="IFtip">
       <inertial>
@@ -693,7 +1060,7 @@
    <joint type="fixed" name="IFtip_joint">
       <parent link="distph2" />
       <child link="IFtip" />
-      <origin xyz="0.001972871390054612 -0.019662907650043963 0.00021061207384855205" rpy="1.5707963267948983 -1.47079632685829 -1.4707963268582915" />
+      <origin xyz="0.001972871390054612 -0.01966290765004396 0.00021061207384855205" rpy="1.5707963267948983 -1.47079632685829 -1.4707963268582915" />
    </joint>
    <link name="MFtip">
       <inertial>
@@ -729,87 +1096,100 @@
    <joint type="fixed" name="LFtip_joint">
       <parent link="distph5" />
       <child link="LFtip" />
-      <origin xyz="-0.00028800192051640867 -0.018833932385459582 0.001111200420124305" rpy="-0.3006875686285624 -0.6985554313998293 0.11023436132302193" />
+      <origin xyz="-0.0002880019205164087 -0.018833932385459582 0.0011112004201243048" rpy="-0.3006875686285624 -0.6985554313998293 0.11023436132302193" />
    </joint>
    <material name="white">
       <color rgba="1 1 1 1" />
    </material>
-
-   <joint type="prismatic" name="translate_x_joint_left">
+<joint type="revolute" name="rotate_x_joint_left">
       <parent link="world" />
-      <child link="joint_tx_link_left" />
-      <origin xyz="0.0 0.0 0.0" rpy="0 0 0" />
-      <axis xyz="1 0 0" />
-      <limit effort="20.0" lower="-10.0" upper="10.0" velocity="5.0" />
-   </joint>
-
-   <joint type="prismatic" name="translate_y_joint_left">
-      <parent link="joint_tx_link_left" />
-      <child link="joint_ty_link_left" />
-      <origin xyz="0.0 0.0 0.0" rpy="0 0 0" />
-      <axis xyz="0 1 0" />
-      <limit effort="20.0" lower="-10.0" upper="10.0" velocity="5.0" />
-   </joint>
-
-   <joint type="prismatic" name="translate_z_joint_left">
-      <parent link="joint_ty_link_left" />
-      <child link="joint_tz_link_left" />
-      <origin xyz="0.0 0.0 0.0" rpy="0 0 0" />
-      <axis xyz="0 0 1" />
-      <limit effort="20.0" lower="-10.0" upper="10.0" velocity="5.0" />
-   </joint>
-
-   
-   <joint type="revolute" name="rotate_x_joint_left">
-      <parent link="joint_tz_link_left" />
       <child link="joint_rx_link_left" />
-      <origin xyz="0.0 0.0 0.0" rpy="0 0 0" />
-      <axis xyz="1 0 0" />
+      <origin xyz="0.0 0.0 0.0" rpy="0.0 0.0 0.0" />
+      <axis xyz="1.0 0.0 0.0" />
       <limit effort="100" lower="-3.141593" upper="3.141593" velocity="100" />
-   </joint>
-
-   <joint type="revolute" name="rotate_y_joint_left">
+   </joint><joint type="revolute" name="rotate_y_joint_left">
       <parent link="joint_rx_link_left" />
       <child link="joint_ry_link_left" />
-      <origin xyz="0.0 0.0 0.0" rpy="0 0 0" />
-      <axis xyz="0 1 0" />
+      <origin xyz="0.0 0.0 0.0" rpy="0.0 0.0 0.0" />
+      <axis xyz="0.0 -1.0 0.0" />
       <limit effort="100" lower="-3.141593" upper="3.141593" velocity="100" />
-   </joint>
-
-   <joint type="revolute" name="rotate_z_joint_left">
+   </joint><joint type="revolute" name="rotate_z_joint_left">
       <parent link="joint_ry_link_left" />
       <child link="joint_rz_link_left" />
-      <origin xyz="0.0 0.0 0.0" rpy="0 0 0" />
-      <axis xyz="0 0 1" />
+      <origin xyz="0.0 0.0 0.0" rpy="0.0 0.0 0.0" />
+      <axis xyz="0.0 0.0 -1.0" />
       <limit effort="100" lower="-3.141593" upper="3.141593" velocity="100" />
-   </joint>
-
-   
-   <link name="joint_tx_link_left" />
-   <link name="joint_ty_link_left" />
-   <link name="joint_tz_link_left" />
-   <link name="joint_rx_link_left" />
-   <link name="joint_ry_link_left" />
-   <link name="joint_rz_link_left" />
-
-   <joint type="fixed" name="wrist_fixed_left">
+   </joint><link name="joint_rx_link_left" /><link name="joint_ry_link_left" /><link name="joint_rz_link_left" /><joint type="fixed" name="wrist_fixed_left">
       <parent link="joint_rz_link_left" />
       <child link="lunate_left" />
       <origin xyz="0.0 0.0 0.0" rpy="0.0 0.0 0.0" />
-   </joint>
-   <link name="lunate_left">
+   </joint><link name="lunate_left">
       <inertial>
-         <origin xyz="0.0 0.0 0.0" rpy="0.0 0.0 0.0" />
-         <mass value="0.0012000263535597198" />
+         <origin xyz="0.0008862231115311852 -0.00916974365186508 -0.0018687547315558051" rpy="1.649621115179617 -0.6615749727475602 -1.3248498815889576" />
+         <mass value="0.16378044689296803" />
          <inertia ixx="0.0001" iyy="0.0001" izz="0.0001" ixy="0" ixz="0" iyz="0" />
       </inertial>
       <visual name="lunate_left">
-         <origin xyz="0.0 0.0 0.0" rpy="0.0 0.0 0.0" />
+         <origin xyz="-3.898813297067293e-06 -2.0315956048179656e-06 1.950744587600639e-07" rpy="-0.3614362236969199 0.1602368552759459 -0.6876895037329067" />
          <geometry>
             <mesh filename="package://myohand_description/meshes/lunate_left.stl" scale="1.0912156403965485 1.0912156403965485 1.0912156403965485" />
          </geometry>
          <material name="white" />
       </visual>
+      <collision group="3" name="ExtensorEllipse_ellipsoid_wrap">
+         <origin xyz="0.001592836558130438 -0.013096442751347257 -0.00974053999518452" rpy="-0.18976269594647313 -0.3286435666437535 -0.16503067139211172" />
+         <geometry>
+            <sphere radius="0.02590644139709042" />
+         </geometry>
+      </collision>
+      <collision group="3" name="FPL_ellipsoid_wrap">
+         <origin xyz="-0.02182431280793097 -0.027280391009913713 -0.00360101161330861" rpy="0.0 0.0 0.0" />
+         <geometry>
+            <sphere radius="0.016368234605948228" />
+         </geometry>
+      </collision>
+      <collision group="3" name="ECRL_torus_wrap">
+         <origin xyz="-0.024224987216803377 -0.010475670147806865 0.022697285320248207" rpy="1.5286767737299405 0.7231368902236683 -0.2623983976153135" />
+         <geometry>
+            <sphere radius="0.008729725123172388" />
+         </geometry>
+      </collision>
+      <collision group="3" name="ECRB_torus_wrap">
+         <origin xyz="-0.01374931706899651 -0.01036654858376721 0.0202966109113758" rpy="1.3135999823787246 -0.0824259966286438 0.14345962847230864" />
+         <geometry>
+            <sphere radius="0.002182431280793097" />
+         </geometry>
+      </collision>
+      <collision group="3" name="FCR_torus_wrap">
+         <origin xyz="-0.0034918900492689553 -0.004910470381784468 -0.02073309716753442" rpy="-1.5560575161830283 0.10226106978890148 -0.15175181458547404" />
+         <geometry>
+            <sphere radius="0.0016368234605948228" />
+         </geometry>
+      </collision>
+      <collision group="3" name="EDCL_torus_wrap">
+         <origin xyz="0.013967560197075821 -0.014513168017274094 0.016149991477868917" rpy="2.346000849733369 -0.055049088897161536 -0.3253669778179351" />
+         <geometry>
+            <sphere radius="0.004364862561586194" />
+         </geometry>
+      </collision>
+      <collision group="3" name="EDCR_torus_wrap">
+         <origin xyz="0.010693913275886174 -0.014949654273432715 0.018114179630582705" rpy="2.0475993592916915 0.5148744166815526 0.13938644679386247" />
+         <geometry>
+            <sphere radius="0.0032736469211896457" />
+         </geometry>
+      </collision>
+      <collision group="3" name="EDCM_torus_wrap">
+         <origin xyz="0.0007638509482775839 -0.012767222992639618 0.020842218731574075" rpy="2.025592430329208 0.4154033772264967 -0.021592874497451398" />
+         <geometry>
+            <sphere radius="0.00381925474138792" />
+         </geometry>
+      </collision>
+      <collision group="3" name="EDCI_torus_wrap">
+         <origin xyz="-0.009820940763568936 -0.016259113041908572 0.023024650012367174" rpy="1.697190866937331 0.01895557022697636 -0.08802436104652389" />
+         <geometry>
+            <sphere radius="0.00381925474138792" />
+         </geometry>
+      </collision>
    </link>
    <link name="scaphoid_left">
       <inertial>
@@ -818,7 +1198,7 @@
          <inertia ixx="0.0001" iyy="0.0001" izz="0.0001" ixy="0" ixz="0" iyz="0" />
       </inertial>
       <visual name="scaphoid_left">
-         <origin xyz="2.6012832737081288e-05 -9.841030817061267e-06 4.183608787850105e-05" rpy="-0.5692290431693717 0.33878345041747737 -0.2136914248969607" />
+         <origin xyz="2.601283273708302e-05 -9.841030817060725e-06 4.183608787850044e-05" rpy="-0.5692290431693717 0.33878345041747737 -0.2136914248969607" />
          <geometry>
             <mesh filename="package://myohand_description/meshes/scaphoid_left.stl" scale="1.0912156403965485 1.0912156403965485 1.0912156403965485" />
          </geometry>
@@ -837,7 +1217,7 @@
          <inertia ixx="0.0001" iyy="0.0001" izz="0.0001" ixy="0" ixz="0" iyz="0" />
       </inertial>
       <visual name="pisiform_left">
-         <origin xyz="-0.0019402791022578886 -0.000990158516763607 -7.84604375335625e-05" rpy="1.2462055088005255 -0.49559439583995424 0.3492964506998784" />
+         <origin xyz="-0.0019402791022578893 -0.0009901585167636073 -7.846043753356301e-05" rpy="1.2462055088005255 -0.49559439583995424 0.3492964506998784" />
          <geometry>
             <mesh filename="package://myohand_description/meshes/pisiform_left.stl" scale="1.0912156403965485 1.0912156403965485 1.0912156403965485" />
          </geometry>
@@ -847,7 +1227,7 @@
    <joint type="fixed" name="lunate2pisiform_fixed_left">
       <parent link="lunate_left" />
       <child link="pisiform_left" />
-      <origin xyz="0.014609194993628992 -0.010787757820960281 -0.011559247278720639" rpy="0.0 0.0 0.0" />
+      <origin xyz="0.014609194993628992 -0.01078775782096028 -0.011559247278720639" rpy="0.0 0.0 0.0" />
    </joint>
    <link name="triquetrum_left">
       <inertial>
@@ -856,7 +1236,7 @@
          <inertia ixx="0.0001" iyy="0.0001" izz="0.0001" ixy="0" ixz="0" iyz="0" />
       </inertial>
       <visual name="triquetrum_left">
-         <origin xyz="-6.471771705709832e-07 -1.2249553131738964e-06 -3.703072096594186e-06" rpy="1.9269139677822995 0.29745876180457564 0.5516387254770375" />
+         <origin xyz="-6.471771705710699e-07 -1.224955313173376e-06 -3.703072096595053e-06" rpy="1.9269139677822995 0.29745876180457564 0.5516387254770375" />
          <geometry>
             <mesh filename="package://myohand_description/meshes/triquetrum_left.stl" scale="1.0912156403965485 1.0912156403965485 1.0912156403965485" />
          </geometry>
@@ -866,7 +1246,7 @@
    <joint type="fixed" name="lunate2triquetrum_fixed_left">
       <parent link="lunate_left" />
       <child link="triquetrum_left" />
-      <origin xyz="0.011767669466036381 -0.008183026087333716 -0.001406576960471151" rpy="0.0 0.0 0.0" />
+      <origin xyz="0.01176766946603638 -0.008183026087333716 -0.001406576960471151" rpy="0.0 0.0 0.0" />
    </joint>
    <link name="capitate_left">
       <inertial>
@@ -875,7 +1255,7 @@
          <inertia ixx="0.0001" iyy="0.0001" izz="0.0001" ixy="0" ixz="0" iyz="0" />
       </inertial>
       <visual name="capitate_left">
-         <origin xyz="-2.7277695026464366e-06 -4.713763620015511e-06 1.4626845560325107e-06" rpy="1.2103081004613072 0.29207479559887606 0.02039821549637577" />
+         <origin xyz="-2.7277695026466098e-06 -4.713763620014383e-06 1.4626845560306023e-06" rpy="1.2103081004613072 0.29207479559887606 0.02039821549637577" />
          <geometry>
             <mesh filename="package://myohand_description/meshes/capitate_left.stl" scale="1.0912156403965485 1.0912156403965485 1.0912156403965485" />
          </geometry>
@@ -894,35 +1274,59 @@
          <inertia ixx="0.0001" iyy="0.0001" izz="0.0001" ixy="0" ixz="0" iyz="0" />
       </inertial>
       <visual name="trapezium_left">
-         <origin xyz="6.197983312853165e-06 1.6671312300058431e-06 -8.008384923818835e-07" rpy="-0.25650854392346245 0.8000548292338778 -2.2561533548010573" />
+         <origin xyz="6.197983312853338e-06 1.6671312300063634e-06 -8.008384923818834e-07" rpy="-0.25650854392346245 0.8000548292338778 -2.2561533548010573" />
          <geometry>
             <mesh filename="package://myohand_description/meshes/trapezium_left.stl" scale="1.0912156403965485 1.0912156403965485 1.0912156403965485" />
          </geometry>
          <material name="white" />
       </visual>
+      <collision group="3" name="Trpzm_wrap">
+         <origin xyz="-0.002182431280793101 -0.003273646921189652 -6.938893903907228e-18" rpy="1.5086432106110845 -0.03392024884768574 -0.49894588259172523" />
+         <geometry>
+            <sphere radius="0.012003372044362033" />
+         </geometry>
+      </collision>
    </link>
    <joint type="fixed" name="capitate2trapezium_fixed_left">
       <parent link="capitate_left" />
       <child link="trapezium_left" />
-      <origin xyz="-0.016687960788584415 -0.004985764260971832 -0.01124825082120762" rpy="0.0 0.0 0.0" />
+      <origin xyz="-0.016687960788584415 -0.004985764260971831 -0.01124825082120762" rpy="0.0 0.0 0.0" />
    </joint>
    <link name="firstmc_left">
       <inertial>
-         <origin xyz="-0.013099680893881645 -0.006874528260996441 -0.009698928892781549" rpy="-2.1572247499833637 0.315602977570725 1.7510692763715636" />
+         <origin xyz="-0.011245279986547688 -0.009612723670059211 0.009698928892781563" rpy="0.9843679036064295 -0.31560297757072386 -0.5605027097619888" />
          <mass value="0.016" />
          <inertia ixx="0.0001" iyy="0.0001" izz="0.0001" ixy="0" ixz="0" iyz="0" />
       </inertial>
       <visual name="1mc_left">
-         <origin xyz="-0.01522174251760287 -0.007904877736212115 -0.009576319475505619" rpy="-2.237451597882739 0.5181491466513539 1.6277365169800726" />
+         <origin xyz="-0.012989610129428179 -0.011200828807821217 0.009576319475505623" rpy="0.9041410557070542 -0.5181491466513535 -0.43716995037049733" />
          <geometry>
             <mesh filename="package://myohand_description/meshes/1mc_left.stl" scale="1.0912156403965485 1.0912156403965485 1.0912156403965485" />
          </geometry>
          <material name="white" />
       </visual>
+      <collision group="1" name="1mcskin">
+         <origin xyz="-0.011007926323825142 -0.009176880074580627 0.008616988076229305" rpy="-2.8925197090171277 -0.9716980275970782 0.46766655063769647" />
+         <geometry>
+            <cylinder radius="0.01036654858376721" length="0.044872453647446034" />
+         </geometry>
+      </collision>
+      <collision name="1mcskin_sphere0">
+         <origin xyz="-0.024543557824794764 -0.022208793690431786 0.02087831677521216" rpy="-2.8925197090171277 -0.9716980275970782 0.46766655063769647" />
+         <geometry>
+            <sphere radius="0.01036654858376721" />
+         </geometry>
+      </collision>
+      <collision name="1mcskin_sphere1">
+         <origin xyz="0.0025277051771444817 0.0038550335412705318 -0.0036443406227535413" rpy="-2.8925197090171277 -0.9716980275970782 0.46766655063769647" />
+         <geometry>
+            <sphere radius="0.01036654858376721" />
+         </geometry>
+      </collision>
    </link>
    <link name="cmc_abduction_dummy_left">
       <inertial>
-         <origin xyz="-1.734723475976807e-17 -1.0408340855860843e-17 -8.673617379884035e-19" rpy="-0.7286789533902662 -0.04241170412851947 0.01617642349516335" />
+         <origin xyz="0.0 0.0 0.0" rpy="2.4129137001995273 0.04241170412851947 0.11111240339895034" />
          <mass value="0.001" />
          <inertia ixx="1e-09" iyy="1e-09" izz="1e-09" ixy="0" ixz="0" iyz="0" />
       </inertial>
@@ -930,57 +1334,93 @@
    <joint type="revolute" name="cmc_abduction_left">
       <parent link="trapezium_left" />
       <child link="cmc_abduction_dummy_left" />
-      <origin xyz="-0.007856752610855151 -0.005892564458141364 -0.0027280391009913696" rpy="0.7286789533902661 0.04241170412851947 0.01617642349516324" />
-      <axis xyz="1.747988441681546e-18 -1.0772761261336016e-16 -1.0" />
+      <origin xyz="-0.00785675261085515 -0.005892564458141361 -0.0027280391009913713" rpy="-2.4129137001995273 -0.042411704128519245 0.11111240339895034" />
+      <axis xyz="0 0 1" />
       <limit lower="-0.5" upper="0.78" effort="100" velocity="100" />
    </joint>
    <joint type="revolute" name="cmc_flexion_left">
       <parent link="cmc_abduction_dummy_left" />
       <child link="firstmc_left" />
-      <origin xyz="-6.5919492087118674e-18 -6.5919492087118674e-18 1.1535911115245768e-17" rpy="-1.7353556432102097 -0.24272282231633158 0.5745472836968706" />
-      <axis xyz="-2.8391311673900116e-17 -5.045193471461809e-17 -1.0000000000000002" />
+      <origin xyz="0.0 0.0 0.0" rpy="-1.8390166597865445 -0.9272661553233179 -0.19094144517959621" />
+      <axis xyz="0 0 1" />
       <limit lower="-0.78" upper="0.7" effort="100" velocity="100" />
    </joint>
    <link name="proximal_thumb_left">
       <inertial>
-         <origin xyz="-0.009175945436263391 -0.017323667062881902 -0.0036376620025967907" rpy="2.1934671196508537 -0.3312682727761356 -1.3835402268256396" />
+         <origin xyz="-0.018738418665246268 0.0057601285646080285 0.0036376620025968215" rpy="-0.9481255339389392 0.3312682727761358 2.169001397686512" />
          <mass value="0.0079" />
          <inertia ixx="0.0001" iyy="0.0001" izz="0.0001" ixy="0" ixz="0" iyz="0" />
       </inertial>
       <visual name="thumbprox_left">
-         <origin xyz="-0.008919062701548273 -0.01744202712274182 -0.0034244405719334116" rpy="1.7513489423197717 0.12389205032924067 -0.43579123948592813" />
+         <origin xyz="-0.01864048506089648 0.0060254714603181665 0.00342444057193339" rpy="-1.3902437112700214 -0.12389205032924111 1.2212524103468005" />
          <geometry>
             <mesh filename="package://myohand_description/meshes/thumbprox_left.stl" scale="1.0912156403965485 1.0912156403965485 1.0912156403965485" />
          </geometry>
          <material name="white" />
       </visual>
+      <collision group="1">
+         <origin xyz="-0.01576312004268248 0.005481554818680713 0.00314365841547119" rpy="1.7667389173705603 -0.3150040231956488 1.1747126543852418" />
+         <geometry>
+            <cylinder radius="0.009275332943370664" length="0.03396503996425633" />
+         </geometry>
+      </collision>
+      <collision>
+         <origin xyz="-0.03152624008536495 0.010963109637361424 0.006287316830942359" rpy="1.7667389173705603 -0.3150040231956488 1.1747126543852418" />
+         <geometry>
+            <sphere radius="0.009275332943370664" />
+         </geometry>
+      </collision>
+      <collision>
+         <origin xyz="-6.101016971488795e-18 -2.0226336226817973e-18 1.4121890390114466e-17" rpy="1.7667389173705603 -0.3150040231956488 1.1747126543852418" />
+         <geometry>
+            <sphere radius="0.009275332943370664" />
+         </geometry>
+      </collision>
    </link>
    <joint type="revolute" name="mp_flexion_left">
       <parent link="firstmc_left" />
       <child link="proximal_thumb_left" />
-      <origin xyz="-0.029731572672082877 -0.014548207254774124 -0.020878316775212152" rpy="1.252742510164709 0.5549106329448805 0.3775526480844189" />
-      <axis xyz="-7.360873981229693e-17 -1.0205699454745994e-16 -1.0000000000000002" />
+      <origin xyz="-0.024543557824794764 -0.022208793690431786 0.020878316775212156" rpy="1.296173942622059 0.1996933528297966 0.5854313730048055" />
+      <axis xyz="0 0 1" />
       <limit lower="-0.785398" upper="0.698132" effort="100" velocity="100" />
    </joint>
    <link name="distal_thumb_left">
       <inertial>
-         <origin xyz="-0.005505270898240551 -0.01130683517570466 0.0008529188979227928" rpy="1.5541483151428697 0.6236827888860805 -0.41877836332372254" />
+         <origin xyz="-0.007723171635187605 0.009924976032565466 -0.0008529188979227824" rpy="-1.5874443384469235 -0.6236827888860804 0.626945794253178" />
          <mass value="0.003" />
          <inertia ixx="0.0001" iyy="0.0001" izz="0.0001" ixy="0" ixz="0" iyz="0" />
       </inertial>
       <visual name="thumbdist_left">
-         <origin xyz="-0.004542850788736518 -0.010651253216962883 0.0010582698770227829" rpy="1.5220799311772146 0.03178831257590442 -0.4785542231651295" />
+         <origin xyz="-0.006646041619831662 0.00948244795229862 -0.0010582698770227202" rpy="-1.619512722412578 -0.031788312575904865 0.6867216540945855" />
          <geometry>
             <mesh filename="package://myohand_description/meshes/thumbdist_left.stl" scale="1.0912156403965485 1.0912156403965485 1.0912156403965485" />
          </geometry>
          <material name="white" />
       </visual>
+      <collision group="1">
+         <origin xyz="-0.0074408123941092745 0.009178783148257683 -0.0010911573856344438" rpy="1.4763333329308026 -0.224519404893055 0.7022939752955819" />
+         <geometry>
+            <cylinder radius="0.007092901662577565" length="0.023732372288272855" />
+         </geometry>
+      </collision>
+      <collision>
+         <origin xyz="-0.014881624788218618 0.01835756629651538 -0.0021823147712689136" rpy="1.4763333329308026 -0.224519404893055 0.7022939752955819" />
+         <geometry>
+            <sphere radius="0.007092901662577565" />
+         </geometry>
+      </collision>
+      <collision>
+         <origin xyz="7.466413027733222e-17 -8.865679474404003e-18 4.080687645554593e-17" rpy="1.4763333329308026 -0.224519404893055 0.7022939752955819" />
+         <geometry>
+            <sphere radius="0.007092901662577565" />
+         </geometry>
+      </collision>
    </link>
    <joint type="revolute" name="ip_flexion_left">
       <parent link="proximal_thumb_left" />
       <child link="distal_thumb_left" />
-      <origin xyz="-0.014538435925150134 -0.03004542340675508 -0.006287316830942379" rpy="0.29479434175333596 -0.03270997999703473 0.011022901491355958" />
-      <axis xyz="-1.923774407218676e-17 -2.7135002682840594e-16 -1.0000000000000009" />
+      <origin xyz="-0.03152624008536495 0.010963109637361421 0.006287316830942348" rpy="0.2822749386733923 0.09214204995112318 0.5745146568145356" />
+      <axis xyz="0 0 1" />
       <limit lower="-1.309" upper="0.436332" effort="100" velocity="100" />
    </joint>
    <link name="trapezoid_left">
@@ -990,7 +1430,7 @@
          <inertia ixx="0.0001" iyy="0.0001" izz="0.0001" ixy="0" ixz="0" iyz="0" />
       </inertial>
       <visual name="trapezoid_left">
-         <origin xyz="-1.4991943433973096e-06 -1.611784249150837e-06 2.0638522848694803e-07" rpy="0.27598761251820686 -0.5558008487263413 -0.19209924739735607" />
+         <origin xyz="-1.4991943433975696e-06 -1.6117842491503165e-06 2.0638522848538676e-07" rpy="0.27598761251820686 -0.5558008487263413 -0.19209924739735607" />
          <geometry>
             <mesh filename="package://myohand_description/meshes/trapezoid_left.stl" scale="1.0912156403965485 1.0912156403965485 1.0912156403965485" />
          </geometry>
@@ -1000,7 +1440,7 @@
    <joint type="fixed" name="capitate2trapezoid_fixed_left">
       <parent link="capitate_left" />
       <child link="trapezoid_left" />
-      <origin xyz="-0.009976984600145643 -0.004432517931290781 -0.0026887553379370955" rpy="0.0 0.0 0.0" />
+      <origin xyz="-0.009976984600145643 -0.0044325179312907775 -0.0026887553379370955" rpy="0.0 0.0 0.0" />
    </joint>
    <link name="hamate_left">
       <inertial>
@@ -1009,17 +1449,23 @@
          <inertia ixx="0.0001" iyy="0.0001" izz="0.0001" ixy="0" ixz="0" iyz="0" />
       </inertial>
       <visual name="hamate_left">
-         <origin xyz="1.2530312628318597e-05 -1.4991055504421594e-06 1.6594574603566102e-06" rpy="1.9411415415940314 0.45538466433185576 0.6664160632978575" />
+         <origin xyz="1.2530312628318378e-05 -1.4991055504419426e-06 1.6594574603553958e-06" rpy="1.9411415415940314 0.45538466433185576 0.6664160632978575" />
          <geometry>
             <mesh filename="package://myohand_description/meshes/hamate_left.stl" scale="1.0912156403965485 1.0912156403965485 1.0912156403965485" />
          </geometry>
          <material name="white" />
       </visual>
+      <collision group="3" name="APL_torus_wrap">
+         <origin xyz="-0.0089479682512517 0.002509795972912075 -0.011021277968005143" rpy="-1.6087264077298418 0.03976061825679067 0.24651015153668698" />
+         <geometry>
+            <sphere radius="0.004364862561586194" />
+         </geometry>
+      </collision>
    </link>
    <joint type="fixed" name="capitate2hamate_fixed_left">
       <parent link="capitate_left" />
       <child link="hamate_left" />
-      <origin xyz="0.011969544359509742 -0.0027225830227893878 -0.0008184117302974113" rpy="0.0 0.0 0.0" />
+      <origin xyz="0.01196954435950974 -0.002722583022789389 -0.0008184117302974113" rpy="0.0 0.0 0.0" />
    </joint>
    <link name="secondmc_left">
       <inertial>
@@ -1028,35 +1474,71 @@
          <inertia ixx="0.0001" iyy="0.0001" izz="0.0001" ixy="0" ixz="0" iyz="0" />
       </inertial>
       <visual name="2mc_left">
-         <origin xyz="0.00011438630272261157 0.00013791558509674198 -0.00015259020960722188" rpy="-1.228861140749632 1.0576482637579705 -2.995769549013369" />
+         <origin xyz="0.00011438630272261191 0.00013791558509674163 -0.00015259020960722153" rpy="-1.228861140749632 1.0576482637579705 -2.995769549013369" />
          <geometry>
             <mesh filename="package://myohand_description/meshes/2mc_left.stl" scale="1.0912156403965485 1.0912156403965485 1.0912156403965485" />
          </geometry>
          <material name="white" />
       </visual>
+      <collision group="1" name="2mcskin">
+         <origin xyz="-6.938893903907228e-18 -1.5612511283791264e-17 -3.469446951953614e-17" rpy="1.4205934196816252 -0.12133524553074881 -0.13337948934397048" />
+         <geometry>
+            <cylinder radius="0.010912156403965485" length="0.06110807586220672" />
+         </geometry>
+      </collision>
+      <collision name="2mcskin_sphere0">
+         <origin xyz="0.004565938367951593 0.02986810800647728 -0.004538454013072991" rpy="1.4205934196816252 -0.12133524553074881 -0.13337948934397048" />
+         <geometry>
+            <sphere radius="0.010912156403965485" />
+         </geometry>
+      </collision>
+      <collision name="2mcskin_sphere1">
+         <origin xyz="-0.004565938367951607 -0.02986810800647731 0.004538454013072922" rpy="1.4205934196816252 -0.12133524553074881 -0.13337948934397048" />
+         <geometry>
+            <sphere radius="0.010912156403965485" />
+         </geometry>
+      </collision>
    </link>
    <joint type="fixed" name="capitate2secondmc_fixed_left">
       <parent link="capitate_left" />
       <child link="secondmc_left" />
-      <origin xyz="-0.016024501679223313 -0.04105153239171816 0.005490997102475434" rpy="0.0 0.0 0.0" />
+      <origin xyz="-0.016024501679223317 -0.04105153239171815 0.005490997102475432" rpy="0.0 0.0 0.0" />
    </joint>
    <link name="proxph2_left">
       <inertial>
-         <origin xyz="-1.734723475976807e-18 0.0 4.336808689942018e-19" rpy="0.0861356540103359 -0.05502674551362019 -0.002371946121602242" />
+         <origin xyz="0.0 0.0 0.0" rpy="-3.055456999579457 0.05502674551362019 -1.1366448625016767" />
          <mass value="0.01" />
          <inertia ixx="0.0001" iyy="0.0001" izz="0.0001" ixy="0" ixz="0" iyz="0" />
       </inertial>
       <visual name="2proxph_left">
-         <origin xyz="-0.004880666929862634 -0.02479981412527163 0.0027061576790072643" rpy="1.32310707032668 1.2754347723112271 -0.40864446039367786" />
+         <origin xyz="0.02048124983503376 0.014811147677449076 -0.0027061576790072353" rpy="-1.8184855832631142 -1.2754347723112274 -0.7303723482295992" />
          <geometry>
             <mesh filename="package://myohand_description/meshes/2proxph_left.stl" scale="1.0912156403965485 1.0912156403965485 1.0912156403965485" />
          </geometry>
          <material name="white" />
       </visual>
+      <collision group="1">
+         <origin xyz="0.019142123043475335 0.013798349194705578 -0.00172111564439266" rpy="-1.5991363169081687 0.4094608751042059 -0.9962009329687036" />
+         <geometry>
+            <cylinder radius="0.009820940763568936" length="0.04364862561586194" />
+         </geometry>
+      </collision>
+      <collision>
+         <origin xyz="0.0009636925472713698 0.001735038351233337 -0.0011538187848327943" rpy="-1.5991363169081687 0.4094608751042059 -0.9962009329687036" />
+         <geometry>
+            <sphere radius="0.009820940763568936" />
+         </geometry>
+      </collision>
+      <collision>
+         <origin xyz="0.0373205535396793 0.02586166003817782 -0.0022884125039525256" rpy="-1.5991363169081687 0.4094608751042059 -0.9962009329687036" />
+         <geometry>
+            <sphere radius="0.009820940763568936" />
+         </geometry>
+      </collision>
    </link>
    <link name="mcp2_flexion_dummy_left">
       <inertial>
-         <origin xyz="3.469446951953614e-18 2.7755575615628914e-17 3.469446951953614e-18" rpy="1.5707963267948961 1.4708802086674053 1.4708802086674049" />
+         <origin xyz="0.0 0.0 0.0" rpy="-1.570796326794898 -1.4708802086674053 1.4708802086674067" />
          <mass value="0.001" />
          <inertia ixx="1e-09" iyy="1e-09" izz="1e-09" ixy="0" ixz="0" iyz="0" />
       </inertial>
@@ -1064,57 +1546,93 @@
    <joint type="revolute" name="mcp2_flexion_left">
       <parent link="secondmc_left" />
       <child link="mcp2_flexion_dummy_left" />
-      <origin xyz="-0.0038203459570283166 -0.03081920333171972 0.003950200618235505" rpy="-1.5707963267948977 -1.4708802086674053 1.4708802086674064" />
-      <axis xyz="-5.2438525824824176e-20 7.039945989835385e-18 -1.0" />
+      <origin xyz="-0.003820345957028317 -0.030819203331719724 0.003950200618235505" rpy="1.5707963267948977 1.4708802086674053 1.4708802086674064" />
+      <axis xyz="0 0 1" />
       <limit lower="0.0" upper="1.5708" effort="100" velocity="100" />
    </joint>
    <joint type="revolute" name="mcp2_abduction_left">
       <parent link="mcp2_flexion_dummy_left" />
       <child link="proxph2_left" />
-      <origin xyz="6.5919492087118674e-18 2.636779683484747e-17 4.9439619065339e-18" rpy="1.996706135703523 1.4588445662369582 1.9856122470713673" />
-      <axis xyz="-2.8382323702885056e-16 2.4019512150402412e-17 -0.9999999999999999" />
+      <origin xyz="0.0 0.0 0.0" rpy="-1.6244173728776419 -0.5331726913130974 -1.7346192138372336" />
+      <axis xyz="0 0 1" />
       <limit lower="-0.261799" upper="0.261799" effort="100" velocity="100" />
    </joint>
    <link name="midph2_left">
       <inertial>
-         <origin xyz="-6.938893903907228e-18 -8.326672684688674e-17 -3.642919299551295e-17" rpy="2.6739267894988212 1.3474886382146267 2.5617140966854453" />
+         <origin xyz="0.0 0.0 0.0" rpy="-0.4676658640909728 -1.3474886382146265 0.37583864241525383" />
          <mass value="0.003" />
          <inertia ixx="0.0001" iyy="0.0001" izz="0.0001" ixy="0" ixz="0" iyz="0" />
       </inertial>
       <visual name="2midph_left">
-         <origin xyz="-0.001043233545711517 -0.014944528630233623 0.00027198457661847255" rpy="-1.5630400763369499 0.0019507371444629218 3.1305336815451996" />
+         <origin xyz="-0.002006573574445959 -0.01484590632804561 -0.00027198457661837616" rpy="1.5785525772528426 -0.0019507371444631438 -0.1929809424445026" />
          <geometry>
             <mesh filename="package://myohand_description/meshes/2midph_left.stl" scale="1.0912156403965485 1.0912156403965485 1.0912156403965485" />
          </geometry>
          <material name="white" />
       </visual>
+      <collision group="1">
+         <origin xyz="-0.001356634790828285 -0.013100929383171655 -7.60797942607873e-05" rpy="-1.7192532043899433 -1.4104000318721406 3.1098371758654473" />
+         <geometry>
+            <cylinder radius="0.008729725123172388" length="0.026189175369517165" />
+         </geometry>
+      </collision>
+      <collision>
+         <origin xyz="0.0009655706599950623 -0.00021761065040849234 0.00023325321081780676" rpy="-1.7192532043899433 -1.4104000318721406 3.1098371758654473" />
+         <geometry>
+            <sphere radius="0.008729725123172388" />
+         </geometry>
+      </collision>
+      <collision>
+         <origin xyz="-0.003678840241651633 -0.025984248115934826 -0.0003854127993393806" rpy="-1.7192532043899433 -1.4104000318721406 3.1098371758654473" />
+         <geometry>
+            <sphere radius="0.008729725123172388" />
+         </geometry>
+      </collision>
    </link>
    <joint type="revolute" name="pm2_flexion_left">
       <parent link="proxph2_left" />
       <child link="midph2_left" />
-      <origin xyz="-0.00851561258830159 -0.04553843896040004 0.0036331389517985885" rpy="-3.1093030719372425 -1.326545003064804 2.985625911527994" />
-      <axis xyz="-6.004321121326396e-16 -1.7684176337434925e-16 -0.9999999999999996" />
+      <origin xyz="0.037795355237465696 0.026791345676876653 -0.0036331389517985876" rpy="-2.4780393093699837 -1.258961676197502 -1.7039987731665693" />
+      <axis xyz="0 0 1" />
       <limit lower="0.0" upper="1.5708" effort="100" velocity="100" />
    </joint>
    <link name="distph2_left">
       <inertial>
-         <origin xyz="-1.3877787807814457e-17 2.7755575615628914e-17 0.0" rpy="1.5707963267948983 1.4707963268582902 1.4707963268582915" />
+         <origin xyz="0.0 0.0 0.0" rpy="-1.5707963267948983 -1.47079632685829 1.4707963268582915" />
          <mass value="0.002" />
          <inertia ixx="0.0001" iyy="0.0001" izz="0.0001" ixy="0" ixz="0" iyz="0" />
       </inertial>
       <visual name="2distph_left">
-         <origin xyz="-0.0006079583664602546 -0.009329934973297337 0.00023430640444268154" rpy="-1.5239710771919284 0.03676633885392744 3.140805196244449" />
+         <origin xyz="-0.0012577322606451605 -0.009264740122736238 -0.00023430640444270599" rpy="1.6176215763978647 -0.036766338853928104 -0.19921254252786902" />
          <geometry>
             <mesh filename="package://myohand_description/meshes/2distph_left.stl" scale="1.0912156403965485 1.0912156403965485 1.0912156403965485" />
          </geometry>
          <material name="white" />
       </visual>
+      <collision group="1">
+         <origin xyz="-0.0008780401545797598 -0.008751114015624823 -0.00021424582253468886" rpy="-1.6855017794884042 -1.2115640887058536 3.078874800980783" />
+         <geometry>
+            <cylinder radius="0.00763850948277584" length="0.017459450246344776" />
+         </geometry>
+      </collision>
+      <collision>
+         <origin xyz="0.0005990497224731304 -0.00015443301369609666 0.0001370118782102961" rpy="-1.6855017794884042 -1.2115640887058536 3.078874800980783" />
+         <geometry>
+            <sphere radius="0.00763850948277584" />
+         </geometry>
+      </collision>
+      <collision>
+         <origin xyz="-0.00235513003163265 -0.01734779501755355 -0.0005655035232796769" rpy="-1.6855017794884042 -1.2115640887058536 3.078874800980783" />
+         <geometry>
+            <sphere radius="0.00763850948277584" />
+         </geometry>
+      </collision>
    </link>
    <joint type="revolute" name="md2_flexion_left">
       <parent link="midph2_left" />
       <child link="distph2_left" />
-      <origin xyz="-0.001323394321106983 -0.027395033344922184 0.0005722576625926627" rpy="0.022138329695812073 0.19777869365516998 -2.5098334244374673e-05" />
-      <axis xyz="-2.4455606779405633e-18 -4.090344666757575e-17 -0.9999999999999998" />
+      <origin xyz="-0.004255033925347842 -0.027094905624354404 -0.0005722576625926579" rpy="0.018120226299812726 0.19818193015538843 -1.6818641285691258e-05" />
+      <axis xyz="0 0 1" />
       <limit lower="0.0" upper="1.5708" effort="100" velocity="100" />
    </joint>
    <link name="thirdmc_left">
@@ -1124,35 +1642,71 @@
          <inertia ixx="0.0001" iyy="0.0001" izz="0.0001" ixy="0" ixz="0" iyz="0" />
       </inertial>
       <visual name="3mc_left">
-         <origin xyz="-1.3339891705493402e-05 0.0005640207064687221 -0.00026277609802395526" rpy="1.4450266262998412 -0.18035841028182698 0.007490416792627297" />
+         <origin xyz="-1.3339891705492664e-05 0.0005640207064687222 -0.0002627760980239563" rpy="1.4450266262998412 -0.18035841028182698 0.007490416792627297" />
          <geometry>
             <mesh filename="package://myohand_description/meshes/3mc_left.stl" scale="1.0912156403965485 1.0912156403965485 1.0912156403965485" />
          </geometry>
          <material name="white" />
       </visual>
+      <collision group="1" name="3mcskin">
+         <origin xyz="0.0 0.0 0.0" rpy="1.4200074259802784 -0.0015022302266762821 -0.009886525065574636" />
+         <geometry>
+            <cylinder radius="0.010912156403965485" length="0.06110807586220672" />
+         </geometry>
+      </collision>
+      <collision name="3mcskin_sphere0">
+         <origin xyz="0.00030553528699684123 0.03020579311023684 -0.004589765208076663" rpy="1.4200074259802784 -0.0015022302266762821 -0.009886525065574636" />
+         <geometry>
+            <sphere radius="0.010912156403965485" />
+         </geometry>
+      </collision>
+      <collision name="3mcskin_sphere1">
+         <origin xyz="-0.00030553528699684123 -0.03020579311023684 0.004589765208076663" rpy="1.4200074259802784 -0.0015022302266762821 -0.009886525065574636" />
+         <geometry>
+            <sphere radius="0.010912156403965485" />
+         </geometry>
+      </collision>
    </link>
    <joint type="fixed" name="capitate2thirdmc_fixed_left">
       <parent link="capitate_left" />
       <child link="thirdmc_left" />
-      <origin xyz="-0.0005205098604691534 -0.04281821051352017 0.00804989777920534" rpy="0.0 0.0 0.0" />
+      <origin xyz="-0.000520509860469154 -0.04281821051352017 0.008049897779205338" rpy="0.0 0.0 0.0" />
    </joint>
    <link name="proxph3_left">
       <inertial>
-         <origin xyz="0.0 1.3877787807814457e-17 -1.734723475976807e-18" rpy="0.0 -0.19999959192895989 0.0" />
+         <origin xyz="0.0 0.0 0.0" rpy="3.141592653589793 0.19999959192896033 3.141592653589793" />
          <mass value="0.01" />
          <inertia ixx="0.0001" iyy="0.0001" izz="0.0001" ixy="0" ixz="0" iyz="0" />
       </inertial>
       <visual name="3proxph_left">
-         <origin xyz="-0.002125789382810408 -0.0254126605783231 0.004590544777638536" rpy="1.1265372608123134 1.2987544122063608 -0.46937964805067295" />
+         <origin xyz="0.0021257893828104495 -0.025412660578323074 -0.0045905447776385085" rpy="-2.015055392777479 -1.2987544122063603 -2.6722130055391218" />
          <geometry>
             <mesh filename="package://myohand_description/meshes/3proxph_left.stl" scale="1.0912156403965485 1.0912156403965485 1.0912156403965485" />
          </geometry>
          <material name="white" />
       </visual>
+      <collision group="1">
+         <origin xyz="0.001936626645289905 -0.02400674408872405 -0.004061065622732037" rpy="-1.641707168863193 0.5522284148124852 -3.120570538876546" />
+         <geometry>
+            <cylinder radius="0.009820940763568936" length="0.04801348817744813" />
+         </geometry>
+      </collision>
+      <collision>
+         <origin xyz="0.0005411824527041711 -8.437906376826051e-05 -0.002612981074220228" rpy="-1.641707168863193 0.5522284148124852 -3.120570538876546" />
+         <geometry>
+            <sphere radius="0.009820940763568936" />
+         </geometry>
+      </collision>
+      <collision>
+         <origin xyz="0.0033320708378756425 -0.04792910911367984 -0.005509150171243846" rpy="-1.641707168863193 0.5522284148124852 -3.120570538876546" />
+         <geometry>
+            <sphere radius="0.009820940763568936" />
+         </geometry>
+      </collision>
    </link>
    <link name="mcp3_flexion_dummy_left">
       <inertial>
-         <origin xyz="4.336808689942018e-19 0.0 0.0" rpy="0.0 1.370796734865936 0.0" />
+         <origin xyz="0.0 0.0 0.0" rpy="3.141592653589793 -1.3707967348659362 3.141592653589793" />
          <mass value="0.001" />
          <inertia ixx="1e-09" iyy="1e-09" izz="1e-09" ixy="0" ixz="0" iyz="0" />
       </inertial>
@@ -1160,15 +1714,15 @@
    <joint type="revolute" name="mcp3_flexion_left">
       <parent link="thirdmc_left" />
       <child link="mcp3_flexion_dummy_left" />
-      <origin xyz="-0.00026189175369517115 -0.028688059186025267 0.0019401814086250635" rpy="0.0 -1.370796734865936 0.0" />
-      <axis xyz="1.842288986358278e-17 0.0 -1.0" />
+      <origin xyz="-0.0002618917536951716 -0.028688059186025267 0.0019401814086250635" rpy="-3.141592653589793 1.3707967348659365 3.141592653589793" />
+      <axis xyz="0 0 1" />
       <limit lower="0.0" upper="1.5708" effort="100" velocity="100" />
    </joint>
    <joint type="revolute" name="mcp3_abduction_left">
       <parent link="mcp3_flexion_dummy_left" />
       <child link="proxph3_left" />
-      <origin xyz="3.0899761915836877e-19 -1.3183898417423735e-17 0.0" rpy="-0.0 1.5707963267948961 0.0" />
-      <axis xyz="-4.59135596783022e-18 0.0 -1.0" />
+      <origin xyz="0.0 0.0 0.0" rpy="2.4248822959354163e-16 1.5707963267948966 0.0" />
+      <axis xyz="0 0 1" />
       <limit lower="-0.261799" upper="0.261799" effort="100" velocity="100" />
    </joint>
    <link name="midph3_left">
@@ -1178,18 +1732,36 @@
          <inertia ixx="0.0001" iyy="0.0001" izz="0.0001" ixy="0" ixz="0" iyz="0" />
       </inertial>
       <visual name="3midph_left">
-         <origin xyz="-0.0007437811749429299 -0.016232856613813084 0.0017325071097409096" rpy="-0.7901456653983319 1.4979259934357856 -2.4117147631811813" />
+         <origin xyz="-0.0007437811749429757 -0.01623285661381299 0.0017325071097409363" rpy="-0.790145665398333 1.4979259934357856 -2.411714763181182" />
          <geometry>
             <mesh filename="package://myohand_description/meshes/3midph_left.stl" scale="1.0912156403965485 1.0912156403965485 1.0912156403965485" />
          </geometry>
          <material name="white" />
       </visual>
+      <collision group="1">
+         <origin xyz="-0.0013094587684758588 -0.01527701896555168 0.0" rpy="1.5486879881801063 -0.3511682583228186 -0.05240669517806007" />
+         <geometry>
+            <cylinder radius="0.008729725123172388" length="0.03055403793110336" />
+         </geometry>
+      </collision>
+      <collision>
+         <origin xyz="-0.0003933875042389165 -3.078787971206101e-05 -0.00031711132089973226" rpy="1.5486879881801063 -0.3511682583228186 -0.05240669517806007" />
+         <geometry>
+            <sphere radius="0.008729725123172388" />
+         </geometry>
+      </collision>
+      <collision>
+         <origin xyz="-0.002225530032712794 -0.0305232500513913 0.00031711132089973226" rpy="1.5486879881801063 -0.3511682583228186 -0.05240669517806007" />
+         <geometry>
+            <sphere radius="0.008729725123172388" />
+         </geometry>
+      </collision>
    </link>
    <joint type="revolute" name="pm3_flexion_left">
       <parent link="proxph3_left" />
       <child link="midph3_left" />
-      <origin xyz="-0.003115221426221413 -0.0482437346775718 0.0063050565727784105" rpy="0.0 -0.19999959192895989 0.0" />
-      <axis xyz="0.9999999999999999 0.0 -1.1075375161486551e-18" />
+      <origin xyz="0.0031152214262214132 -0.048243734677571815 -0.0063050565727784105" rpy="3.141592653589793 0.19999959192896033 3.141592653589793" />
+      <axis xyz="1.0 0.0 0.0" />
       <limit lower="0.0" upper="1.5708" effort="100" velocity="100" />
    </joint>
    <link name="distph3_left">
@@ -1199,18 +1771,36 @@
          <inertia ixx="0.0001" iyy="0.0001" izz="0.0001" ixy="0" ixz="0" iyz="0" />
       </inertial>
       <visual name="3distph_left">
-         <origin xyz="-0.0006845750437656936 -0.009339593144242661 -3.544380817686573e-05" rpy="0.4079397820603101 1.4851549016387628 -1.2108481043436292" />
+         <origin xyz="-0.0006845750437657061 -0.009339593144242757 -3.54438081768757e-05" rpy="0.4079397820603119 1.4851549016387633 -1.2108481043436274" />
          <geometry>
             <mesh filename="package://myohand_description/meshes/3distph_left.stl" scale="1.0912156403965485 1.0912156403965485 1.0912156403965485" />
          </geometry>
          <material name="white" />
       </visual>
+      <collision group="1">
+         <origin xyz="-0.0014185803325155108 -0.009820940763568872 -0.0021824312807930957" rpy="1.5999635237216727 0.001459368385735571 -0.049978715644726" />
+         <geometry>
+            <cylinder radius="0.00763850948277584" length="0.017459450246344776" />
+         </geometry>
+      </collision>
+      <collision>
+         <origin xyz="-0.000982275922897985 -0.001105843199923958 -0.0019278460407535225" rpy="1.5999635237216727 0.001459368385735571 -0.049978715644726" />
+         <geometry>
+            <sphere radius="0.00763850948277584" />
+         </geometry>
+      </collision>
+      <collision>
+         <origin xyz="-0.0018548847421330367 -0.018536038327213778 -0.0024370165208326966" rpy="1.5999635237216727 0.001459368385735571 -0.049978715644726" />
+         <geometry>
+            <sphere radius="0.00763850948277584" />
+         </geometry>
+      </collision>
    </link>
    <joint type="revolute" name="md3_flexion_left">
       <parent link="midph3_left" />
       <child link="distph3_left" />
-      <origin xyz="-0.0014895093491412892 -0.03169654070659855 0.002132235361334855" rpy="0.0 0.0 0.0" />
-      <axis xyz="0.9999999999999999 0.0 -1.1075375161486551e-18" />
+      <origin xyz="-0.001489509349141288 -0.03169654070659855 0.0021322353613348576" rpy="0.0 0.0 0.0" />
+      <axis xyz="1.0 0.0 0.0" />
       <limit lower="0.0" upper="1.5708" effort="100" velocity="100" />
    </joint>
    <link name="fourthmc_left">
@@ -1220,35 +1810,71 @@
          <inertia ixx="0.0001" iyy="0.0001" izz="0.0001" ixy="0" ixz="0" iyz="0" />
       </inertial>
       <visual name="4mc_left">
-         <origin xyz="-4.7796698384546585e-05 0.0005804645102251922 -0.00018198006768264073" rpy="1.5268660941250807 0.3772702504935901 0.07031755099911197" />
+         <origin xyz="-4.779669838454563e-05 0.0005804645102251912 -0.0001819800676826494" rpy="1.5268660941250807 0.3772702504935901 0.07031755099911197" />
          <geometry>
             <mesh filename="package://myohand_description/meshes/4mc_left.stl" scale="1.0912156403965485 1.0912156403965485 1.0912156403965485" />
          </geometry>
          <material name="white" />
       </visual>
+      <collision group="1" name="4mcskin">
+         <origin xyz="-0.00109121564039656 0.0021824312807930974 -6.938893903907228e-18" rpy="1.5500664936771607 0.0016618130649093121 0.0799827748254357" />
+         <geometry>
+            <cylinder radius="0.01036654858376721" length="0.05674321330062052" />
+         </geometry>
+      </collision>
+      <collision name="4mcskin_sphere0">
+         <origin xyz="-0.0033585239032698482 0.030457181864401293 -0.0005880957369199455" rpy="1.5500664936771607 0.0016618130649093121 0.0799827748254357" />
+         <geometry>
+            <sphere radius="0.01036654858376721" />
+         </geometry>
+      </collision>
+      <collision name="4mcskin_sphere1">
+         <origin xyz="0.0011760926224767265 -0.026092319302815102 0.0005880957369199316" rpy="1.5500664936771607 0.0016618130649093121 0.0799827748254357" />
+         <geometry>
+            <sphere radius="0.01036654858376721" />
+         </geometry>
+      </collision>
    </link>
    <joint type="fixed" name="capitate2fourthmc_fixed_left">
       <parent link="capitate_left" />
       <child link="fourthmc_left" />
-      <origin xyz="0.013144783604216823 -0.044214966533227755 0.003833440544713075" rpy="0.0 0.0 0.0" />
+      <origin xyz="0.013144783604216823 -0.04421496653322775 0.003833440544713075" rpy="0.0 0.0 0.0" />
    </joint>
    <link name="proxph4_left">
       <inertial>
-         <origin xyz="-1.734723475976807e-18 1.3877787807814457e-17 -2.6020852139652106e-18" rpy="0.0 -0.4500004640280284 0.0" />
+         <origin xyz="0.0 0.0 0.0" rpy="3.141592653589793 0.4500004640280286 3.141592653589793" />
          <mass value="0.01" />
          <inertia ixx="0.0001" iyy="0.0001" izz="0.0001" ixy="0" ixz="0" iyz="0" />
       </inertial>
       <visual name="4proxph_left">
-         <origin xyz="0.001454035356757294 -0.0235614785283727 0.0023162657504834923" rpy="0.6976319582938992 1.4758909364414672 -0.7976662974326221" />
+         <origin xyz="-0.0014540353567572965 -0.023561478528372697 -0.0023162657504834745" rpy="-2.4439606952958948 -1.4758909364414672 -2.3439263561571706" />
          <geometry>
             <mesh filename="package://myohand_description/meshes/4proxph_left.stl" scale="1.0912156403965485 1.0912156403965485 1.0912156403965485" />
          </geometry>
          <material name="white" />
       </visual>
+      <collision group="1">
+         <origin xyz="-0.0006028684213491613 -0.021824312807930967 -0.001260707042753192" rpy="-1.6101729984861737 0.448392495812437 3.0527947639242243" />
+         <geometry>
+            <cylinder radius="0.009275332943370664" length="0.03928376305427574" />
+         </geometry>
+      </collision>
+      <collision>
+         <origin xyz="0.0008037588259204113 -0.0022452579945829963 -0.0005639127192441647" rpy="-1.6101729984861737 0.448392495812437 3.0527947639242243" />
+         <geometry>
+            <sphere radius="0.009275332943370664" />
+         </geometry>
+      </collision>
+      <collision>
+         <origin xyz="-0.0020094956686187403 -0.04140336762127895 -0.0019575013662622067" rpy="-1.6101729984861737 0.448392495812437 3.0527947639242243" />
+         <geometry>
+            <sphere radius="0.009275332943370664" />
+         </geometry>
+      </collision>
    </link>
    <link name="mcp4_flexion_dummy_left">
       <inertial>
-         <origin xyz="1.734723475976807e-18 0.0 8.673617379884035e-19" rpy="0.0 1.120795862766868 0.0" />
+         <origin xyz="0.0 0.0 0.0" rpy="3.141592653589793 -1.120795862766868 3.141592653589793" />
          <mass value="0.001" />
          <inertia ixx="1e-09" iyy="1e-09" izz="1e-09" ixy="0" ixz="0" iyz="0" />
       </inertial>
@@ -1256,57 +1882,93 @@
    <joint type="revolute" name="mcp4_flexion_left">
       <parent link="fourthmc_left" />
       <child link="mcp4_flexion_dummy_left" />
-      <origin xyz="0.001996924621925684 -0.02584980730535384 -0.0001887803057886027" rpy="0.0 -1.1207958627668684 0.0" />
-      <axis xyz="-7.907580905939781e-17 0.0 -1.0" />
+      <origin xyz="0.0019969246219256834 -0.025849807305353835 -0.00018878030578860314" rpy="-3.141592653589793 1.1207958627668684 3.141592653589793" />
+      <axis xyz="0 0 1" />
       <limit lower="0.0" upper="1.5708" effort="100" velocity="100" />
    </joint>
    <joint type="revolute" name="mcp4_abduction_left">
       <parent link="mcp4_flexion_dummy_left" />
       <child link="proxph4_left" />
-      <origin xyz="3.2959746043559337e-18 -1.3183898417423735e-17 1.5449880957918439e-19" rpy="-0.0 1.5707963267948961 0.0" />
-      <axis xyz="4.994681042330142e-17 0.0 -1.0000000000000002" />
+      <origin xyz="0.0 0.0 0.0" rpy="2.3273762136668943e-16 1.5707963267948966 0.0" />
+      <axis xyz="0 0 1" />
       <limit lower="-0.261799" upper="0.261799" effort="100" velocity="100" />
    </joint>
    <link name="midph4_left">
       <inertial>
-         <origin xyz="0.0 2.7755575615628914e-17 1.734723475976807e-18" rpy="-5.8096713723763484e-33 1.1707966444174693 -6.285106853470097e-33" />
+         <origin xyz="0.0 0.0 0.0" rpy="3.141592653589793 -1.1707966444174698 3.141592653589793" />
          <mass value="0.003" />
          <inertia ixx="0.0001" iyy="0.0001" izz="0.0001" ixy="0" ixz="0" iyz="0" />
       </inertial>
       <visual name="4midph_left">
-         <origin xyz="0.0012854336845298405 -0.014311424955266315 -0.0013640544306725247" rpy="-1.624420311140701 0.00529879897844765 -3.0977891945924623" />
+         <origin xyz="-0.0012854336845297782 -0.014311424955266371 0.0013640544306724898" rpy="1.5171723424490917 -0.0052987989784465395 -0.04380345899733129" />
          <geometry>
             <mesh filename="package://myohand_description/meshes/4midph_left.stl" scale="1.0912156403965485 1.0912156403965485 1.0912156403965485" />
          </geometry>
          <material name="white" />
       </visual>
+      <collision group="1">
+         <origin xyz="0.0010050762973854296 -0.013094587684758581 0.00042493906654959775" rpy="-1.375133389159768 -1.162576284599265 2.938907776718764" />
+         <geometry>
+            <cylinder radius="0.008184117302974114" length="0.02182431280793097" />
+         </geometry>
+      </collision>
+      <collision>
+         <origin xyz="0.0012524582706442454 -0.0022177922517256365 -0.000417248948008442" rpy="-1.375133389159768 -1.162576284599265 2.938907776718764" />
+         <geometry>
+            <sphere radius="0.008184117302974114" />
+         </geometry>
+      </collision>
+      <collision>
+         <origin xyz="0.0007576943241266146 -0.023971383117791525 0.0012671270811076359" rpy="-1.375133389159768 -1.162576284599265 2.938907776718764" />
+         <geometry>
+            <sphere radius="0.008184117302974114" />
+         </geometry>
+      </collision>
    </link>
    <joint type="revolute" name="pm4_flexion_left">
       <parent link="proxph4_left" />
       <child link="midph4_left" />
-      <origin xyz="0.002828155363936046 -0.04392688560416305 0.002996108182399035" rpy="-3.141592653589793 -1.5207955451442956 -3.141592653589793" />
-      <axis xyz="-1.228163387906391e-16 -2.5729218551481257e-33 -1.0000000000000002" />
+      <origin xyz="-0.0028281553639360442 -0.043926885604163066 -0.002996108182399038" rpy="3.141592653589791 -1.5207955451442945 -3.141592653589791" />
+      <axis xyz="0 0 1" />
       <limit lower="0.0" upper="1.5708" effort="100" velocity="100" />
    </joint>
    <link name="distph4_left">
       <inertial>
-         <origin xyz="-3.469446951953614e-18 2.7755575615628914e-17 7.589415207398531e-18" rpy="9.507900496666728e-34 0.9707969349430008 -3.875608070853002e-33" />
+         <origin xyz="0.0 0.0 0.0" rpy="3.141592653589793 -0.970796934943 3.141592653589793" />
          <mass value="0.002" />
          <inertia ixx="0.0001" iyy="0.0001" izz="0.0001" ixy="0" ixz="0" iyz="0" />
       </inertial>
       <visual name="4distph_left">
-         <origin xyz="0.0013485345772644582 -0.009657786641601888 6.261121284748261e-05" rpy="-1.5832780312239771 0.030396363417948935 -2.9652765496152345" />
+         <origin xyz="-0.0013485345772644415 -0.009657786641601836 -6.261121284754676e-05" rpy="1.558314622365815 -0.03039636341794849 -0.17631610397455866" />
          <geometry>
             <mesh filename="package://myohand_description/meshes/4distph_left.stl" scale="1.0912156403965485 1.0912156403965485 1.0912156403965485" />
          </geometry>
          <material name="white" />
       </visual>
+      <collision group="1">
+         <origin xyz="0.0018012390125480456 -0.010912156403965485 0.001232292300981847" rpy="-1.397497702694938 -0.9606544538092737 2.966539986922986" />
+         <geometry>
+            <cylinder radius="0.007420266354696529" length="0.017459450246344776" />
+         </geometry>
+      </collision>
+      <collision>
+         <origin xyz="0.0020840045706168884 -0.002229747276781076 0.00036978658302859804" rpy="-1.397497702694938 -0.9606544538092737 2.966539986922986" />
+         <geometry>
+            <sphere radius="0.007420266354696529" />
+         </geometry>
+      </collision>
+      <collision>
+         <origin xyz="0.0015184734544792023 -0.019594565531149893 0.002094798018935096" rpy="-1.397497702694938 -0.9606544538092737 2.966539986922986" />
+         <geometry>
+            <sphere radius="0.007420266354696529" />
+         </geometry>
+      </collision>
    </link>
    <joint type="revolute" name="md4_flexion_left">
       <parent link="midph4_left" />
       <child link="distph4_left" />
-      <origin xyz="0.001550441772623424 -0.027050144509790056 -0.0020895210865746164" rpy="-4.462365316954919e-33 0.19999970947446855 -1.3781457552156878e-33" />
-      <axis xyz="-5.254894459090136e-16 -3.28052241842023e-33 -1.0000000000000007" />
+      <origin xyz="-0.0015504417726234152 -0.02705014450979004 0.002089521086574618" rpy="4.865991258798914e-17 0.19999970947446966 -2.2559491645940666e-16" />
+      <axis xyz="0 0 1" />
       <limit lower="0.0" upper="1.5708" effort="100" velocity="100" />
    </joint>
    <link name="fifthmc_left">
@@ -1316,35 +1978,71 @@
          <inertia ixx="0.0001" iyy="0.0001" izz="0.0001" ixy="0" ixz="0" iyz="0" />
       </inertial>
       <visual name="5mc_left">
-         <origin xyz="-0.00021243305008746238 0.00045668960348956494 -0.0001403838303151512" rpy="1.6537260233892073 1.161764483067726 0.20407074680325366" />
+         <origin xyz="-0.00021243305008746688 0.0004566896034895649 -0.00014038383031515084" rpy="1.6537260233892073 1.161764483067726 0.20407074680325366" />
          <geometry>
             <mesh filename="package://myohand_description/meshes/5mc_left.stl" scale="1.0912156403965485 1.0912156403965485 1.0912156403965485" />
          </geometry>
          <material name="white" />
       </visual>
+      <collision group="1" name="5mcskin">
+         <origin xyz="-0.0010912156403965478 0.0021824312807930783 -0.0010912156403965478" rpy="1.5997537146198217 -0.0037852640777780167 0.12994519042460329" />
+         <geometry>
+            <cylinder radius="0.01036654858376721" length="0.05237835073903433" />
+         </geometry>
+      </collision>
+      <collision name="5mcskin_sphere0">
+         <origin xyz="-0.004486226935340731 0.028139546848501125 -0.00033295694629920797" rpy="1.5997537146198217 -0.0037852640777780167 0.12994519042460329" />
+         <geometry>
+            <sphere radius="0.01036654858376721" />
+         </geometry>
+      </collision>
+      <collision name="5mcskin_sphere1">
+         <origin xyz="0.002303795654547632 -0.023774684286914975 -0.0018494743344938877" rpy="1.5997537146198217 -0.0037852640777780167 0.12994519042460329" />
+         <geometry>
+            <sphere radius="0.01036654858376721" />
+         </geometry>
+      </collision>
    </link>
    <joint type="fixed" name="capitate2fifthmc_fixed_left">
       <parent link="capitate_left" />
       <child link="fifthmc_left" />
-      <origin xyz="0.023893257662122826 -0.03784663205587349 -0.004602747571192643" rpy="0.0 0.0 0.0" />
+      <origin xyz="0.023893257662122826 -0.03784663205587349 -0.004602747571192642" rpy="0.0 0.0 0.0" />
    </joint>
    <link name="proxph5_left">
       <inertial>
-         <origin xyz="-3.469446951953614e-18 0.0 -5.204170427930421e-18" rpy="0.0 -0.599999391851897 0.0" />
+         <origin xyz="0.0 0.0 0.0" rpy="3.141592653589793 0.5999993918518967 3.141592653589793" />
          <mass value="0.005" />
          <inertia ixx="0.0001" iyy="0.0001" izz="0.0001" ixy="0" ixz="0" iyz="0" />
       </inertial>
       <visual name="5proxph_left">
-         <origin xyz="0.0037130494653037876 -0.021083925719690318 0.0009617048071497659" rpy="-1.4569822139036388 1.3815149067226087 -2.8851965671744555" />
+         <origin xyz="-0.0037130494653037764 -0.021083925719690262 -0.0009617048071497691" rpy="1.6846104396861534 -1.381514906722609 -0.2563960864153376" />
          <geometry>
             <mesh filename="package://myohand_description/meshes/5proxph_left.stl" scale="1.0912156403965485 1.0912156403965485 1.0912156403965485" />
          </geometry>
          <material name="white" />
       </visual>
+      <collision group="1">
+         <origin xyz="-0.003934150819803918 -0.01964188152713787 -4.719943892472643e-05" rpy="-1.530435056585738 0.6074813000563752 3.020434015319068" />
+         <geometry>
+            <cylinder radius="0.008729725123172388" length="0.03491890049268955" />
+         </geometry>
+      </collision>
+      <collision>
+         <origin xyz="-0.0014264994418236403 -0.0023731386445353143 -0.0006256514470169156" rpy="-1.530435056585738 0.6074813000563752 3.020434015319068" />
+         <geometry>
+            <sphere radius="0.008729725123172388" />
+         </geometry>
+      </collision>
+      <collision>
+         <origin xyz="-0.0064418021977841935 -0.03691062440974043 0.0005312525691674647" rpy="-1.530435056585738 0.6074813000563752 3.020434015319068" />
+         <geometry>
+            <sphere radius="0.008729725123172388" />
+         </geometry>
+      </collision>
    </link>
    <link name="mcp5_flexion_dummy_left">
       <inertial>
-         <origin xyz="-3.469446951953614e-18 1.3877787807814457e-17 -2.6020852139652106e-18" rpy="0.0 0.9707969349430003 0.0" />
+         <origin xyz="0.0 0.0 0.0" rpy="3.141592653589793 -0.970796934943 3.141592653589793" />
          <mass value="0.001" />
          <inertia ixx="1e-09" iyy="1e-09" izz="1e-09" ixy="0" ixz="0" iyz="0" />
       </inertial>
@@ -1352,62 +2050,98 @@
    <joint type="revolute" name="mcp5_flexion_left">
       <parent link="fifthmc_left" />
       <child link="mcp5_flexion_dummy_left" />
-      <origin xyz="0.0017426713777132878 -0.023385842389338427 -0.0016324585980332371" rpy="0.0 -0.9707969349430003 0.0" />
-      <axis xyz="2.7011479700438378e-17 0.0 -1.0" />
+      <origin xyz="0.001742671377713289 -0.023385842389338433 -0.0016324585980332365" rpy="-3.141592653589793 0.9707969349430003 3.141592653589793" />
+      <axis xyz="0 0 1" />
       <limit lower="0.0" upper="1.5708" effort="100" velocity="100" />
    </joint>
    <joint type="revolute" name="mcp5_abduction_left">
       <parent link="mcp5_flexion_dummy_left" />
       <child link="proxph5_left" />
-      <origin xyz="3.2959746043559337e-18 0.0 -1.6479873021779669e-18" rpy="-0.0 1.5707963267948966 0.0" />
-      <axis xyz="1.804436795852415e-16 0.0 -1.0000000000000002" />
+      <origin xyz="0.0 0.0 0.0" rpy="2.235391838695488e-16 1.5707963267948966 0.0" />
+      <axis xyz="0 0 1" />
       <limit lower="-0.261799" upper="0.261799" effort="100" velocity="100" />
    </joint>
    <link name="midph5_left">
       <inertial>
-         <origin xyz="-6.938893903907228e-18 1.3877787807814457e-17 -1.734723475976807e-18" rpy="0.0 0.9707969349430003 0.0" />
+         <origin xyz="0.0 0.0 0.0" rpy="3.141592653589793 -0.970796934943 3.141592653589793" />
          <mass value="0.002" />
          <inertia ixx="0.0001" iyy="0.0001" izz="0.0001" ixy="0" ixz="0" iyz="0" />
       </inertial>
       <visual name="5midph_left">
-         <origin xyz="-0.000209763230521209 -0.012844246409209248 -0.002279325925178824" rpy="-1.7327462170365329 -0.1431630889135289 -3.08764894477981" />
+         <origin xyz="0.0002097632305212694 -0.012844246409209264 0.0022793259251788125" rpy="1.4088464365532598 0.14316308891352914 -0.053943708809983004" />
          <geometry>
             <mesh filename="package://myohand_description/meshes/5midph_left.stl" scale="1.0912156403965485 1.0912156403965485 1.0912156403965485" />
          </geometry>
          <material name="white" />
       </visual>
+      <collision group="1">
+         <origin xyz="0.0016354026151941313 -0.012003372044362037 0.0024409848825013344" rpy="-1.2932653316807587 -0.9476285009282254 2.9362510521262295" />
+         <geometry>
+            <cylinder radius="0.00763850948277584" length="0.01964188152713787" />
+         </geometry>
+      </collision>
+      <collision>
+         <origin xyz="0.001422197055089702 -0.0023111378958638254 0.000870628846006519" rpy="-1.2932653316807587 -0.9476285009282254 2.9362510521262295" />
+         <geometry>
+            <sphere radius="0.00763850948277584" />
+         </geometry>
+      </collision>
+      <collision>
+         <origin xyz="0.0018486081752985607 -0.021695606192860248 0.0040113409189961495" rpy="-1.2932653316807587 -0.9476285009282254 2.9362510521262295" />
+         <geometry>
+            <sphere radius="0.00763850948277584" />
+         </geometry>
+      </collision>
    </link>
    <joint type="revolute" name="pm5_flexion_left">
       <parent link="proxph5_left" />
       <child link="midph5_left" />
-      <origin xyz="0.006528255140883938 -0.03880690181942246 0.0006597519698786732" rpy="0.0 -1.5707963267948961 0.0" />
-      <axis xyz="1.019142349991081e-16 0.0 -1.0000000000000004" />
+      <origin xyz="-0.00652825514088394 -0.03880690181942245 -0.0006597519698786737" rpy="-5.331598161240296e-17 -1.5707963267948963 0.0" />
+      <axis xyz="0 0 1" />
       <limit lower="0.0" upper="1.5708" effort="100" velocity="100" />
    </joint>
    <link name="distph5_left">
       <inertial>
-         <origin xyz="1.0408340855860843e-17 0.0 5.204170427930421e-18" rpy="-0.30068756862856233 0.6985554313998295 -0.11023436132302195" />
+         <origin xyz="0.0 0.0 0.0" rpy="2.8409050849612303 -0.6985554313998293 -2.3532617678330627" />
          <mass value="0.001" />
          <inertia ixx="0.0001" iyy="0.0001" izz="0.0001" ixy="0" ixz="0" iyz="0" />
       </inertial>
       <visual name="5distph_left">
-         <origin xyz="0.0011069679115155535 -0.008597030397592735 0.00048825809364410336" rpy="-1.5131584280044281 0.07399081576380362 -2.9725845702930727" />
+         <origin xyz="0.0045309471617629715 -0.007389507928919811 -0.00048825809364413204" rpy="1.628434225585365 -0.07399081576380384 0.5090884411369876" />
          <geometry>
             <mesh filename="package://myohand_description/meshes/5distph_left.stl" scale="1.0912156403965485 1.0912156403965485 1.0912156403965485" />
          </geometry>
          <material name="white" />
       </visual>
+      <collision group="1">
+         <origin xyz="0.0066191615627092405 -0.007563551841191804 -0.0004908131948356388" rpy="-1.7080395488507394 -0.7164260258630066 -2.482767226983685" />
+         <geometry>
+            <cylinder radius="0.006547293842379291" length="0.01527701896555168" />
+         </geometry>
+      </collision>
+      <collision>
+         <origin xyz="0.002529570039553292 -0.0011603557039917025 0.0002973159321056102" rpy="-1.7080395488507394 -0.7164260258630066 -2.482767226983685" />
+         <geometry>
+            <sphere radius="0.006547293842379291" />
+         </geometry>
+      </collision>
+      <collision>
+         <origin xyz="0.01070875308586519 -0.013966747978391902 -0.0012789423217768902" rpy="-1.7080395488507394 -0.7164260258630066 -2.482767226983685" />
+         <geometry>
+            <sphere radius="0.006547293842379291" />
+         </geometry>
+      </collision>
    </link>
    <joint type="revolute" name="md5_flexion_left">
       <parent link="midph5_left" />
       <child link="distph5_left" />
-      <origin xyz="-0.00025113395451318833 -0.02256306579647942 -0.003967694418063878" rpy="0.20638367854381948 0.2682608800927275 -0.08747994233519726" />
-      <axis xyz="-3.067053893791756e-16 3.6436868920186926e-17 -1.0000000000000002" />
+      <origin xyz="0.00025113395451319235 -0.022563065796479445 0.003967694418063864" rpy="-0.3270437039190569 0.08255811450688944 -0.5762987939281994" />
+      <axis xyz="0 0 1" />
       <limit lower="0.0" upper="1.5708" effort="100" velocity="100" />
    </joint>
    <link name="THtip_left">
       <inertial>
-         <origin xyz="-1.3877787807814457e-17 0.0 0.0" rpy="-8.981636647091639e-18 0.0 9.901469019638499e-18" />
+         <origin xyz="0.0 0.0 0.0" rpy="0.0 0.0 0.0" />
          <mass value="0.001" />
          <inertia ixx="1e-09" iyy="1e-09" izz="1e-09" ixy="0" ixz="0" iyz="0" />
       </inertial>
@@ -1415,11 +2149,11 @@
    <joint type="fixed" name="THtip_joint_left">
       <parent link="distal_thumb_left" />
       <child link="THtip_left" />
-      <origin xyz="-0.010739724593419112 -0.02347499067048486 0.002273107196620625" rpy="-0.5009125402511723 -0.05012299056598346 0.012825373716091937" />
+      <origin xyz="-0.015359379356017569 0.0207486466334502 -0.002273107196620666" rpy="2.6406801133386213 0.05012299056598368 0.19534205721336395" />
    </joint>
    <link name="IFtip_left">
       <inertial>
-         <origin xyz="-3.469446951953614e-18 0.0 0.0" rpy="1.9842975991750576e-18 0.0 -4.128063011068848e-20" />
+         <origin xyz="0.0 0.0 0.0" rpy="0.0 0.0 0.0" />
          <mass value="0.001" />
          <inertia ixx="1e-09" iyy="1e-09" izz="1e-09" ixy="0" ixz="0" iyz="0" />
       </inertial>
@@ -1427,7 +2161,7 @@
    <joint type="fixed" name="IFtip_joint_left">
       <parent link="distph2_left" />
       <child link="IFtip_left" />
-      <origin xyz="-0.0019728713900546246 -0.01966290765004393 0.0002106120738485518" rpy="1.5707963267948983 1.4707963268582902 1.4707963268582915" />
+      <origin xyz="-0.0019728713900546107 -0.019662907650043953 -0.00021061207384855162" rpy="-1.5707963267948983 -1.47079632685829 1.4707963268582915" />
    </joint>
    <link name="MFtip_left">
       <inertial>
@@ -1443,7 +2177,7 @@
    </joint>
    <link name="RFtip_left">
       <inertial>
-         <origin xyz="0.0 0.0 0.0" rpy="0.0 0.0 1.7105694144590052e-49" />
+         <origin xyz="0.0 0.0 0.0" rpy="0.0 0.0 0.0" />
          <mass value="0.001" />
          <inertia ixx="1e-09" iyy="1e-09" izz="1e-09" ixy="0" ixz="0" iyz="0" />
       </inertial>
@@ -1451,11 +2185,11 @@
    <joint type="fixed" name="RFtip_joint_left">
       <parent link="distph4_left" />
       <child link="RFtip_left" />
-      <origin xyz="0.0015167656567649432 -0.01964188152713786 -0.0002844733557830925" rpy="9.507900496666728e-34 0.9707969349430008 -3.875608070853002e-33" />
+      <origin xyz="-0.0015167656567649462 -0.01964188152713786 0.00028447335578309926" rpy="3.141592653589793 -0.970796934943 3.141592653589793" />
    </joint>
    <link name="LFtip_left">
       <inertial>
-         <origin xyz="0.0 2.7755575615628914e-17 -3.469446951953614e-18" rpy="-2.3461332654756542e-17 0.0 -2.9436483604948474e-18" />
+         <origin xyz="0.0 0.0 0.0" rpy="0.0 0.0 0.0" />
          <mass value="0.001" />
          <inertia ixx="1e-09" iyy="1e-09" izz="1e-09" ixy="0" ixz="0" iyz="0" />
       </inertial>
@@ -1463,6 +2197,9 @@
    <joint type="fixed" name="LFtip_joint_left">
       <parent link="distph5_left" />
       <child link="LFtip_left" />
-      <origin xyz="0.00028800192051641827 -0.01883393238545958 0.00111120042012431" rpy="-0.30068756862856233 0.6985554313998295 -0.11023436132302195" />
+      <origin xyz="0.011590461196100244 -0.014847934653276816 -0.0011112004201243" rpy="2.8409050849612303 -0.6985554313998293 -2.3532617678330627" />
    </joint>
+   <material name="white">
+      <color rgba="1 1 1 1" />
+   </material>
 </robot>
