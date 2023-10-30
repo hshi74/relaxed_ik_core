@@ -45,7 +45,7 @@ impl RelaxedIKVars {
         let docs = YamlLoader::load_from_str(contents.as_str()).unwrap();
         let settings = &docs[0];
 
-        let path_to_urdf = std::path::Path::new(path_to_setting).parent().unwrap().to_str().unwrap().to_string() + "/" + settings["urdf"].as_str().unwrap();
+        let path_to_urdf = std::path::Path::new(path_to_setting).parent().unwrap().to_str().unwrap().to_string() + "/urdfs/" + settings["urdf"].as_str().unwrap();
         println!("RelaxedIK is using below URDF file: {}", path_to_urdf);
         let chain = k::Chain::<f64>::from_urdf_file(path_to_urdf.clone()).unwrap();
 

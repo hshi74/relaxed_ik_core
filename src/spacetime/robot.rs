@@ -22,7 +22,7 @@ fn convert_ros_package_path(filename: &str) -> Option<String> {
             if ros_package_path.contains("catkin") {
                 // Search for the absolute path to the package
                 for path in ros_package_path.split(':') {
-                    let possible_path = format!("{}/{}/{}", path, package_name, relative_path);
+                    let possible_path = format!("{}/{}", path, relative_path);
                     if std::path::Path::new(&possible_path).exists() {
                         return Some(possible_path);
                     }
