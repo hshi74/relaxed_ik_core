@@ -38,14 +38,14 @@ pub struct RelaxedIKVars {
 }
 impl RelaxedIKVars {
     pub fn from_local_settings(path_to_setting: &str) -> Self {
-        let path_to_src = get_path_to_src();
+        // let path_to_src = get_path_to_src();
         let mut file = File::open(path_to_setting).unwrap();
         let mut contents = String::new();
         let res = file.read_to_string(&mut contents).unwrap();
         let docs = YamlLoader::load_from_str(contents.as_str()).unwrap();
         let settings = &docs[0];
 
-        let path_to_urdf = path_to_src + "configs/urdfs/" + settings["urdf"].as_str().unwrap();
+        let path_to_urdf = std::path::Path::new(path_to_setting).parent().unwrap().to_str().unwrap().to_string() + "/" + settings["urdf"].as_str().unwrap();
         println!("RelaxedIK is using below URDF file: {}", path_to_urdf);
         let chain = k::Chain::<f64>::from_urdf_file(path_to_urdf.clone()).unwrap();
 
