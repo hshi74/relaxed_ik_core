@@ -1,5 +1,5 @@
 <robot name="myohand_two_scaled">
-   <link name="world">
+   <link name="world"></link>
    <joint type="revolute" name="rotate_x_joint">
       <parent link="world" />
       <child link="joint_rx_link" />
@@ -2199,7 +2199,4 @@
       <child link="LFtip_left" />
       <origin xyz="0.011590461196100244 -0.014847934653276816 -0.0011112004201243" rpy="2.8409050849612303 -0.6985554313998293 -2.3532617678330627" />
    </joint>
-   <material name="white">
-      <color rgba="1 1 1 1" />
-   </material>
 </robot>
