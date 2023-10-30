@@ -7,7 +7,7 @@
       <child link="joint_tx_link" />
       <origin xyz="0.0 0.0 0.0" rpy="0 0 0" />
       <axis xyz="1 0 0" />
-      <limit effort="20.0" lower="-1.0" upper="1.0" velocity="5.0" />
+      <limit effort="20.0" lower="-10.0" upper="10.0" velocity="5.0" />
    </joint>
 
    <joint type="prismatic" name="translate_y_joint">
@@ -15,7 +15,7 @@
       <child link="joint_ty_link" />
       <origin xyz="0.0 0.0 0.0" rpy="0 0 0" />
       <axis xyz="0 1 0" />
-      <limit effort="20.0" lower="-1.0" upper="1.0" velocity="5.0" />
+      <limit effort="20.0" lower="-10.0" upper="10.0" velocity="5.0" />
    </joint>
 
    <joint type="prismatic" name="translate_z_joint">
@@ -23,7 +23,7 @@
       <child link="joint_tz_link" />
       <origin xyz="0.0 0.0 0.0" rpy="0 0 0" />
       <axis xyz="0 0 1" />
-      <limit effort="20.0" lower="-1.0" upper="1.0" velocity="5.0" />
+      <limit effort="20.0" lower="-10.0" upper="10.0" velocity="5.0" />
    </joint>
 
    
@@ -740,7 +740,7 @@
       <child link="joint_tx_link_left" />
       <origin xyz="0.0 0.0 0.0" rpy="0 0 0" />
       <axis xyz="1 0 0" />
-      <limit effort="20.0" lower="-1.0" upper="1.0" velocity="5.0" />
+      <limit effort="20.0" lower="-10.0" upper="10.0" velocity="5.0" />
    </joint>
 
    <joint type="prismatic" name="translate_y_joint_left">
@@ -748,7 +748,7 @@
       <child link="joint_ty_link_left" />
       <origin xyz="0.0 0.0 0.0" rpy="0 0 0" />
       <axis xyz="0 1 0" />
-      <limit effort="20.0" lower="-1.0" upper="1.0" velocity="5.0" />
+      <limit effort="20.0" lower="-10.0" upper="10.0" velocity="5.0" />
    </joint>
 
    <joint type="prismatic" name="translate_z_joint_left">
@@ -756,7 +756,7 @@
       <child link="joint_tz_link_left" />
       <origin xyz="0.0 0.0 0.0" rpy="0 0 0" />
       <axis xyz="0 0 1" />
-      <limit effort="20.0" lower="-1.0" upper="1.0" velocity="5.0" />
+      <limit effort="20.0" lower="-10.0" upper="10.0" velocity="5.0" />
    </joint>
 
    
