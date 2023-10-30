@@ -380,7 +380,7 @@ impl ObjectiveTrait for MinimizeVelocity {
         let mut x_val = 0.0;
         for i in 0..x.len() {
             if v.robot.joint_types_robot[i] == "prismatic" {
-                x_val += (10.0 * (x[i] - v.xopt[i])).powi(2);
+                x_val += (5.0 * (x[i] - v.xopt[i])).powi(2);
             } else {
                 x_val += (x[i] - v.xopt[i]).powi(2);
             }
@@ -407,7 +407,7 @@ impl ObjectiveTrait for MinimizeAcceleration {
             let v1 = x[i] - v.xopt[i];
             let v2 = v.xopt[i] - v.prev_state[i];
             if v.robot.joint_types_robot[i] == "prismatic" {
-                x_val += (10.0 * (v1 - v2)).powi(2);
+                x_val += (5.0 * (v1 - v2)).powi(2);
             } else {
                 x_val += (v1 - v2).powi(2);
             }
@@ -439,7 +439,7 @@ impl ObjectiveTrait for MinimizeJerk {
             let a1 = v1 - v2;
             let a2 = v2 - v3;
             if v.robot.joint_types_robot[i] == "prismatic" {
-                x_val += (10.0 * (a1 - a2)).powi(2);
+                x_val += (5.0 * (a1 - a2)).powi(2);
             } else {
                 x_val += (a1 - a2).powi(2);
             }

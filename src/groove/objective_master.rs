@@ -65,11 +65,11 @@ impl ObjectiveMaster {
         } else {
             for i in 0..num_dofs {
                 objectives.push(Box::new(MatchJointPosiDoF::new(i, 0)));
-                weight_priors.push(10.0);
+                weight_priors.push(5.0);
                 objectives.push(Box::new(MatchJointPosiDoF::new(i, 1)));
-                weight_priors.push(10.0);
+                weight_priors.push(5.0);
                 objectives.push(Box::new(MatchJointPosiDoF::new(i, 2)));
-                weight_priors.push(10.0);
+                weight_priors.push(5.0);
             }
             for i in 0..num_chains {
                 objectives.push(Box::new(MatchEEPosiDoF::new(i, 0)));
