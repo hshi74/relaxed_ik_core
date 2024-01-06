@@ -105,10 +105,10 @@ impl ObjectiveMaster {
             // weight_priors.push(1.0);
         }
 
-        // for j in 0..num_dofs {
-        //     objectives.push(Box::new(EachJointLimits::new(j)));
-        //     weight_priors.push(0.1);
-        // }
+        for j in 0..num_dofs {
+            objectives.push(Box::new(EachJointLimits::new(j)));
+            weight_priors.push(0.1);
+        }
 
         // let self_collision_weight = 0.01;
         // let mut pairs = Vec::new();
