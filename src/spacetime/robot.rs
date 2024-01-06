@@ -38,7 +38,10 @@ fn convert_ros_package_path(filename: &str) -> Option<String> {
         let possible_path = filename["file://".len()..].to_string();
         return Some(possible_path);
     } else {
-        eprintln!("Error: Unsupported file URI.");
+        // Hard code
+        let possible_path = format!("leap_hand/{}", filename.to_string());
+        return Some(possible_path);
+        // eprintln!("Error: Unsupported file URI.");
     }
     None
 }
