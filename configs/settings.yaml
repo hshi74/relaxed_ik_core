@@ -1,15 +1,15 @@
-urdf: leap.urdf
+urdf: franka_leap.urdf
 link_radius: 0.05
 base_links:
-  - palm_lower
-  - palm_lower
-  - palm_lower
-  - palm_lower
+  - panda_link0
+  - panda_link0
+  - panda_link0
+  - panda_link0
 ee_links:
   - realtip
   - realtip_2
   - realtip_3
   - realtip_4
-joint_ordering: ['1', '0', '2', '3', '5', '4', '6', '7', '9', '8', '10', '11', '12', '13', '14', '15']
-starting_config: [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0]
+joint_ordering: ['panda_joint1', 'panda_joint2', 'panda_joint3', 'panda_joint4', 'panda_joint5', 'panda_joint6', 'panda_joint7','1', '0', '2', '3', '5', '4', '6', '7', '9', '8', '10', '11', '12', '13', '14', '15']
+starting_config: [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0]
 obstacles:
